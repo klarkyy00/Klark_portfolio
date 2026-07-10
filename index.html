@@ -83,6 +83,28 @@
   }
   .about-section p + p{ margin-top:14px; }
 
+  /* ===== CERTIFICATIONS ===== */
+  .cert-section{
+    max-width:1000px; margin:0 auto; padding:56px 24px;
+    border-bottom:1px solid var(--border);
+  }
+  .cert-section h2{
+    font-size:1.7rem; font-weight:800; margin-bottom:24px; color:var(--text); text-align:center;
+  }
+  .cert-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+    gap:16px;
+  }
+  .cert-card{
+    background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+    border:1px solid var(--border); border-radius:12px; padding:18px 20px;
+  }
+  .cert-card h3{
+    font-size:0.95rem; font-weight:700; color:var(--text); margin-bottom:6px; line-height:1.35;
+  }
+  .cert-card .cert-org{ font-size:0.78rem; color:var(--accent2); font-weight:600; margin-bottom:4px; }
+  .cert-card .cert-date{ font-size:0.75rem; color:var(--muted); }
+
   /* ===== AVATAR ===== */
   .title-row{
     display:flex; align-items:center; justify-content:center;
@@ -272,36 +294,56 @@
         <svg viewBox="0 0 150 160" preserveAspectRatio="xMidYMid slice" style="background:#0d1a20;">
           <defs>
             <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#c9d1d3"/>
-              <stop offset="100%" stop-color="#9aa5a8"/>
+              <stop offset="0%" stop-color="#2a2320"/>
+              <stop offset="100%" stop-color="#151110"/>
             </linearGradient>
           </defs>
           <circle class="avatar-ring" cx="75" cy="80" r="62"/>
-          <rect x="62" y="120" width="26" height="24" rx="10" fill="#f0c39a"/>
-          <ellipse cx="75" cy="90" rx="42" ry="46" fill="#f6d3ab"/>
-          <circle cx="34" cy="92" r="7" fill="#f0c39a"/>
-          <circle cx="116" cy="92" r="7" fill="#f0c39a"/>
-          <path d="M32,78 C28,40 55,18 75,18 C97,18 122,42 118,80
-                   C112,66 104,58 96,64 C92,50 82,40 75,40
-                   C66,40 58,52 55,66 C48,58 38,64 32,78 Z"
+
+          <!-- shoulders / suit -->
+          <path d="M20,160 C20,130 40,120 75,120 C110,120 130,130 130,160 Z" fill="#111417"/>
+          <path d="M55,120 L60,160 L48,160 C48,140 50,128 55,120 Z" fill="#0d9488"/>
+          <path d="M95,120 L90,160 L102,160 C102,140 100,128 95,120 Z" fill="#0d9488"/>
+          <path d="M60,118 L75,132 L90,118 L84,124 L75,120 L66,124 Z" fill="#0a1210"/>
+
+          <!-- neck -->
+          <rect x="62" y="108" width="26" height="20" rx="8" fill="#e0ab7c"/>
+
+          <!-- face -->
+          <ellipse cx="75" cy="82" rx="40" ry="45" fill="#e8b98a"/>
+
+          <!-- ears -->
+          <circle cx="36" cy="84" r="6.5" fill="#e0ab7c"/>
+          <circle cx="114" cy="84" r="6.5" fill="#e0ab7c"/>
+
+          <!-- short faded hair -->
+          <path d="M34,70 C32,42 52,20 75,20 C99,20 118,43 116,70
+                   C114,55 108,44 100,42 C97,35 88,30 75,30
+                   C62,30 53,35 50,42 C42,44 36,55 34,70 Z"
                 fill="url(#hairGrad)"/>
-          <g stroke="#3a3a3a" stroke-width="3" fill="none">
-            <rect x="42" y="82" width="30" height="24" rx="8"/>
-            <rect x="78" y="82" width="30" height="24" rx="8"/>
-            <line x1="72" y1="92" x2="78" y2="92"/>
-            <line x1="38" y1="88" x2="30" y2="84"/>
-            <line x1="112" y1="88" x2="120" y2="84"/>
-          </g>
-          <path d="M46,76 Q57,70 68,76" stroke="#8f9497" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M82,76 Q93,70 104,76" stroke="#8f9497" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M36,66 C37,54 42,46 48,42 C44,50 42,58 42,66 Z" fill="#1c1714" opacity="0.6"/>
+          <path d="M114,66 C113,54 108,46 102,42 C106,50 108,58 108,66 Z" fill="#1c1714" opacity="0.6"/>
+
+          <!-- eyebrows -->
+          <path d="M48,72 Q57,66 66,71" stroke="#3a2e28" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M84,71 Q93,66 102,72" stroke="#3a2e28" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+          <!-- eyes -->
           <g id="eyeL">
-            <circle class="avatar-eye" cx="57" cy="94" r="5.5"/>
+            <ellipse class="avatar-eye" cx="58" cy="80" rx="4.8" ry="5.5"/>
           </g>
           <g id="eyeR">
-            <circle class="avatar-eye" cx="93" cy="94" r="5.5"/>
+            <ellipse class="avatar-eye" cx="92" cy="80" rx="4.8" ry="5.5"/>
           </g>
-          <path d="M75,98 Q80,110 73,114" stroke="#d9a978" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path id="mouth" d="M62,124 Q75,130 88,124" stroke="#a56b52" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+          <!-- nose -->
+          <path d="M75,82 Q79,92 74,96" stroke="#c99367" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+
+          <!-- light stubble -->
+          <path d="M52,96 Q75,112 98,96 Q95,106 75,110 Q55,106 52,96 Z" fill="#3a2e28" opacity="0.12"/>
+
+          <!-- mouth -->
+          <path id="mouth" d="M63,104 Q75,109 87,104" stroke="#a56b52" stroke-width="2.8" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
@@ -361,6 +403,47 @@
   <p>I'm Klark John Cabungcal, an automation engineer focused on turning manual, repetitive business processes into reliable, self-healing systems using n8n. I work across the full stack of a workflow — form intake, AI-powered data extraction, CRM and calendar integrations, and multi-channel notifications — so a process can run unattended without someone babysitting it.</p>
   <p>My background is in Information Technology, and I got into automation because I kept noticing the same pattern: small businesses and teams doing the same manual tasks over and over, when the tools to eliminate that work already exist — they just need to be connected properly. That's what I build.</p>
   <p>I'm currently open to freelance automation projects and full-time opportunities. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
+</div>
+
+<div class="cert-section">
+  <h2>Certifications & Trainings</h2>
+  <div class="cert-grid">
+    <div class="cert-card">
+      <h3>AI Automation with n8n</h3>
+      <div class="cert-org">Technical Virtual Assistants PH</div>
+      <div class="cert-date">May 19, 2026</div>
+    </div>
+    <div class="cert-card">
+      <h3>HighLevel CRM Full Training</h3>
+      <div class="cert-org">Technical Virtual Assistants PH</div>
+      <div class="cert-date">June 1, 2026</div>
+    </div>
+    <div class="cert-card">
+      <h3>No Code Automation with Make.com</h3>
+      <div class="cert-org">Technical Virtual Assistants PH</div>
+      <div class="cert-date">April 22, 2026</div>
+    </div>
+    <div class="cert-card">
+      <h3>No Code Automation with Zapier</h3>
+      <div class="cert-org">Technical Virtual Assistants PH</div>
+      <div class="cert-date">April 15, 2026</div>
+    </div>
+    <div class="cert-card">
+      <h3>Prompt Engineering Full Training</h3>
+      <div class="cert-org">Technical Virtual Assistants PH</div>
+      <div class="cert-date">May 19, 2026</div>
+    </div>
+    <div class="cert-card">
+      <h3>Technical Drafting NCII</h3>
+      <div class="cert-org">All Business Computer Center Phils. Inc.</div>
+      <div class="cert-date">Sep 11 – Oct 7, 2019</div>
+    </div>
+    <div class="cert-card">
+      <h3>Electrical Installation and Maintenance NCII</h3>
+      <div class="cert-org">Concept Institute for Career Enhancement, Inc.</div>
+      <div class="cert-date">Jun 4 – Jul 10, 2019</div>
+    </div>
+  </div>
 </div>
 
 <div class="wrap" id="cardWrap">
@@ -691,11 +774,12 @@
     });
   });
 
-  // ===== Avatar eye tracking + blinking =====
+  // ===== Avatar eye tracking + blinking (only runs if illustrated avatar is present) =====
   (function(){
     const avatar = document.getElementById('avatar');
     const eyeL = document.getElementById('eyeL');
     const eyeR = document.getElementById('eyeR');
+    if(!eyeL || !eyeR) return;
     const maxOffset = 2.5;
 
     function moveEyes(clientX, clientY){
@@ -720,6 +804,30 @@
       setTimeout(blink, 2500 + Math.random() * 3000);
     }
     setTimeout(blink, 1800);
+  })();
+
+  // ===== Photo avatar parallax tilt (runs if a real photo is present) =====
+  (function(){
+    const avatar = document.getElementById('avatar');
+    const photo = document.getElementById('avatarPhoto');
+    if(!photo) return;
+    const maxShift = 6;
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = avatar.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const dist = Math.hypot(dx, dy) || 1;
+      const shiftX = (dx / dist) * maxShift;
+      const shiftY = (dy / dist) * maxShift;
+      photo.style.transform = `translate(${shiftX}px, ${shiftY}px) scale(1.04)`;
+    });
+
+    avatar.addEventListener('mouseleave', () => {
+      photo.style.transform = 'translate(0,0) scale(1)';
+    });
   })();
 </script>
 
