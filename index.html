@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root{
+    --bg:#0a0e14; --panel:#0e1720; --panel2:#122029;
+    --border:#1b2b35; --text:#e8f2f2; --muted:#7ea3a8;
+    --accent:#14b8a6; --accent2:#2dd4bf; --deep:#0d9488; --sea:#38bdf8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    padding:0;
+  }
+  .hero{
+    padding:64px 24px 40px; text-align:center;
+    background:radial-gradient(ellipse at top, #0f2a2c 0%, var(--bg) 70%);
+    border-bottom:1px solid var(--border);
+  }
+  .hero h1{
+    font-size:2.4rem; margin:0 0 12px;
+    background:linear-gradient(90deg, var(--accent), var(--sea));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    font-weight:800; letter-spacing:-0.5px;
+  }
+  .hero p{color:var(--muted); font-size:1.05rem; max-width:640px; margin:0 auto;}
+  .contact-line{
+    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    margin-top:16px; font-size:0.85rem; color:var(--muted);
+  }
+  .contact-line a{ color:var(--accent2); text-decoration:none; font-weight:600; }
+  .contact-line a:hover{ text-decoration:underline; }
+  .contact-line span.sep{ color:#334; }
+  .edu-line{
+    margin-top:10px; font-size:0.82rem; color:var(--muted); font-weight:500;
+  }
+  .edu-line strong{ color:var(--text); font-weight:700; }
+  .badges{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
+  .badge{
+    background:var(--panel2); border:1px solid var(--border); color:var(--muted);
+    padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:600;
+  }
+  .hint{color:var(--muted); font-size:0.82rem; margin-top:26px; opacity:0.8;}
+  .hint span{color:var(--accent2); font-weight:700;}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:48px 24px 80px;}
+  .card{
+    background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+    border:1px solid var(--border); border-radius:16px;
+    margin-bottom:24px; overflow:hidden;
+    transition:border-color .25s, box-shadow .25s, transform .2s;
+    cursor:pointer;
+  }
+  .card:hover{
+    border-color:var(--accent); transform:translateY(-3px);
+    box-shadow:0 20px 50px -25px rgba(20,184,166,0.35);
+  }
+  .card.open{border-color:var(--accent2); box-shadow:0 20px 50px -20px rgba(45,212,191,0.25);}
+
+  .card-head{
+    padding:26px 28px; display:flex; justify-content:space-between;
+    align-items:center; gap:16px;
+  }
+  .card-head.has-body{border-bottom:1px solid var(--border);}
+  .head-left{flex:1; min-width:0;}
+  .card-title{font-size:1.35rem; font-weight:700; margin:0 0 6px;}
+  .card-tag{
+    font-size:0.78rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.06em; padding:4px 10px; border-radius:6px; display:inline-block;
+    background:rgba(20,184,166,0.12); color:var(--accent2);
+  }
+  .chevron{
+    flex-shrink:0; width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+    color:var(--accent2); font-size:1rem; transition:transform .3s ease, border-color .3s, background .3s;
+  }
+  .card:hover .chevron{border-color:var(--accent); background:rgba(20,184,166,0.08);}
+  .card.open .chevron{transform:rotate(180deg); background:rgba(45,212,191,0.15); border-color:var(--accent2);}
+
+  .card-body-wrap{
+    display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s ease;
+  }
+  .card.open .card-body-wrap{grid-template-rows:1fr;}
+  .card-body-inner{overflow:hidden;}
+  .card-body{padding:22px 28px 28px;}
+  .card-desc{color:var(--muted); font-size:0.96rem; line-height:1.6; margin:0 0 20px;}
+  .flow{
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    margin-bottom:22px; padding:16px; background:#081014; border-radius:10px;
+    border:1px solid var(--border); overflow-x:auto;
+  }
+  .step{
+    background:var(--panel2); border:1px solid var(--border); border-radius:8px;
+    padding:8px 12px; font-size:0.78rem; font-weight:600; white-space:nowrap;
+    color:var(--text);
+  }
+  .arrow{color:var(--muted); font-size:0.9rem;}
+  .split{color:var(--accent2); font-weight:700; font-size:0.78rem;}
+  .split.neg{color:#5c8a8f;}
+  .section-label{
+    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--muted); font-weight:700; margin:20px 0 10px;
+  }
+  ul.highlights{margin:0; padding-left:20px; color:var(--text); font-size:0.9rem; line-height:1.8;}
+  ul.highlights li{margin-bottom:2px;}
+  .stack{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .chip{
+    background:#081014; border:1px solid var(--border); color:var(--accent2);
+    padding:4px 10px; border-radius:6px; font-size:0.76rem; font-weight:600;
+  }
+  .footer{text-align:center; color:var(--muted); padding:30px; font-size:0.85rem; border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p style="color:var(--accent2); font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:0.8rem; margin:0 0 14px;">Klark John Cabungcal</p>
+  <h1>Automation Engineering Portfolio</h1>
+  <p>End-to-end n8n workflows that replace manual, repetitive business processes — from lead qualification to AI video publishing — with reliable, self-healing automation.</p>
+
+  <div class="contact-line">
+    <a href="mailto:pungzuwangdu11@gmail.com">pungzuwangdu11@gmail.com</a>
+    <span class="sep">|</span>
+    <a href="mailto:klarkyy02@gmail.com">klarkyy02@gmail.com</a>
+    <span class="sep">|</span>
+    <span>Purok 4, Banaybanay I, San Jose, Batangas 500</span>
+  </div>
+  <div class="edu-line"><strong>Bachelor of Science in Information Technology</strong></div>
+
+  <div class="badges">
+    <span class="badge">n8n</span>
+    <span class="badge">Gemini / Ollama AI</span>
+    <span class="badge">Google Workspace</span>
+    <span class="badge">Slack / Gmail</span>
+    <span class="badge">Airtable · HubSpot</span>
+    <span class="badge">Webhooks & REST APIs</span>
+  </div>
+  <p class="hint">Click any project below to <span>expand the full workflow</span></p>
+</div>
+
+<div class="wrap" id="cardWrap">
+
+  <!-- 1: Appointment Setter -->
+  <div class="card" data-id="c1">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">Scheduling · AI Extraction</span>
+        <h2 class="card-title">Advanced Appointment Setter</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">An AI-powered booking assistant that turns a raw Jotform submission into a fully confirmed calendar appointment — checking real-time availability, handling conflicts gracefully, and never touching a human unless something breaks.</p>
+
+          <div class="flow">
+            <span class="step">📥 Jotform Webhook</span><span class="arrow">→</span>
+            <span class="step">🤖 Gemini Extractor</span><span class="arrow">→</span>
+            <span class="step">✅ Validate Fields</span><span class="arrow">→</span>
+            <span class="step">🗂 Airtable (Pending)</span><span class="arrow">→</span>
+            <span class="step">📅 Check Calendar</span><span class="arrow">→</span>
+            <span class="step">🔀 Slot Available?</span>
+          </div>
+          <div class="flow">
+            <span class="split">YES</span>
+            <span class="step">Create Event</span><span class="arrow">→</span>
+            <span class="step">Log to Sheet</span><span class="arrow">→</span>
+            <span class="step">Confirmation Email</span><span class="arrow">→</span>
+            <span class="step">200 Confirmed</span>
+          </div>
+          <div class="flow">
+            <span class="split neg">NO</span>
+            <span class="step">Update Airtable → Needs Reschedule</span><span class="arrow">→</span>
+            <span class="step">Alt. Slots Email</span><span class="arrow">→</span>
+            <span class="step">200 Needs Reschedule</span>
+          </div>
+
+          <div class="section-label">Why it matters</div>
+          <ul class="highlights">
+            <li>Uses a Gemini "Information Extractor" so the form doesn't need rigid field names — natural language like "2pm" is auto-converted to 24h time</li>
+            <li>Actively checks Google Calendar to prevent double-booking, and suggests up to 3 real alternative slots if busy</li>
+            <li>Every external step (Airtable, Calendar, Sheets, Gmail) has a fallback — failures email the admin and return a 500 instead of failing silently</li>
+            <li>Full audit trail: every request, confirmed or not, lands in Airtable</li>
+          </ul>
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Gemini AI</span><span class="chip">Jotform</span>
+            <span class="chip">Google Calendar</span><span class="chip">Airtable</span><span class="chip">Google Sheets</span><span class="chip">Gmail</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2: E-Commerce -->
+  <div class="card" data-id="c2">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">E-Commerce · Fulfillment</span>
+        <h2 class="card-title">E-Commerce Order Processing</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A webhook-triggered fan-out that takes a messy Jotform order submission, normalizes it, and simultaneously notifies the customer, the fulfillment team, and the inventory tracker — in parallel, not sequentially.</p>
+
+          <div class="flow">
+            <span class="step">📥 Order Webhook</span><span class="arrow">→</span>
+            <span class="step">🧹 Map & Normalize Fields</span><span class="arrow">→</span>
+            <span class="step">⑂ Fan-out (parallel)</span>
+          </div>
+          <div class="flow">
+            <span class="step">📧 Confirmation Email</span>
+            <span class="step">💬 Slack #inventory (packing checklist)</span>
+            <span class="step">📊 Append to Google Sheets</span>
+          </div>
+          <div class="flow">
+            <span class="split neg">⚠️ Any failure</span><span class="arrow">→</span>
+            <span class="step">Log Failure</span><span class="arrow">→</span>
+            <span class="step">Notify Team (Slack)</span>
+          </div>
+
+          <div class="section-label">Why it matters</div>
+          <ul class="highlights">
+            <li>Handles inconsistent Jotform field naming (q2_customer_name vs customerName) with a resilient lookup + "pretty" string fallback</li>
+            <li>Three actions fire in parallel instead of a slow sequential chain — customer, warehouse, and inventory all stay in sync instantly</li>
+            <li>Retries 3x on every external call before escalating to a Slack failure alert</li>
+          </ul>
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Gmail</span>
+            <span class="chip">Slack</span><span class="chip">Google Sheets</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3: Invoice -->
+  <div class="card" data-id="c3">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">Finance · Collections</span>
+        <h2 class="card-title">Invoice & Payment Automation</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">Turns a client's invoice upload into a complete intake → bookkeeping → payment follow-up pipeline, replacing the classic small-business time sink of manual invoice tracking and collections chasing.</p>
+
+          <div class="flow">
+            <span class="step">📥 Invoice Upload Webhook</span><span class="arrow">→</span>
+            <span class="step">🧹 Parse Jotform Payload</span><span class="arrow">→</span>
+            <span class="step">👁 OCR (Google Vision)</span><span class="arrow">→</span>
+            <span class="step">🧾 Parse Invoice Data</span><span class="arrow">→</span>
+            <span class="step">📊 Log to Sheets</span>
+          </div>
+          <div class="flow">
+            <span class="step">📧 Confirm to Client</span><span class="arrow">→</span>
+            <span class="step">💬 Notify Team (Slack)</span><span class="arrow">→</span>
+            <span class="step">⏳ Wait 7 Days</span><span class="arrow">→</span>
+            <span class="step">🔍 Re-check Paid?</span>
+          </div>
+          <div class="flow">
+            <span class="split neg">Still Unpaid</span>
+            <span class="step">Reminder Email</span><span class="arrow">→</span>
+            <span class="step">⏳ Wait 7 More Days</span><span class="arrow">→</span>
+            <span class="step">🔍 Re-check Paid?</span><span class="arrow">→</span>
+            <span class="step">🚨 Final Notice + Slack Escalation</span>
+          </div>
+
+          <div class="section-label">Business value</div>
+          <ul class="highlights">
+            <li>OCR cross-checks the uploaded invoice image against form data to catch mismatches automatically</li>
+            <li>Re-verifies payment status before each escalation — never sends an "URGENT OVERDUE" email to someone who already paid</li>
+            <li>Reminders fire exactly on schedule, every time, improving cash collection speed</li>
+            <li>Built to survive multi-week wait chains: retries + a dedicated error-alert channel on every critical step</li>
+          </ul>
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Google Cloud Vision (OCR)</span>
+            <span class="chip">Google Sheets</span><span class="chip">Gmail</span><span class="chip">Slack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4: Lead Gen -->
+  <div class="card" data-id="c4">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">Sales · AI Qualification</span>
+        <h2 class="card-title">Lead Generation & Sales Automation Pipeline</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A fully automated inbound lead scoring system that monitors Gmail, qualifies every new lead with a locally-hosted AI model using BANT criteria, and routes hot/warm/cold leads to the right CRM and outreach action — zero manual triage.</p>
+
+          <div class="flow">
+            <span class="step">📧 Gmail Trigger</span><span class="arrow">→</span>
+            <span class="step">🧠 Extract Lead Data</span><span class="arrow">→</span>
+            <span class="step">🦙 AI Qualification (Ollama / Llama 3.2)</span><span class="arrow">→</span>
+            <span class="step">📊 Score & Tier</span>
+          </div>
+          <div class="flow">
+            <span class="split">🔥 Hot (8–10)</span>
+            <span class="step">HubSpot: SQL</span><span class="step">Slack #sales-urgent</span><span class="step">Book-a-call reply</span>
+          </div>
+          <div class="flow">
+            <span class="split neg">☀️ Warm (5–7)</span>
+            <span class="step">HubSpot: MQL</span><span class="step">Slack #sales-leads</span><span class="step">24h follow-up reply</span>
+          </div>
+          <div class="flow">
+            <span class="split neg">❄️ Cold (1–4)</span>
+            <span class="step">No CRM entry — polite nurture reply only</span>
+          </div>
+
+          <div class="section-label">Key highlights</div>
+          <ul class="highlights">
+            <li>Zero cloud AI cost — qualification runs entirely on local hardware via Ollama</li>
+            <li>BANT-based prompt evaluates budget signals, decision-maker indicators, urgency, and free vs. business email domain</li>
+            <li>Three-tier routing eliminates manual sales triage entirely</li>
+            <li>Auto-replies are personalized per tier with the appropriate CTA, within seconds of the lead arriving</li>
+          </ul>
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Ollama (Llama 3.2)</span><span class="chip">Gmail API</span>
+            <span class="chip">HubSpot CRM</span><span class="chip">Slack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5: Veo Video -->
+  <div class="card" data-id="c5">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">Media · AI Video</span>
+        <h2 class="card-title">Veo AI Video Generator — Auto-Post to YouTube & Facebook</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">One click generates two cinematic AI video clips with Google Veo 3.1, merges them, and auto-publishes to YouTube and Facebook simultaneously — replacing a video editor, social media manager, and content writer in one automated run.</p>
+
+          <div class="flow">
+            <span class="step">🖱 Manual Trigger</span><span class="arrow">→</span>
+            <span class="step">🤖 Gemini writes scripts + titles</span><span class="arrow">→</span>
+            <span class="step">🔐 JWT / Service Account Auth</span><span class="arrow">→</span>
+            <span class="step">🎥 Veo 3.1: Generate Clip 1</span><span class="arrow">→</span>
+            <span class="step">⏳ Poll every 30s</span>
+          </div>
+          <div class="flow">
+            <span class="step">🎥 Veo 3.1: Generate Clip 2</span><span class="arrow">→</span>
+            <span class="step">⏳ Poll every 30s</span><span class="arrow">→</span>
+            <span class="step">🎞 FFmpeg Merge</span><span class="arrow">→</span>
+            <span class="step">📤 YouTube Upload</span>
+            <span class="step">📤 Facebook Graph API</span>
+          </div>
+          <div class="flow">
+            <span class="split neg">🚧 Content Filtered / Error</span><span class="arrow">→</span>
+            <span class="step">Auto-regenerate script & retry</span>
+          </div>
+
+          <div class="section-label">What makes it powerful</div>
+          <ul class="highlights">
+            <li>Gemini 2.5 Flash writes optimized Veo prompts, titles, and descriptions with structured JSON output</li>
+            <li>Two unique 8-second vertical (9:16, 1080×1920) clips generated with AI audio included — no manual editing</li>
+            <li>Smart retry system auto-regenerates if Google's AI safety filter blocks content</li>
+            <li>Total time from click to live post: roughly 4–5 minutes</li>
+          </ul>
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Google Veo 3.1</span><span class="chip">Gemini 2.5 Flash</span>
+            <span class="chip">FFmpeg</span><span class="chip">YouTube API</span><span class="chip">Facebook Graph API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Automation workflows built in n8n — connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.</div>
+
+<script>
+  document.querySelectorAll('.card').forEach(card => {
+    const head = card.querySelector('.card-head');
+    head.addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
