@@ -111,6 +111,46 @@
     padding:4px 10px; border-radius:6px; font-size:0.76rem; font-weight:600;
   }
   .footer{text-align:center; color:var(--muted); padding:30px; font-size:0.85rem; border-top:1px solid var(--border);}
+
+  /* ===== CONTACT SECTION ===== */
+  .contact-section{
+    max-width:700px; margin:0 auto 80px; padding:0 24px; text-align:center;
+  }
+  .contact-section h2{
+    font-size:2.1rem; font-weight:800; margin-bottom:12px; color:var(--text);
+  }
+  .contact-section > p{
+    color:var(--muted); font-size:1rem; margin-bottom:32px;
+  }
+  .contact-form{
+    display:flex; flex-direction:column; gap:16px; text-align:left;
+  }
+  .contact-form input,
+  .contact-form textarea{
+    width:100%; background:var(--panel2); border:1px solid var(--border);
+    border-radius:10px; padding:14px 16px; color:var(--text);
+    font-family:inherit; font-size:0.95rem; outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder{ color:#5a7a80; }
+  .contact-form input:focus,
+  .contact-form textarea:focus{
+    border-color:var(--accent2);
+    box-shadow:0 0 0 3px rgba(45,212,191,0.15);
+  }
+  .contact-form textarea{ min-height:150px; resize:vertical; }
+  .contact-submit{
+    background:linear-gradient(90deg, var(--sea), var(--accent2));
+    border:none; border-radius:10px; padding:15px; color:#04201e;
+    font-size:1rem; font-weight:700; cursor:pointer;
+    transition:opacity .2s, transform .15s;
+  }
+  .contact-submit:hover{ opacity:0.92; transform:translateY(-1px); }
+  .contact-submit:disabled{ opacity:0.6; cursor:default; transform:none; }
+  .contact-status{
+    font-size:0.85rem; margin-top:4px; min-height:18px; color:var(--accent2);
+  }
 </style>
 </head>
 <body>
@@ -390,9 +430,46 @@
 
 </div>
 
+<div class="contact-section">
+  <h2>Let's Collaborate</h2>
+  <p>Ready to automate your business? Get in touch and let's discuss your project.</p>
+  <form class="contact-form" id="contactForm">
+    <input type="text" id="cf-name" placeholder="Your Name" required>
+    <input type="email" id="cf-email" placeholder="Your Email" required>
+    <textarea id="cf-message" placeholder="Tell me about your project..." required></textarea>
+    <button type="submit" class="contact-submit" id="cf-submit">Send Message</button>
+    <div class="contact-status" id="cf-status"></div>
+  </form>
+</div>
+
 <div class="footer">Automation workflows built in n8n — connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.</div>
 
 <script>
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    const status = document.getElementById('cf-status');
+    const submitBtn = document.getElementById('cf-submit');
+
+    if(!name || !email || !message){
+      status.textContent = 'Please fill out all fields.';
+      status.style.color = '#e07a7a';
+      return;
+    }
+
+    // Opens the visitor's email client with a pre-filled message to you.
+    // Replace the address below with the inbox you want inquiries sent to.
+    const to = 'pungzuwangdu11@gmail.com';
+    const subject = encodeURIComponent('Project Inquiry from ' + name);
+    const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
+    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+
+    status.textContent = 'Opening your email client...';
+    status.style.color = 'var(--accent2)';
+  });
+</script>
   document.querySelectorAll('.card').forEach(card => {
     const head = card.querySelector('.card-head');
     head.addEventListener('click', () => {
