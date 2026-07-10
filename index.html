@@ -15,6 +15,7 @@
     padding:0;
   }
   .hero{
+    position:relative;
     padding:64px 24px 40px; text-align:center;
     background:radial-gradient(ellipse at top, #0f2a2c 0%, var(--bg) 70%);
     border-bottom:1px solid var(--border);
@@ -30,9 +31,11 @@
     display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
     margin-top:16px; font-size:0.85rem; color:var(--muted);
   }
-  .contact-line a{ color:var(--accent2); text-decoration:none; font-weight:600; }
+  .contact-line a{ color:var(--accent2); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:6px; }
   .contact-line a:hover{ text-decoration:underline; }
   .contact-line span.sep{ color:#334; }
+  .contact-line span.addr{ display:inline-flex; align-items:center; gap:6px; }
+  .contact-icon{ width:15px; height:15px; flex-shrink:0; }
   .edu-line{
     margin-top:10px; font-size:0.82rem; color:var(--muted); font-weight:500;
   }
@@ -46,15 +49,21 @@
   .hint span{color:var(--accent2); font-weight:700;}
 
   /* ===== AVATAR ===== */
-  .avatar-wrap{
-    display:inline-flex; vertical-align:middle; margin-right:10px;
+  .title-row{
+    display:flex; align-items:center; justify-content:center;
+    gap:18px; margin:0 0 12px;
   }
-  .name-row{
-    display:flex; align-items:center; justify-content:center; gap:0;
-    margin:0 0 14px;
+  .title-row h1{ margin:0; }
+  .title-col{ text-align:left; }
+  .name-tag{
+    color:var(--accent2); font-weight:800; letter-spacing:0.04em;
+    font-size:1.7rem; margin:0 0 2px; line-height:1.1;
+  }
+  .avatar-wrap{
+    display:inline-flex; vertical-align:middle;
   }
   .avatar{
-    width:132px; height:170px; position:relative;
+    width:64px; height:82px; position:relative;
     animation:float 4s ease-in-out infinite;
     border-radius:6px;
     overflow:hidden;
@@ -147,6 +156,37 @@
   }
   .footer{text-align:center; color:var(--muted); padding:30px; font-size:0.85rem; border-top:1px solid var(--border);}
 
+  /* ===== TABLE ===== */
+  table.info-table{
+    width:100%; border-collapse:collapse; margin:10px 0 20px;
+    font-size:0.85rem; background:#081014; border-radius:10px; overflow:hidden;
+    border:1px solid var(--border);
+  }
+  table.info-table th, table.info-table td{
+    padding:10px 14px; text-align:left; border-bottom:1px solid var(--border);
+  }
+  table.info-table th{
+    background:var(--panel2); color:var(--accent2); font-weight:700;
+    text-transform:uppercase; font-size:0.72rem; letter-spacing:0.05em;
+  }
+  table.info-table td{ color:var(--text); }
+  table.info-table tr:last-child td{ border-bottom:none; }
+
+  /* ===== SCREENSHOTS ===== */
+  .screenshot-slot{
+    margin:0 0 22px; border:1.5px dashed var(--border); border-radius:12px;
+    background:#081014; padding:28px; text-align:center;
+    color:var(--muted); font-size:0.85rem;
+  }
+  .screenshot-slot svg{ width:28px; height:28px; margin-bottom:8px; opacity:0.6; }
+  .screenshot-gallery{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+    gap:12px; margin:0 0 22px;
+  }
+  .screenshot-gallery img{
+    width:100%; border-radius:10px; border:1px solid var(--border); display:block;
+  }
+
   /* ===== CONTACT SECTION ===== */
   .contact-section{
     max-width:700px; margin:0 auto 80px; padding:0 24px; text-align:center;
@@ -191,7 +231,7 @@
 <body>
 
 <div class="hero">
-  <div class="name-row">
+  <div class="title-row">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar">
         <svg viewBox="0 0 150 160" preserveAspectRatio="xMidYMid slice" style="background:#0d1a20;">
@@ -202,24 +242,14 @@
             </linearGradient>
           </defs>
           <circle class="avatar-ring" cx="75" cy="80" r="62"/>
-
-          <!-- neck -->
           <rect x="62" y="120" width="26" height="24" rx="10" fill="#f0c39a"/>
-
-          <!-- face -->
           <ellipse cx="75" cy="90" rx="42" ry="46" fill="#f6d3ab"/>
-
-          <!-- ears -->
           <circle cx="34" cy="92" r="7" fill="#f0c39a"/>
           <circle cx="116" cy="92" r="7" fill="#f0c39a"/>
-
-          <!-- hair -->
           <path d="M32,78 C28,40 55,18 75,18 C97,18 122,42 118,80
                    C112,66 104,58 96,64 C92,50 82,40 75,40
                    C66,40 58,52 55,66 C48,58 38,64 32,78 Z"
                 fill="url(#hairGrad)"/>
-
-          <!-- glasses -->
           <g stroke="#3a3a3a" stroke-width="3" fill="none">
             <rect x="42" y="82" width="30" height="24" rx="8"/>
             <rect x="78" y="82" width="30" height="24" rx="8"/>
@@ -227,38 +257,41 @@
             <line x1="38" y1="88" x2="30" y2="84"/>
             <line x1="112" y1="88" x2="120" y2="84"/>
           </g>
-
-          <!-- eyebrows -->
           <path d="M46,76 Q57,70 68,76" stroke="#8f9497" stroke-width="3" fill="none" stroke-linecap="round"/>
           <path d="M82,76 Q93,70 104,76" stroke="#8f9497" stroke-width="3" fill="none" stroke-linecap="round"/>
-
-          <!-- eyes -->
           <g id="eyeL">
             <circle class="avatar-eye" cx="57" cy="94" r="5.5"/>
           </g>
           <g id="eyeR">
             <circle class="avatar-eye" cx="93" cy="94" r="5.5"/>
           </g>
-
-          <!-- nose -->
           <path d="M75,98 Q80,110 73,114" stroke="#d9a978" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-
-          <!-- mouth -->
           <path id="mouth" d="M62,124 Q75,130 88,124" stroke="#a56b52" stroke-width="3" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
-    <p style="color:var(--accent2); font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:0.8rem; margin:0;">Klark John Cabungcal</p>
+    <div class="title-col">
+      <p class="name-tag">Klark John Cabungcal</p>
+      <h1>Automation Engineering Portfolio</h1>
+    </div>
   </div>
-  <h1>Automation Engineering Portfolio</h1>
   <p>End-to-end n8n workflows that replace manual, repetitive business processes — from lead qualification to AI video publishing — with reliable, self-healing automation.</p>
 
   <div class="contact-line">
-    <a href="mailto:pungzuwangdu11@gmail.com">pungzuwangdu11@gmail.com</a>
+    <a href="mailto:pungzuwangdu11@gmail.com">
+      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      pungzuwangdu11@gmail.com
+    </a>
     <span class="sep">|</span>
-    <a href="mailto:klarkyy02@gmail.com">klarkyy02@gmail.com</a>
+    <a href="mailto:klarkyy02@gmail.com">
+      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      klarkyy02@gmail.com
+    </a>
     <span class="sep">|</span>
-    <span>Purok 4, Banaybanay I, San Jose, Batangas 500</span>
+    <span class="addr">
+      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      Purok 4, Banaybanay I, San Jose, Batangas 500
+    </span>
   </div>
   <div class="edu-line"><strong>Bachelor of Science in Information Technology</strong></div>
 
@@ -287,37 +320,34 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">An AI-powered booking assistant that turns a raw Jotform submission into a fully confirmed calendar appointment — checking real-time availability, handling conflicts gracefully, and never touching a human unless something breaks.</p>
+          <p class="card-desc">An AI-powered appointment booking assistant that takes a form submission (from Jotform) and fully automates checking availability, booking the calendar, logging records, and emailing the customer — with no human touching it unless something goes wrong.</p>
 
-          <div class="flow">
-            <span class="step">📥 Jotform Webhook</span><span class="arrow">→</span>
-            <span class="step">🤖 Gemini Extractor</span><span class="arrow">→</span>
-            <span class="step">✅ Validate Fields</span><span class="arrow">→</span>
-            <span class="step">🗂 Airtable (Pending)</span><span class="arrow">→</span>
-            <span class="step">📅 Check Calendar</span><span class="arrow">→</span>
-            <span class="step">🔀 Slot Available?</span>
-          </div>
-          <div class="flow">
-            <span class="split">YES</span>
-            <span class="step">Create Event</span><span class="arrow">→</span>
-            <span class="step">Log to Sheet</span><span class="arrow">→</span>
-            <span class="step">Confirmation Email</span><span class="arrow">→</span>
-            <span class="step">200 Confirmed</span>
-          </div>
-          <div class="flow">
-            <span class="split neg">NO</span>
-            <span class="step">Update Airtable → Needs Reschedule</span><span class="arrow">→</span>
-            <span class="step">Alt. Slots Email</span><span class="arrow">→</span>
-            <span class="step">200 Needs Reschedule</span>
+          <div class="screenshot-gallery">
+            <img src="Available%20date%20appoinment.png" alt="Advanced Appointment Setter - slot available flow" loading="lazy">
+            <img src="Unavailable%20date%20appointment.png" alt="Advanced Appointment Setter - slot unavailable flow" loading="lazy">
+            <img src="Error.png" alt="Advanced Appointment Setter - error handling flow" loading="lazy">
           </div>
 
-          <div class="section-label">Why it matters</div>
+          <div class="section-label">How it works, step by step</div>
           <ul class="highlights">
-            <li>Uses a Gemini "Information Extractor" so the form doesn't need rigid field names — natural language like "2pm" is auto-converted to 24h time</li>
-            <li>Actively checks Google Calendar to prevent double-booking, and suggests up to 3 real alternative slots if busy</li>
-            <li>Every external step (Airtable, Calendar, Sheets, Gmail) has a fallback — failures email the admin and return a 500 instead of failing silently</li>
-            <li>Full audit trail: every request, confirmed or not, lands in Airtable</li>
+            <li><strong>1. Trigger — Webhook:</strong> Jotform posts form submissions to this webhook, using Jotform's auto-generated plain-English summary of all form answers.</li>
+            <li><strong>2. Extract Appointment Details (Gemini AI):</strong> An AI "Information Extractor" reads that raw text and pulls out structured fields — name, email, address, phone, date, and time — auto-converting natural language like "2pm" into 24-hour format.</li>
+            <li><strong>3. Validate Required Fields:</strong> Checks that name, a valid email, and a date were actually extracted. If not, the customer gets an immediate error asking them to resubmit — no bad data enters the system.</li>
+            <li><strong>4. Prepare Appointment Data:</strong> Builds a clean record with a 1-hour time slot and marks status as "Pending."</li>
+            <li><strong>5. Create Airtable Record (Pending):</strong> Logs the request immediately, so there's a record even before availability is confirmed.</li>
+            <li><strong>6. Check Google Calendar availability:</strong> Pulls all events for that business day (9am–5pm) and checks for overlaps with the requested slot.</li>
+            <li><strong>7. Branch — Is the slot available?</strong> Yes → creates the calendar event, logs to Sheets, emails a confirmation, returns 200. No → marks "Needs Reschedule," emails up to 3 alternative times, returns 200 needs_reschedule.</li>
+            <li><strong>8. Error handling:</strong> Every external step has a fallback — failures email the admin directly and return a 500, so nothing fails silently.</li>
           </ul>
+
+          <div class="section-label">Business value</div>
+          <ul class="highlights">
+            <li>Zero manual scheduling work — a lead fills out a form and either gets booked or gets alternatives, instantly, 24/7</li>
+            <li>No double-booking — actively checks the calendar before confirming</li>
+            <li>Full audit trail — every request lands in Airtable, successful bookings also land in a Google Sheet</li>
+            <li>Graceful degradation — bad input is rejected politely; system failures alert the admin directly instead of losing the customer's request</li>
+          </ul>
+
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Gemini AI</span><span class="chip">Jotform</span>
             <span class="chip">Google Calendar</span><span class="chip">Airtable</span><span class="chip">Google Sheets</span><span class="chip">Gmail</span>
@@ -339,30 +369,29 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A webhook-triggered fan-out that takes a messy Jotform order submission, normalizes it, and simultaneously notifies the customer, the fulfillment team, and the inventory tracker — in parallel, not sequentially.</p>
+          <p class="card-desc">Triggered by a webhook, then fans out to three parallel actions — notifying the customer, the fulfillment team, and inventory tracking simultaneously instead of one after another.</p>
 
-          <div class="flow">
-            <span class="step">📥 Order Webhook</span><span class="arrow">→</span>
-            <span class="step">🧹 Map & Normalize Fields</span><span class="arrow">→</span>
-            <span class="step">⑂ Fan-out (parallel)</span>
+          <div class="screenshot-gallery">
+            <img src="E-commerce%20order%20Processing.png" alt="E-Commerce Order Processing workflow" loading="lazy">
           </div>
-          <div class="flow">
-            <span class="step">📧 Confirmation Email</span>
-            <span class="step">💬 Slack #inventory (packing checklist)</span>
-            <span class="step">📊 Append to Google Sheets</span>
-          </div>
-          <div class="flow">
-            <span class="split neg">⚠️ Any failure</span><span class="arrow">→</span>
-            <span class="step">Log Failure</span><span class="arrow">→</span>
-            <span class="step">Notify Team (Slack)</span>
-          </div>
+
+          <div class="section-label">How it works</div>
+          <ul class="highlights">
+            <li><strong>Trigger — Order Received (Webhook):</strong> Listens for POST requests at /order-received — where a Jotform submission gets sent via Jotform's webhook integration.</li>
+            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy — field names vary (q2_customer_name, customerName, etc.) depending on how the form was built, and Jotform also sends a "pretty string" fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
+            <li><strong>Fan-out to three parallel branches:</strong></li>
+            <li><strong>→ Send Confirmation Email (Gmail):</strong> Sends an HTML order-confirmation email with order ID, items, and total.</li>
+            <li><strong>→ Send Packing Instructions (Slack → #inventory):</strong> Posts order details plus a packing checklist for the fulfillment team.</li>
+            <li><strong>→ Update Inventory (Google Sheets → append):</strong> Logs the order as a new row in the tracking spreadsheet.</li>
+          </ul>
 
           <div class="section-label">Why it matters</div>
           <ul class="highlights">
-            <li>Handles inconsistent Jotform field naming (q2_customer_name vs customerName) with a resilient lookup + "pretty" string fallback</li>
+            <li>Handles inconsistent Jotform field naming with a resilient lookup + "pretty string" fallback</li>
             <li>Three actions fire in parallel instead of a slow sequential chain — customer, warehouse, and inventory all stay in sync instantly</li>
             <li>Retries 3x on every external call before escalating to a Slack failure alert</li>
           </ul>
+
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Gmail</span>
             <span class="chip">Slack</span><span class="chip">Google Sheets</span>
@@ -384,36 +413,37 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">Turns a client's invoice upload into a complete intake → bookkeeping → payment follow-up pipeline, replacing the classic small-business time sink of manual invoice tracking and collections chasing.</p>
+          <p class="card-desc">Manual invoice intake and collections follow-up is a classic small-business time sink — someone has to open, retype, confirm, remember to follow up, and escalate, all while juggling other work. This workflow replaces that entire chain end to end.</p>
 
-          <div class="flow">
-            <span class="step">📥 Invoice Upload Webhook</span><span class="arrow">→</span>
-            <span class="step">🧹 Parse Jotform Payload</span><span class="arrow">→</span>
-            <span class="step">👁 OCR (Google Vision)</span><span class="arrow">→</span>
-            <span class="step">🧾 Parse Invoice Data</span><span class="arrow">→</span>
-            <span class="step">📊 Log to Sheets</span>
+          <div class="screenshot-gallery">
+            <img src="Invoice%20and%20Payment%20Automation.png" alt="Invoice and Payment Automation workflow" loading="lazy">
           </div>
-          <div class="flow">
-            <span class="step">📧 Confirm to Client</span><span class="arrow">→</span>
-            <span class="step">💬 Notify Team (Slack)</span><span class="arrow">→</span>
-            <span class="step">⏳ Wait 7 Days</span><span class="arrow">→</span>
-            <span class="step">🔍 Re-check Paid?</span>
-          </div>
-          <div class="flow">
-            <span class="split neg">Still Unpaid</span>
-            <span class="step">Reminder Email</span><span class="arrow">→</span>
-            <span class="step">⏳ Wait 7 More Days</span><span class="arrow">→</span>
-            <span class="step">🔍 Re-check Paid?</span><span class="arrow">→</span>
-            <span class="step">🚨 Final Notice + Slack Escalation</span>
-          </div>
+
+          <div class="section-label">Who it's for</div>
+          <p class="card-desc" style="margin-bottom:16px;">Freelancers, small agencies, or an accounts-payable/receivable function at a small company — anyone processing a steady trickle of invoices without a full accounting department behind them. It fills the gap between "too small for enterprise software" and "too much volume to track in your head."</p>
+
+          <div class="section-label">What it replaces</div>
+          <table class="info-table">
+            <tr><th>Manual task</th><th>Automated by</th></tr>
+            <tr><td>Opening the invoice, reading it, typing details into a spreadsheet</td><td>JotForm intake + OCR cross-check + auto-logging</td></tr>
+            <tr><td>Emailing the client "we got it"</td><td>Confirmation email node</td></tr>
+            <tr><td>Telling the team a new invoice came in</td><td>Slack notification</td></tr>
+            <tr><td>Remembering to check back in a week</td><td>Wait node + scheduled re-check</td></tr>
+            <tr><td>Writing (and remembering to send) a reminder</td><td>Auto-generated reminder email</td></tr>
+            <tr><td>Checking again before escalating</td><td>Second payment re-check before final notice</td></tr>
+            <tr><td>Flagging genuinely overdue invoices to a human</td><td>Slack escalation alert</td></tr>
+          </table>
 
           <div class="section-label">Business value</div>
           <ul class="highlights">
-            <li>OCR cross-checks the uploaded invoice image against form data to catch mismatches automatically</li>
-            <li>Re-verifies payment status before each escalation — never sends an "URGENT OVERDUE" email to someone who already paid</li>
-            <li>Reminders fire exactly on schedule, every time, improving cash collection speed</li>
-            <li>Built to survive multi-week wait chains: retries + a dedicated error-alert channel on every critical step</li>
+            <li><strong>Time saved per invoice:</strong> even a conservative 5–10 minutes of manual entry plus follow-up overhead adds up fast across dozens of invoices a month — this turns that into a one-time setup cost instead of a recurring one</li>
+            <li><strong>Faster cash collection:</strong> reminders go out exactly on schedule, every time, with zero chance of a forgotten follow-up costing real cash flow delay</li>
+            <li><strong>Fewer errors, fewer awkward moments:</strong> OCR cross-checking catches form/invoice mismatches, and a payment re-check before escalation avoids sending an "URGENT OVERDUE" email to someone who already paid</li>
+            <li><strong>Visibility without extra software:</strong> the Google Sheet is the single source of truth, readable by anyone, with Slack keeping the team passively in the loop</li>
+            <li><strong>Resilience as a feature:</strong> retries on every external call and a dedicated error-alert channel mean a transient API hiccup doesn't silently kill a workflow meant to run unattended for weeks</li>
+            <li><strong>Scales without added headcount:</strong> processing invoice #50 costs the same as invoice #1</li>
           </ul>
+
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Google Cloud Vision (OCR)</span>
             <span class="chip">Google Sheets</span><span class="chip">Gmail</span><span class="chip">Slack</span>
@@ -435,7 +465,16 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A fully automated inbound lead scoring system that monitors Gmail, qualifies every new lead with a locally-hosted AI model using BANT criteria, and routes hot/warm/cold leads to the right CRM and outreach action — zero manual triage.</p>
+          <p class="card-desc">Built a fully automated inbound lead scoring system using n8n that processes every new email, qualifies it with a local AI model, and triggers the right sales actions — all without manual review.</p>
+
+          <div class="screenshot-gallery">
+            <img src="hot%20lead.png" alt="Lead Generation - hot lead branch" loading="lazy">
+            <img src="Warm%20Lead.png" alt="Lead Generation - warm lead branch" loading="lazy">
+            <img src="Warm%20Lead%202.png" alt="Lead Generation - warm lead branch zoomed" loading="lazy">
+          </div>
+
+          <div class="section-label">What it does</div>
+          <p class="card-desc" style="margin-bottom:16px;">Monitors a Gmail inbox, extracts lead intelligence (company, domain, buying signals), runs it through a locally-hosted Llama 3.2 model via Ollama using BANT qualification criteria, assigns a score (1–10) and tier (hot/warm/cold), then automatically creates contacts in HubSpot, sends Slack alerts to the sales team, and dispatches personalized email replies — all within seconds of the lead arriving.</p>
 
           <div class="flow">
             <span class="step">📧 Gmail Trigger</span><span class="arrow">→</span>
@@ -458,14 +497,15 @@
 
           <div class="section-label">Key highlights</div>
           <ul class="highlights">
-            <li>Zero cloud AI cost — qualification runs entirely on local hardware via Ollama</li>
-            <li>BANT-based prompt evaluates budget signals, decision-maker indicators, urgency, and free vs. business email domain</li>
-            <li>Three-tier routing eliminates manual sales triage entirely</li>
-            <li>Auto-replies are personalized per tier with the appropriate CTA, within seconds of the lead arriving</li>
+            <li>Zero cloud AI cost — runs entirely on local hardware via Ollama</li>
+            <li>BANT-based scoring prompt evaluates budget signals, decision-maker indicators, urgency, and domain type (free vs. business email)</li>
+            <li>Three-tier routing eliminates manual triage for the sales team</li>
+            <li>Auto-replies personalized per tier with appropriate CTAs</li>
           </ul>
+
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Ollama (Llama 3.2)</span><span class="chip">Gmail API</span>
-            <span class="chip">HubSpot CRM</span><span class="chip">Slack</span>
+            <span class="chip">HubSpot CRM</span><span class="chip">Slack</span><span class="chip">JavaScript</span>
           </div>
         </div>
       </div>
@@ -484,8 +524,13 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">One click generates two cinematic AI video clips with Google Veo 3.1, merges them, and auto-publishes to YouTube and Facebook simultaneously — replacing a video editor, social media manager, and content writer in one automated run.</p>
+          <p class="card-desc"><strong>One click. Two AI videos. Posted everywhere. Automatically.</strong> This fully automated system uses the latest Google Veo 3.1 AI to create short videos from scratch — then instantly publishes them to YouTube and Facebook at the same time, without lifting a finger.</p>
 
+          <div class="screenshot-gallery">
+            <img src="Veo%20Video%20Generator%20-%20YouTube%20and%20Facebook.png" alt="Veo AI Video Generator workflow" loading="lazy">
+          </div>
+
+          <div class="section-label">The magic behind it</div>
           <div class="flow">
             <span class="step">🖱 Manual Trigger</span><span class="arrow">→</span>
             <span class="step">🤖 Gemini writes scripts + titles</span><span class="arrow">→</span>
@@ -506,12 +551,34 @@
           </div>
 
           <div class="section-label">What makes it powerful</div>
+          <table class="info-table">
+            <tr><th>Feature</th><th>Details</th></tr>
+            <tr><td>🧠 AI Script Writer</td><td>Gemini 2.5 Flash writes optimized prompts & titles</td></tr>
+            <tr><td>🎬 Dual Clip Generation</td><td>2 unique 8-second vertical clips (9:16 reels format)</td></tr>
+            <tr><td>🔊 AI Audio Included</td><td>Videos come with generated audio — no editing needed</td></tr>
+            <tr><td>🔄 Smart Retry System</td><td>Auto-retries if AI filters or rejects content</td></tr>
+            <tr><td>📱 Reels-Ready Format</td><td>Vertical 1080×1920 — perfect for Facebook & YouTube Shorts</td></tr>
+            <tr><td>🚀 Dual Publishing</td><td>Posts to YouTube + Facebook in the same moment</td></tr>
+          </table>
+
+          <div class="section-label">Timeline of one run</div>
           <ul class="highlights">
-            <li>Gemini 2.5 Flash writes optimized Veo prompts, titles, and descriptions with structured JSON output</li>
-            <li>Two unique 8-second vertical (9:16, 1080×1920) clips generated with AI audio included — no manual editing</li>
-            <li>Smart retry system auto-regenerates if Google's AI safety filter blocked content</li>
-            <li>Total time from click to live post: roughly 4–5 minutes</li>
+            <li><strong>0:00</strong> — Workflow starts</li>
+            <li><strong>0:05</strong> — Gemini writes scripts & titles</li>
+            <li><strong>0:30–2:00</strong> — Veo generates Clip 1</li>
+            <li><strong>2:30–4:00</strong> — Veo generates Clip 2</li>
+            <li><strong>4:05</strong> — Clips merged into final video</li>
+            <li><strong>4:10</strong> — Published to YouTube + Facebook</li>
           </ul>
+          <p class="card-desc" style="margin-bottom:16px;"><strong>Total time: ~4–5 minutes from click to live post.</strong></p>
+
+          <div class="section-label">Built-in safety features</div>
+          <ul class="highlights">
+            <li>Automatically retries if Google's AI safety filter blocks content</li>
+            <li>Automatically regenerates scripts if video generation fails</li>
+            <li>Polls every 30 seconds to check video status — never misses a beat</li>
+          </ul>
+
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Google Veo 3.1</span><span class="chip">Gemini 2.5 Flash</span>
             <span class="chip">FFmpeg</span><span class="chip">YouTube API</span><span class="chip">Facebook Graph API</span>
