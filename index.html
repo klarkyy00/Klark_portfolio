@@ -156,7 +156,65 @@
 <body>
 
 <div class="hero">
-  <p style="color:var(--accent2); font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:0.8rem; margin:0 0 14px;">Klark John Cabungcal</p>
+  <div class="name-row">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatar">
+        <svg viewBox="0 0 150 160" preserveAspectRatio="xMidYMid slice" style="background:#0d1a20;">
+          <defs>
+            <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#c9d1d3"/>
+              <stop offset="100%" stop-color="#9aa5a8"/>
+            </linearGradient>
+          </defs>
+          <circle class="avatar-ring" cx="75" cy="80" r="62"/>
+
+          <!-- neck -->
+          <rect x="62" y="120" width="26" height="24" rx="10" fill="#f0c39a"/>
+
+          <!-- face -->
+          <ellipse cx="75" cy="90" rx="42" ry="46" fill="#f6d3ab"/>
+
+          <!-- ears -->
+          <circle cx="34" cy="92" r="7" fill="#f0c39a"/>
+          <circle cx="116" cy="92" r="7" fill="#f0c39a"/>
+
+          <!-- hair -->
+          <path d="M32,78 C28,40 55,18 75,18 C97,18 122,42 118,80
+                   C112,66 104,58 96,64 C92,50 82,40 75,40
+                   C66,40 58,52 55,66 C48,58 38,64 32,78 Z"
+                fill="url(#hairGrad)"/>
+
+          <!-- glasses -->
+          <g stroke="#3a3a3a" stroke-width="3" fill="none">
+            <rect x="42" y="82" width="30" height="24" rx="8"/>
+            <rect x="78" y="82" width="30" height="24" rx="8"/>
+            <line x1="72" y1="92" x2="78" y2="92"/>
+            <line x1="38" y1="88" x2="30" y2="84"/>
+            <line x1="112" y1="88" x2="120" y2="84"/>
+          </g>
+
+          <!-- eyebrows -->
+          <path d="M46,76 Q57,70 68,76" stroke="#8f9497" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M82,76 Q93,70 104,76" stroke="#8f9497" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+          <!-- eyes -->
+          <g id="eyeL">
+            <circle class="avatar-eye" cx="57" cy="94" r="5.5"/>
+          </g>
+          <g id="eyeR">
+            <circle class="avatar-eye" cx="93" cy="94" r="5.5"/>
+          </g>
+
+          <!-- nose -->
+          <path d="M75,98 Q80,110 73,114" stroke="#d9a978" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+          <!-- mouth -->
+          <path id="mouth" d="M62,124 Q75,130 88,124" stroke="#a56b52" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+    <p style="color:var(--accent2); font-weight:700; letter-spacing:0.14em; text-transform:uppercase; font-size:0.8rem; margin:0;">Klark John Cabungcal</p>
+  </div>
   <h1>Automation Engineering Portfolio</h1>
   <p>End-to-end n8n workflows that replace manual, repetitive business processes — from lead qualification to AI video publishing — with reliable, self-healing automation.</p>
 
@@ -476,6 +534,37 @@
       card.classList.toggle('open');
     });
   });
+
+  // ===== Avatar eye tracking + blinking =====
+  (function(){
+    const avatar = document.getElementById('avatar');
+    const eyeL = document.getElementById('eyeL');
+    const eyeR = document.getElementById('eyeR');
+    const maxOffset = 2.5;
+
+    function moveEyes(clientX, clientY){
+      const rect = avatar.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
+      const dist = Math.hypot(dx, dy) || 1;
+      const ox = (dx / dist) * maxOffset;
+      const oy = (dy / dist) * maxOffset;
+      eyeL.setAttribute('transform', `translate(${ox},${oy})`);
+      eyeR.setAttribute('transform', `translate(${ox},${oy})`);
+    }
+
+    window.addEventListener('mousemove', (e) => moveEyes(e.clientX, e.clientY));
+
+    function blink(){
+      const eyes = avatar.querySelectorAll('.avatar-eye');
+      eyes.forEach(eye => eye.classList.add('blink'));
+      setTimeout(() => eyes.forEach(eye => eye.classList.remove('blink')), 140);
+      setTimeout(blink, 2500 + Math.random() * 3000);
+    }
+    setTimeout(blink, 1800);
+  })();
 </script>
 
 </body>
