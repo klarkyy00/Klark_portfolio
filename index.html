@@ -1,975 +1,310 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Klark John Cabungcal — Automation Engineer</title>
-<meta name="description" content="Automation engineering portfolio by Klark John Cabungcal — end-to-end n8n workflows connecting AI models, CRMs, and messaging platforms into self-healing automations.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2314b8a6'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='white' font-family='Arial'%3EK%3C/text%3E%3C/svg%3E">
 <style>
-  :root{
-    --bg:#0a0e14; --panel:#0e1720; --panel2:#122029;
-    --border:#1b2b35; --text:#e8f2f2; --muted:#7ea3a8;
-    --accent:#14b8a6; --accent2:#2dd4bf; --deep:#0d9488; --sea:#38bdf8;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-    padding:0;
-  }
-  .hero{
-    position:relative;
-    padding:64px 24px 40px; text-align:center;
-    background:radial-gradient(ellipse at top, #0f2a2c 0%, var(--bg) 70%);
-    border-bottom:1px solid var(--border);
-  }
-  .hero h1{
-    font-size:2.4rem; margin:0 0 12px;
-    background:linear-gradient(90deg, var(--accent), var(--sea));
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-    font-weight:800; letter-spacing:-0.5px;
-  }
-  .hero p{color:var(--muted); font-size:1.05rem; max-width:640px; margin:0 auto;}
-  .contact-line{
-    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
-    margin-top:16px; font-size:0.85rem; color:var(--muted);
-  }
-  .contact-line a{ color:var(--accent2); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:6px; }
-  .contact-line a:hover{ text-decoration:underline; }
-  .contact-line span.sep{ color:#334; }
-  .contact-line span.addr{ display:inline-flex; align-items:center; gap:6px; }
-  .contact-icon{ width:15px; height:15px; flex-shrink:0; }
-  .edu-line{
-    margin-top:10px; font-size:0.82rem; color:var(--muted); font-weight:500;
-  }
-  .edu-line strong{ color:var(--text); font-weight:700; }
-  .badges{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
-  .badge{
-    background:var(--panel2); border:1px solid var(--border); color:var(--muted);
-    padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:600;
-  }
-  .hint{color:var(--muted); font-size:0.82rem; margin-top:26px; opacity:0.8;}
-  .hint span{color:var(--accent2); font-weight:700;}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-  /* ===== SOCIAL / RESUME LINKS ===== */
-  .social-row{
-    display:flex; gap:14px; justify-content:center; margin-top:18px; flex-wrap:wrap;
-  }
-  .social-btn{
-    display:inline-flex; align-items:center; gap:7px;
-    padding:9px 18px; border-radius:24px; font-size:0.85rem; font-weight:700;
-    text-decoration:none; transition:transform .15s, opacity .2s;
-  }
-  .social-btn:hover{ transform:translateY(-2px); }
-  .social-btn svg{ width:16px; height:16px; }
-  .social-btn.outline{
-    border:1.5px solid var(--border); color:var(--text); background:transparent;
-  }
-  .social-btn.outline:hover{ border-color:var(--accent2); color:var(--accent2); }
-  .social-btn.solid{
-    background:linear-gradient(90deg, var(--sea), var(--accent2)); color:#04201e; border:none;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #e5e5e5;
+    padding: 40px 20px;
+    color: #111;
   }
 
-  /* ===== ABOUT SECTION ===== */
-  .about-section{
-    max-width:800px; margin:0 auto; padding:56px 24px; text-align:center;
-    border-bottom:1px solid var(--border);
-  }
-  .about-section h2{
-    font-size:1.7rem; font-weight:800; margin-bottom:16px; color:var(--text);
-  }
-  .about-section p{
-    color:var(--muted); font-size:1rem; line-height:1.75; max-width:640px; margin:0 auto;
-  }
-  .about-section p + p{ margin-top:14px; }
-
-  /* ===== CERTIFICATIONS ===== */
-  .cert-section{
-    max-width:1000px; margin:0 auto; padding:56px 24px;
-    border-bottom:1px solid var(--border);
-  }
-  .cert-section h2{
-    font-size:1.7rem; font-weight:800; margin-bottom:24px; color:var(--text); text-align:center;
-  }
-  .cert-grid{
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
-    gap:16px;
-  }
-  .cert-card{
-    background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
-    border:1px solid var(--border); border-radius:12px; padding:18px 20px;
-  }
-  .cert-card h3{
-    font-size:0.95rem; font-weight:700; color:var(--text); margin-bottom:6px; line-height:1.35;
-  }
-  .cert-card .cert-org{ font-size:0.78rem; color:var(--accent2); font-weight:600; margin-bottom:4px; }
-  .cert-card .cert-date{ font-size:0.75rem; color:var(--muted); }
-
-  /* ===== AVATAR ===== */
-  .title-row{
-    display:flex; align-items:center; justify-content:center;
-    gap:18px; margin:0 0 12px;
-  }
-  .title-row h1{ margin:0; }
-  .title-col{ text-align:left; }
-  .name-tag{
-    color:var(--accent2); font-weight:800; letter-spacing:0.04em;
-    font-size:1.7rem; margin:0 0 2px; line-height:1.1;
-  }
-  .avatar-wrap{
-    display:inline-flex; vertical-align:middle;
-  }
-  .avatar{
-    width:64px; height:82px; position:relative;
-    animation:float 4s ease-in-out infinite;
-    border-radius:6px;
-    overflow:hidden;
-    border:1.5px solid var(--border);
-  }
-  @keyframes float{
-    0%,100%{ transform:translateY(0); }
-    50%{ transform:translateY(-8px); }
-  }
-  .avatar svg{ width:100%; height:100%; display:block; }
-  .avatar-eye{
-    fill:#2d2a26;
-    transition:transform .05s linear;
-  }
-  .avatar-eye.blink{ transform:scaleY(0.08); }
-  .avatar-ring{
-    fill:none; stroke:var(--accent2); stroke-width:2; opacity:0.5;
-    animation:pulse-ring 2.5s ease-out infinite;
-    transform-origin:75px 80px;
-  }
-  @keyframes pulse-ring{
-    0%{ transform:scale(0.92); opacity:0.6; }
-    100%{ transform:scale(1.3); opacity:0; }
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 48px 54px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
   }
 
-  .wrap{max-width:1100px; margin:0 auto; padding:48px 24px 80px;}
-  .card{
-    background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
-    border:1px solid var(--border); border-radius:16px;
-    margin-bottom:24px; overflow:hidden;
-    transition:border-color .25s, box-shadow .25s, transform .2s;
-    cursor:pointer;
+  .header {
+    text-align: center;
+    border-bottom: 3px solid #111;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
   }
-  .card:hover{
-    border-color:var(--accent); transform:translateY(-3px);
-    box-shadow:0 20px 50px -25px rgba(20,184,166,0.35);
+  .header h1 {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
-  .card.open{border-color:var(--accent2); box-shadow:0 20px 50px -20px rgba(45,212,191,0.25);}
+  .header .role {
+    font-size: 11.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #444;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .contact-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #333;
+  }
+  .contact-row span::after {
+    content: '·';
+    margin-left: 12px;
+    color: #aaa;
+  }
+  .contact-row span:last-child::after { content: none; }
 
-  .card-head{
-    padding:26px 28px; display:flex; justify-content:space-between;
-    align-items:center; gap:16px;
-  }
-  .card-head.has-body{border-bottom:1px solid var(--border);}
-  .head-left{flex:1; min-width:0;}
-  .card-title{font-size:1.35rem; font-weight:700; margin:0 0 6px;}
-  .card-tag{
-    font-size:0.78rem; font-weight:700; text-transform:uppercase;
-    letter-spacing:0.06em; padding:4px 10px; border-radius:6px; display:inline-block;
-    background:rgba(20,184,166,0.12); color:var(--accent2);
-  }
-  .chevron{
-    flex-shrink:0; width:34px; height:34px; border-radius:50%;
-    border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
-    color:var(--accent2); font-size:1rem; transition:transform .3s ease, border-color .3s, background .3s;
-  }
-  .card:hover .chevron{border-color:var(--accent); background:rgba(20,184,166,0.08);}
-  .card.open .chevron{transform:rotate(180deg); background:rgba(45,212,191,0.15); border-color:var(--accent2);}
-
-  .card-body-wrap{
-    display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s ease;
-  }
-  .card.open .card-body-wrap{grid-template-rows:1fr;}
-  .card-body-inner{overflow:hidden;}
-  .card-body{padding:22px 28px 28px;}
-  .card-desc{color:var(--muted); font-size:0.96rem; line-height:1.6; margin:0 0 20px;}
-  .flow{
-    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
-    margin-bottom:22px; padding:16px; background:#081014; border-radius:10px;
-    border:1px solid var(--border); overflow-x:auto;
-  }
-  .step{
-    background:var(--panel2); border:1px solid var(--border); border-radius:8px;
-    padding:8px 12px; font-size:0.78rem; font-weight:600; white-space:nowrap;
-    color:var(--text);
-  }
-  .arrow{color:var(--muted); font-size:0.9rem;}
-  .split{color:var(--accent2); font-weight:700; font-size:0.78rem;}
-  .split.neg{color:#5c8a8f;}
-  .section-label{
-    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em;
-    color:var(--muted); font-weight:700; margin:20px 0 10px;
-  }
-  ul.highlights{margin:0; padding-left:20px; color:var(--text); font-size:0.9rem; line-height:1.8;}
-  ul.highlights li{margin-bottom:2px;}
-  .stack{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
-  .chip{
-    background:#081014; border:1px solid var(--border); color:var(--accent2);
-    padding:4px 10px; border-radius:6px; font-size:0.76rem; font-weight:600;
-  }
-  .footer{text-align:center; color:var(--muted); padding:30px; font-size:0.85rem; border-top:1px solid var(--border);}
-
-  /* ===== TABLE ===== */
-  table.info-table{
-    width:100%; border-collapse:collapse; margin:10px 0 20px;
-    font-size:0.85rem; background:#081014; border-radius:10px; overflow:hidden;
-    border:1px solid var(--border);
-  }
-  table.info-table th, table.info-table td{
-    padding:10px 14px; text-align:left; border-bottom:1px solid var(--border);
-  }
-  table.info-table th{
-    background:var(--panel2); color:var(--accent2); font-weight:700;
-    text-transform:uppercase; font-size:0.72rem; letter-spacing:0.05em;
-  }
-  table.info-table td{ color:var(--text); }
-  table.info-table tr:last-child td{ border-bottom:none; }
-
-  /* ===== SCREENSHOTS ===== */
-  .screenshot-slot{
-    margin:0 0 22px; border:1.5px dashed var(--border); border-radius:12px;
-    background:#081014; padding:28px; text-align:center;
-    color:var(--muted); font-size:0.85rem;
-  }
-  .screenshot-slot svg{ width:28px; height:28px; margin-bottom:8px; opacity:0.6; }
-  .screenshot-gallery{
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
-    gap:12px; margin:0 0 22px;
-  }
-  .screenshot-gallery img{
-    width:100%; border-radius:10px; border:1px solid var(--border); display:block;
+  .section { margin-bottom: 17px; }
+  .section-title {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 1.5px solid #111;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
   }
 
-  /* ===== CONTACT SECTION ===== */
-  .contact-section{
-    max-width:700px; margin:0 auto 80px; padding:0 24px; text-align:center;
+  .summary {
+    font-size: 12px;
+    line-height: 1.55;
+    color: #222;
   }
-  .contact-section h2{
-    font-size:2.1rem; font-weight:800; margin-bottom:12px; color:var(--text);
+
+  .skills-grid {
+    font-size: 11.2px;
+    line-height: 1.75;
+    color: #222;
   }
-  .contact-section > p{
-    color:var(--muted); font-size:1rem; margin-bottom:32px;
+  .skill-tag { display: inline; }
+  .skill-tag:not(:last-child)::after {
+    content: " · ";
+    color: #999;
   }
-  .contact-form{
-    display:flex; flex-direction:column; gap:16px; text-align:left;
+
+  .item { margin-bottom: 12px; }
+  .item:last-child { margin-bottom: 0; }
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
   }
-  .contact-form input,
-  .contact-form textarea{
-    width:100%; background:var(--panel2); border:1px solid var(--border);
-    border-radius:10px; padding:14px 16px; color:var(--text);
-    font-family:inherit; font-size:0.95rem; outline:none;
-    transition:border-color .2s, box-shadow .2s;
+  .item-title { font-size: 12.8px; font-weight: 700; }
+  .item-meta {
+    font-size: 10.2px;
+    color: #555;
+    font-style: italic;
+    white-space: nowrap;
   }
-  .contact-form input::placeholder,
-  .contact-form textarea::placeholder{ color:#5a7a80; }
-  .contact-form input:focus,
-  .contact-form textarea:focus{
-    border-color:var(--accent2);
-    box-shadow:0 0 0 3px rgba(45,212,191,0.15);
+  ul.bullets { margin-top: 4px; padding-left: 16px; }
+  ul.bullets li {
+    font-size: 11px;
+    line-height: 1.45;
+    color: #222;
+    margin-bottom: 2px;
   }
-  .contact-form textarea{ min-height:150px; resize:vertical; }
-  .contact-submit{
-    background:linear-gradient(90deg, var(--sea), var(--accent2));
-    border:none; border-radius:10px; padding:15px; color:#04201e;
-    font-size:1rem; font-weight:700; cursor:pointer;
-    transition:opacity .2s, transform .15s;
+
+  .edu-row { font-size: 11.5px; margin-bottom: 2px; }
+  .edu-school { font-weight: 700; }
+  .edu-detail { color: #555; font-size: 11px; }
+
+  .note-box {
+    font-size: 10.5px;
+    color: #555;
+    border-left: 2.5px solid #999;
+    padding: 5px 0 5px 11px;
+    margin-top: 6px;
+    line-height: 1.45;
   }
-  .contact-submit:hover{ opacity:0.92; transform:translateY(-1px); }
-  .contact-submit:disabled{ opacity:0.6; cursor:default; transform:none; }
-  .contact-status{
-    font-size:0.85rem; margin-top:4px; min-height:18px; color:var(--accent2);
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .placeholder { color: #999; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { box-shadow: none; padding: 24px 34px; }
   }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="title-row">
-    <div class="avatar-wrap">
-      <div class="avatar" id="avatar">
-        <svg viewBox="0 0 150 160" preserveAspectRatio="xMidYMid slice" style="background:#0d1a20;">
-          <defs>
-            <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#2a2320"/>
-              <stop offset="100%" stop-color="#151110"/>
-            </linearGradient>
-          </defs>
-          <circle class="avatar-ring" cx="75" cy="80" r="62"/>
+<div class="page">
 
-          <!-- shoulders / suit -->
-          <path d="M20,160 C20,130 40,120 75,120 C110,120 130,130 130,160 Z" fill="#111417"/>
-          <path d="M55,120 L60,160 L48,160 C48,140 50,128 55,120 Z" fill="#0d9488"/>
-          <path d="M95,120 L90,160 L102,160 C102,140 100,128 95,120 Z" fill="#0d9488"/>
-          <path d="M60,118 L75,132 L90,118 L84,124 L75,120 L66,124 Z" fill="#0a1210"/>
+  <div class="header">
+    <h1>Klark John Cabungcal</h1>
+    <div class="role">Automation Engineer</div>
+    <div class="contact-row">
+      <span>pungzuwangdu11@gmail.com</span>
+      <span>klarkyy02@gmail.com</span>
+      <span>San Jose, Batangas, PH</span>
+      <span>klarkyy00.github.io/Klark_portfolio</span>
+    </div>
+  </div>
 
-          <!-- neck -->
-          <rect x="62" y="108" width="26" height="20" rx="8" fill="#e0ab7c"/>
+  <div class="section">
+    <div class="section-title">Summary</div>
+    <p class="summary">
+      Automation engineer with an Information Technology background and over 5 years of hands-on
+      technical operations experience monitoring SCADA-based critical infrastructure. Certified and
+      practiced across three major automation platforms — n8n, Make.com, and Zapier — building
+      end-to-end workflows that connect AI models, CRMs, forms, and messaging platforms into
+      unattended, self-healing systems. Comfortable owning a process from intake through error
+      handling, and learning new tools quickly.
+    </p>
+  </div>
 
-          <!-- face -->
-          <ellipse cx="75" cy="82" rx="40" ry="45" fill="#e8b98a"/>
+  <div class="section">
+    <div class="section-title">Skills</div>
+    <div class="skills-grid">
+      <span class="skill-tag">n8n</span>
+      <span class="skill-tag">Make.com</span>
+      <span class="skill-tag">Zapier</span>
+      <span class="skill-tag">HighLevel CRM</span>
+      <span class="skill-tag">Prompt Engineering</span>
+      <span class="skill-tag">Anthropic Claude</span>
+      <span class="skill-tag">Gemini API</span>
+      <span class="skill-tag">Ollama / Local AI Models</span>
+      <span class="skill-tag">AI Chatbots</span>
+      <span class="skill-tag">REST APIs & Webhooks</span>
+      <span class="skill-tag">SCADA Monitoring</span>
+      <span class="skill-tag">Google Workspace (Sheets, Calendar, Vision OCR)</span>
+      <span class="skill-tag">CRM Integration (HubSpot, Airtable)</span>
+      <span class="skill-tag">Slack / Gmail API</span>
+      <span class="skill-tag">Process Documentation</span>
+    </div>
+  </div>
 
-          <!-- ears -->
-          <circle cx="36" cy="84" r="6.5" fill="#e0ab7c"/>
-          <circle cx="114" cy="84" r="6.5" fill="#e0ab7c"/>
+  <div class="section">
+    <div class="section-title">Featured Automation Projects</div>
 
-          <!-- short faded hair -->
-          <path d="M34,70 C32,42 52,20 75,20 C99,20 118,43 116,70
-                   C114,55 108,44 100,42 C97,35 88,30 75,30
-                   C62,30 53,35 50,42 C42,44 36,55 34,70 Z"
-                fill="url(#hairGrad)"/>
-          <path d="M36,66 C37,54 42,46 48,42 C44,50 42,58 42,66 Z" fill="#1c1714" opacity="0.6"/>
-          <path d="M114,66 C113,54 108,46 102,42 C106,50 108,58 108,66 Z" fill="#1c1714" opacity="0.6"/>
-
-          <!-- eyebrows -->
-          <path d="M48,72 Q57,66 66,71" stroke="#3a2e28" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M84,71 Q93,66 102,72" stroke="#3a2e28" stroke-width="3" fill="none" stroke-linecap="round"/>
-
-          <!-- eyes -->
-          <g id="eyeL">
-            <ellipse class="avatar-eye" cx="58" cy="80" rx="4.8" ry="5.5"/>
-          </g>
-          <g id="eyeR">
-            <ellipse class="avatar-eye" cx="92" cy="80" rx="4.8" ry="5.5"/>
-          </g>
-
-          <!-- nose -->
-          <path d="M75,82 Q79,92 74,96" stroke="#c99367" stroke-width="2.3" fill="none" stroke-linecap="round"/>
-
-          <!-- light stubble -->
-          <path d="M52,96 Q75,112 98,96 Q95,106 75,110 Q55,106 52,96 Z" fill="#3a2e28" opacity="0.12"/>
-
-          <!-- mouth -->
-          <path id="mouth" d="M63,104 Q75,109 87,104" stroke="#a56b52" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-        </svg>
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Lead Capture & AI Qualification — Gmail → Google Sheets</span>
+        <span class="item-meta">Make.com</span>
       </div>
+      <ul class="bullets">
+        <li>Built an AI-qualified lead pipeline using Claude to score, de-duplicate, and route inbound emails, auto-escalating hot leads and sending prioritized replies.</li>
+      </ul>
     </div>
-    <div class="title-col">
-      <p class="name-tag">Klark John Cabungcal</p>
-      <h1>Automation Engineering Portfolio</h1>
-    </div>
-  </div>
-  <p>End-to-end n8n workflows that replace manual, repetitive business processes — from lead qualification to AI video publishing — with reliable, self-healing automation.</p>
 
-  <div class="contact-line">
-    <a href="mailto:pungzuwangdu11@gmail.com">
-      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-      pungzuwangdu11@gmail.com
-    </a>
-    <span class="sep">|</span>
-    <a href="mailto:klarkyy02@gmail.com">
-      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-      klarkyy02@gmail.com
-    </a>
-    <span class="sep">|</span>
-    <span class="addr">
-      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-      Purok 4, Banaybanay I, San Jose, Batangas 500
-    </span>
-  </div>
-  <div class="edu-line"><strong>Bachelor of Science in Information Technology</strong></div>
-
-  <div class="social-row">
-    <a class="social-btn outline" href="https://linkedin.com/in/your-linkedin-here" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3V9zm7 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06C21.9 8.58 23 10.9 23 14.1V21h-4v-6.14c0-1.46-.03-3.35-2.04-3.35-2.05 0-2.36 1.6-2.36 3.24V21h-4V9z"/></svg>
-      LinkedIn
-    </a>
-    <a class="social-btn outline" href="https://github.com/klarkyy00" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 015 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.78-4.57 5.04.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.26 10.26 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
-      GitHub
-    </a>
-    <a class="social-btn solid" href="#" onclick="alert('Link this button to your hosted resume PDF once uploaded.'); return false;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
-      Download Resume
-    </a>
-  </div>
-
-  <div class="badges">
-    <span class="badge">n8n</span>
-    <span class="badge">Gemini / Ollama AI</span>
-    <span class="badge">Google Workspace</span>
-    <span class="badge">Slack / Gmail</span>
-    <span class="badge">Airtable · HubSpot</span>
-    <span class="badge">Webhooks & REST APIs</span>
-  </div>
-  <p class="hint">Click any project below to <span>expand the full workflow</span></p>
-</div>
-
-<div class="about-section">
-  <h2>About Me</h2>
-  <p>I'm Klark John Cabungcal, an automation engineer focused on turning manual, repetitive business processes into reliable, self-healing systems using n8n. I work across the full stack of a workflow — form intake, AI-powered data extraction, CRM and calendar integrations, and multi-channel notifications — so a process can run unattended without someone babysitting it.</p>
-  <p>My background is in Information Technology, and I got into automation because I kept noticing the same pattern: small businesses and teams doing the same manual tasks over and over, when the tools to eliminate that work already exist — they just need to be connected properly. That's what I build.</p>
-  <p>I'm currently open to freelance automation projects and full-time opportunities. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
-</div>
-
-<div class="cert-section">
-  <h2>Certifications & Trainings</h2>
-  <div class="cert-grid">
-    <div class="cert-card">
-      <h3>AI Automation with n8n</h3>
-      <div class="cert-org">Technical Virtual Assistants PH</div>
-      <div class="cert-date">May 19, 2026</div>
-    </div>
-    <div class="cert-card">
-      <h3>HighLevel CRM Full Training</h3>
-      <div class="cert-org">Technical Virtual Assistants PH</div>
-      <div class="cert-date">June 1, 2026</div>
-    </div>
-    <div class="cert-card">
-      <h3>No Code Automation with Make.com</h3>
-      <div class="cert-org">Technical Virtual Assistants PH</div>
-      <div class="cert-date">April 22, 2026</div>
-    </div>
-    <div class="cert-card">
-      <h3>No Code Automation with Zapier</h3>
-      <div class="cert-org">Technical Virtual Assistants PH</div>
-      <div class="cert-date">April 15, 2026</div>
-    </div>
-    <div class="cert-card">
-      <h3>Prompt Engineering Full Training</h3>
-      <div class="cert-org">Technical Virtual Assistants PH</div>
-      <div class="cert-date">May 19, 2026</div>
-    </div>
-    <div class="cert-card">
-      <h3>Technical Drafting NCII</h3>
-      <div class="cert-org">All Business Computer Center Phils. Inc.</div>
-      <div class="cert-date">Sep 11 – Oct 7, 2019</div>
-    </div>
-    <div class="cert-card">
-      <h3>Electrical Installation and Maintenance NCII</h3>
-      <div class="cert-org">Concept Institute for Career Enhancement, Inc.</div>
-      <div class="cert-date">Jun 4 – Jul 10, 2019</div>
-    </div>
-  </div>
-</div>
-
-<div class="wrap" id="cardWrap">
-
-  <!-- 1: Appointment Setter -->
-  <div class="card" data-id="c1">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">n8n · Scheduling · AI Extraction</span>
-        <h2 class="card-title">Advanced Appointment Setter</h2>
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Client Pipeline Automation</span>
+        <span class="item-meta">Zapier</span>
       </div>
-      <div class="chevron">⌄</div>
+      <ul class="bullets">
+        <li>Built a spreadsheet-driven CRM where updating a single status field automatically sends the right client email, creates a Drive folder, and runs a 3-day delayed follow-up chain.</li>
+      </ul>
     </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc">An AI-powered appointment booking assistant that takes a form submission (from Jotform) and fully automates checking availability, booking the calendar, logging records, and emailing the customer — with no human touching it unless something goes wrong.</p>
 
-          <div class="screenshot-gallery">
-            <img src="Available%20date%20appoinment.png" alt="Advanced Appointment Setter - slot available flow" loading="lazy">
-            <img src="Unavailable%20date%20appointment.png" alt="Advanced Appointment Setter - slot unavailable flow" loading="lazy">
-            <img src="Error.png" alt="Advanced Appointment Setter - error handling flow" loading="lazy">
-          </div>
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">AI Lead Generation & Sales Qualification Pipeline</span>
+        <span class="item-meta">n8n</span>
+      </div>
+      <ul class="bullets">
+        <li>Built an inbound lead-scoring system using a locally-hosted AI model (zero cloud cost) that auto-routes hot/warm/cold leads into HubSpot with tailored Slack alerts and replies.</li>
+      </ul>
+    </div>
 
-          <div class="section-label">How it works, step by step</div>
-          <ul class="highlights">
-            <li><strong>1. Trigger — Webhook:</strong> Jotform posts form submissions to this webhook, using Jotform's auto-generated plain-English summary of all form answers.</li>
-            <li><strong>2. Extract Appointment Details (Gemini AI):</strong> An AI "Information Extractor" reads that raw text and pulls out structured fields — name, email, address, phone, date, and time — auto-converting natural language like "2pm" into 24-hour format.</li>
-            <li><strong>3. Validate Required Fields:</strong> Checks that name, a valid email, and a date were actually extracted. If not, the customer gets an immediate error asking them to resubmit — no bad data enters the system.</li>
-            <li><strong>4. Prepare Appointment Data:</strong> Builds a clean record with a 1-hour time slot and marks status as "Pending."</li>
-            <li><strong>5. Create Airtable Record (Pending):</strong> Logs the request immediately, so there's a record even before availability is confirmed.</li>
-            <li><strong>6. Check Google Calendar availability:</strong> Pulls all events for that business day (9am–5pm) and checks for overlaps with the requested slot.</li>
-            <li><strong>7. Branch — Is the slot available?</strong> Yes → creates the calendar event, logs to Sheets, emails a confirmation, returns 200. No → marks "Needs Reschedule," emails up to 3 alternative times, returns 200 needs_reschedule.</li>
-            <li><strong>8. Error handling:</strong> Every external step has a fallback — failures email the admin directly and return a 500, so nothing fails silently.</li>
-          </ul>
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Invoice & Payment Automation</span>
+        <span class="item-meta">n8n</span>
+      </div>
+      <ul class="bullets">
+        <li>Automated invoice intake, OCR verification, and staged payment follow-up/escalation — replacing manual collections tracking entirely.</li>
+      </ul>
+    </div>
 
-          <div class="section-label">Business value</div>
-          <ul class="highlights">
-            <li>Zero manual scheduling work — a lead fills out a form and either gets booked or gets alternatives, instantly, 24/7</li>
-            <li>No double-booking — actively checks the calendar before confirming</li>
-            <li>Full audit trail — every request lands in Airtable, successful bookings also land in a Google Sheet</li>
-            <li>Graceful degradation — bad input is rejected politely; system failures alert the admin directly instead of losing the customer's request</li>
-          </ul>
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">AI Video Generator — Auto-Publish to YouTube & Facebook</span>
+        <span class="item-meta">n8n</span>
+      </div>
+      <ul class="bullets">
+        <li>Built a one-click pipeline that writes scripts with AI, generates two video clips, merges them, and publishes to YouTube and Facebook in ~5 minutes.</li>
+      </ul>
+    </div>
 
-          <div class="stack">
-            <span class="chip">n8n</span><span class="chip">Gemini AI</span><span class="chip">Jotform</span>
-            <span class="chip">Google Calendar</span><span class="chip">Airtable</span><span class="chip">Google Sheets</span><span class="chip">Gmail</span>
-          </div>
+    <div class="note-box">
+      3 additional projects (Fearless Customer Support & Growth, AI Appointment Setter, E-Commerce Order Processing) with full breakdowns and screenshots available at my portfolio: klarkyy00.github.io/Klark_portfolio
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-title">Experience</div>
+      <div class="item">
+        <div class="item-header">
+          <span class="item-title">Computer Room Specialist</span>
         </div>
+        <span class="item-meta">Baggage Handling System, NAIA Terminal 3 · Dec 2019 – Present</span>
+        <ul class="bullets">
+          <li>Monitor the Automated Baggage Handling System (BHS) in real time, ensuring smooth, uninterrupted terminal baggage flow.</li>
+          <li>Monitor check-in counters and inbound/outbound racetrack conveyor systems using SCADA, flagging issues before they impact operations.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Education</div>
+      <div class="edu-row">
+        <span class="edu-school">BS Information Technology</span>
+      </div>
+      <div class="edu-row">
+        <span class="edu-detail">University of Batangas</span>
+      </div>
+      <div class="edu-row" style="margin-top:6px;">
+        <span class="edu-school">BS Information Technology</span>
+      </div>
+      <div class="edu-row">
+        <span class="edu-detail">De La Salle Lipa · 2013–2016</span>
       </div>
     </div>
   </div>
 
-  <!-- 2: E-Commerce -->
-  <div class="card" data-id="c2">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">n8n · E-Commerce · Fulfillment</span>
-        <h2 class="card-title">E-Commerce Order Processing</h2>
+  <div class="section">
+    <div class="section-title">Certifications & Trainings</div>
+    <div class="two-col">
+      <div>
+        <div class="edu-row"><span class="edu-school" style="font-size:11.5px;">AI Automation with n8n</span></div>
+        <div class="edu-detail">Technical Virtual Assistants PH · May 19, 2026</div>
+
+        <div class="edu-row" style="margin-top:6px;"><span class="edu-school" style="font-size:11.5px;">HighLevel CRM Full Training</span></div>
+        <div class="edu-detail">Technical Virtual Assistants PH · Jun 1, 2026</div>
+
+        <div class="edu-row" style="margin-top:6px;"><span class="edu-school" style="font-size:11.5px;">No Code Automation with Make.com</span></div>
+        <div class="edu-detail">Technical Virtual Assistants PH · Apr 22, 2026</div>
+
+        <div class="edu-row" style="margin-top:6px;"><span class="edu-school" style="font-size:11.5px;">No Code Automation with Zapier</span></div>
+        <div class="edu-detail">Technical Virtual Assistants PH · Apr 15, 2026</div>
       </div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc">Triggered by a webhook, then fans out to three parallel actions — notifying the customer, the fulfillment team, and inventory tracking simultaneously instead of one after another.</p>
+      <div>
+        <div class="edu-row"><span class="edu-school" style="font-size:11.5px;">Prompt Engineering Full Training</span></div>
+        <div class="edu-detail">Technical Virtual Assistants PH · May 19, 2026</div>
 
-          <div class="screenshot-gallery">
-            <img src="E-commerce%20order%20Processing.png" alt="E-Commerce Order Processing workflow" loading="lazy">
-          </div>
+        <div class="edu-row" style="margin-top:6px;"><span class="edu-school" style="font-size:11.5px;">Technical Drafting NCII</span></div>
+        <div class="edu-detail">All Business Computer Center Phils. Inc. · Sep–Oct 2019</div>
 
-          <div class="section-label">How it works</div>
-          <ul class="highlights">
-            <li><strong>Trigger — Order Received (Webhook):</strong> Listens for POST requests at /order-received — where a Jotform submission gets sent via Jotform's webhook integration.</li>
-            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy — field names vary (q2_customer_name, customerName, etc.) depending on how the form was built, and Jotform also sends a "pretty string" fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
-            <li><strong>Fan-out to three parallel branches:</strong></li>
-            <li><strong>→ Send Confirmation Email (Gmail):</strong> Sends an HTML order-confirmation email with order ID, items, and total.</li>
-            <li><strong>→ Send Packing Instructions (Slack → #inventory):</strong> Posts order details plus a packing checklist for the fulfillment team.</li>
-            <li><strong>→ Update Inventory (Google Sheets → append):</strong> Logs the order as a new row in the tracking spreadsheet.</li>
-          </ul>
-
-          <div class="section-label">Why it matters</div>
-          <ul class="highlights">
-            <li>Handles inconsistent Jotform field naming with a resilient lookup + "pretty string" fallback</li>
-            <li>Three actions fire in parallel instead of a slow sequential chain — customer, warehouse, and inventory all stay in sync instantly</li>
-            <li>Retries 3x on every external call before escalating to a Slack failure alert</li>
-          </ul>
-
-          <div class="stack">
-            <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Gmail</span>
-            <span class="chip">Slack</span><span class="chip">Google Sheets</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3: Invoice -->
-  <div class="card" data-id="c3">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">n8n · Finance · Collections</span>
-        <h2 class="card-title">Invoice & Payment Automation</h2>
-      </div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc">Manual invoice intake and collections follow-up is a classic small-business time sink — someone has to open, retype, confirm, remember to follow up, and escalate, all while juggling other work. This workflow replaces that entire chain end to end.</p>
-
-          <div class="screenshot-gallery">
-            <img src="Invoice%20and%20Payment%20Automation.png" alt="Invoice and Payment Automation workflow" loading="lazy">
-          </div>
-
-          <div class="section-label">Who it's for</div>
-          <p class="card-desc" style="margin-bottom:16px;">Freelancers, small agencies, or an accounts-payable/receivable function at a small company — anyone processing a steady trickle of invoices without a full accounting department behind them. It fills the gap between "too small for enterprise software" and "too much volume to track in your head."</p>
-
-          <div class="section-label">What it replaces</div>
-          <table class="info-table">
-            <tr><th>Manual task</th><th>Automated by</th></tr>
-            <tr><td>Opening the invoice, reading it, typing details into a spreadsheet</td><td>JotForm intake + OCR cross-check + auto-logging</td></tr>
-            <tr><td>Emailing the client "we got it"</td><td>Confirmation email node</td></tr>
-            <tr><td>Telling the team a new invoice came in</td><td>Slack notification</td></tr>
-            <tr><td>Remembering to check back in a week</td><td>Wait node + scheduled re-check</td></tr>
-            <tr><td>Writing (and remembering to send) a reminder</td><td>Auto-generated reminder email</td></tr>
-            <tr><td>Checking again before escalating</td><td>Second payment re-check before final notice</td></tr>
-            <tr><td>Flagging genuinely overdue invoices to a human</td><td>Slack escalation alert</td></tr>
-          </table>
-
-          <div class="section-label">Business value</div>
-          <ul class="highlights">
-            <li><strong>Time saved per invoice:</strong> even a conservative 5–10 minutes of manual entry plus follow-up overhead adds up fast across dozens of invoices a month — this turns that into a one-time setup cost instead of a recurring one</li>
-            <li><strong>Faster cash collection:</strong> reminders go out exactly on schedule, every time, with zero chance of a forgotten follow-up costing real cash flow delay</li>
-            <li><strong>Fewer errors, fewer awkward moments:</strong> OCR cross-checking catches form/invoice mismatches, and a payment re-check before escalation avoids sending an "URGENT OVERDUE" email to someone who already paid</li>
-            <li><strong>Visibility without extra software:</strong> the Google Sheet is the single source of truth, readable by anyone, with Slack keeping the team passively in the loop</li>
-            <li><strong>Resilience as a feature:</strong> retries on every external call and a dedicated error-alert channel mean a transient API hiccup doesn't silently kill a workflow meant to run unattended for weeks</li>
-            <li><strong>Scales without added headcount:</strong> processing invoice #50 costs the same as invoice #1</li>
-          </ul>
-
-          <div class="stack">
-            <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Google Cloud Vision (OCR)</span>
-            <span class="chip">Google Sheets</span><span class="chip">Gmail</span><span class="chip">Slack</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4: Lead Gen -->
-  <div class="card" data-id="c4">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">n8n · Sales · AI Qualification</span>
-        <h2 class="card-title">Lead Generation & Sales Automation Pipeline</h2>
-      </div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc">Built a fully automated inbound lead scoring system using n8n that processes every new email, qualifies it with a local AI model, and triggers the right sales actions — all without manual review.</p>
-
-          <div class="screenshot-gallery">
-            <img src="hot%20lead.png" alt="Lead Generation - hot lead branch" loading="lazy">
-            <img src="Warm%20Lead.png" alt="Lead Generation - warm lead branch" loading="lazy">
-            <img src="Warm%20Lead%202.png" alt="Lead Generation - warm lead branch zoomed" loading="lazy">
-          </div>
-
-          <div class="section-label">What it does</div>
-          <p class="card-desc" style="margin-bottom:16px;">Monitors a Gmail inbox, extracts lead intelligence (company, domain, buying signals), runs it through a locally-hosted Llama 3.2 model via Ollama using BANT qualification criteria, assigns a score (1–10) and tier (hot/warm/cold), then automatically creates contacts in HubSpot, sends Slack alerts to the sales team, and dispatches personalized email replies — all within seconds of the lead arriving.</p>
-
-          <div class="flow">
-            <span class="step">📧 Gmail Trigger</span><span class="arrow">→</span>
-            <span class="step">🧠 Extract Lead Data</span><span class="arrow">→</span>
-            <span class="step">🦙 AI Qualification (Ollama / Llama 3.2)</span><span class="arrow">→</span>
-            <span class="step">📊 Score & Tier</span>
-          </div>
-          <div class="flow">
-            <span class="split">🔥 Hot (8–10)</span>
-            <span class="step">HubSpot: SQL</span><span class="step">Slack #sales-urgent</span><span class="step">Book-a-call reply</span>
-          </div>
-          <div class="flow">
-            <span class="split neg">☀️ Warm (5–7)</span>
-            <span class="step">HubSpot: MQL</span><span class="step">Slack #sales-leads</span><span class="step">24h follow-up reply</span>
-          </div>
-          <div class="flow">
-            <span class="split neg">❄️ Cold (1–4)</span>
-            <span class="step">No CRM entry — polite nurture reply only</span>
-          </div>
-
-          <div class="section-label">Key highlights</div>
-          <ul class="highlights">
-            <li>Zero cloud AI cost — runs entirely on local hardware via Ollama</li>
-            <li>BANT-based scoring prompt evaluates budget signals, decision-maker indicators, urgency, and domain type (free vs. business email)</li>
-            <li>Three-tier routing eliminates manual triage for the sales team</li>
-            <li>Auto-replies personalized per tier with appropriate CTAs</li>
-          </ul>
-
-          <div class="stack">
-            <span class="chip">n8n</span><span class="chip">Ollama (Llama 3.2)</span><span class="chip">Gmail API</span>
-            <span class="chip">HubSpot CRM</span><span class="chip">Slack</span><span class="chip">JavaScript</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5: Veo Video -->
-  <div class="card" data-id="c5">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">n8n · Media · AI Video</span>
-        <h2 class="card-title">Veo AI Video Generator — Auto-Post to YouTube & Facebook</h2>
-      </div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc"><strong>One click. Two AI videos. Posted everywhere. Automatically.</strong> This fully automated system uses the latest Google Veo 3.1 AI to create short videos from scratch — then instantly publishes them to YouTube and Facebook at the same time, without lifting a finger.</p>
-
-          <div class="screenshot-gallery">
-            <img src="Veo%20Video%20Generator%20-%20YouTube%20and%20Facebook.png" alt="Veo AI Video Generator workflow" loading="lazy">
-          </div>
-
-          <div class="section-label">The magic behind it</div>
-          <div class="flow">
-            <span class="step">🖱 Manual Trigger</span><span class="arrow">→</span>
-            <span class="step">🤖 Gemini writes scripts + titles</span><span class="arrow">→</span>
-            <span class="step">🔐 JWT / Service Account Auth</span><span class="arrow">→</span>
-            <span class="step">🎥 Veo 3.1: Generate Clip 1</span><span class="arrow">→</span>
-            <span class="step">⏳ Poll every 30s</span>
-          </div>
-          <div class="flow">
-            <span class="step">🎥 Veo 3.1: Generate Clip 2</span><span class="arrow">→</span>
-            <span class="step">⏳ Poll every 30s</span><span class="arrow">→</span>
-            <span class="step">🎞 FFmpeg Merge</span><span class="arrow">→</span>
-            <span class="step">📤 YouTube Upload</span>
-            <span class="step">📤 Facebook Graph API</span>
-          </div>
-          <div class="flow">
-            <span class="split neg">🚧 Content Filtered / Error</span><span class="arrow">→</span>
-            <span class="step">Auto-regenerate script & retry</span>
-          </div>
-
-          <div class="section-label">What makes it powerful</div>
-          <table class="info-table">
-            <tr><th>Feature</th><th>Details</th></tr>
-            <tr><td>🧠 AI Script Writer</td><td>Gemini 2.5 Flash writes optimized prompts & titles</td></tr>
-            <tr><td>🎬 Dual Clip Generation</td><td>2 unique 8-second vertical clips (9:16 reels format)</td></tr>
-            <tr><td>🔊 AI Audio Included</td><td>Videos come with generated audio — no editing needed</td></tr>
-            <tr><td>🔄 Smart Retry System</td><td>Auto-retries if AI filters or rejects content</td></tr>
-            <tr><td>📱 Reels-Ready Format</td><td>Vertical 1080×1920 — perfect for Facebook & YouTube Shorts</td></tr>
-            <tr><td>🚀 Dual Publishing</td><td>Posts to YouTube + Facebook in the same moment</td></tr>
-          </table>
-
-          <div class="section-label">Timeline of one run</div>
-          <ul class="highlights">
-            <li><strong>0:00</strong> — Workflow starts</li>
-            <li><strong>0:05</strong> — Gemini writes scripts & titles</li>
-            <li><strong>0:30–2:00</strong> — Veo generates Clip 1</li>
-            <li><strong>2:30–4:00</strong> — Veo generates Clip 2</li>
-            <li><strong>4:05</strong> — Clips merged into final video</li>
-            <li><strong>4:10</strong> — Published to YouTube + Facebook</li>
-          </ul>
-          <p class="card-desc" style="margin-bottom:16px;"><strong>Total time: ~4–5 minutes from click to live post.</strong></p>
-
-          <div class="section-label">Built-in safety features</div>
-          <ul class="highlights">
-            <li>Automatically retries if Google's AI safety filter blocks content</li>
-            <li>Automatically regenerates scripts if video generation fails</li>
-            <li>Polls every 30 seconds to check video status — never misses a beat</li>
-          </ul>
-
-          <div class="stack">
-            <span class="chip">n8n</span><span class="chip">Google Veo 3.1</span><span class="chip">Gemini 2.5 Flash</span>
-            <span class="chip">FFmpeg</span><span class="chip">YouTube API</span><span class="chip">Facebook Graph API</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 6: Lead Capture (Make.com) -->
-  <div class="card" data-id="c6">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">Make.com · Sales · AI Qualification</span>
-        <h2 class="card-title">Lead Capture & AI Qualification — Gmail → Google Sheets</h2>
-      </div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc">Inbound leads arrive by email — contact-form notifications, quote requests, general enquiries. Left in an inbox they get missed, response times slip, and there's no single view of the pipeline. This automation captures every qualifying email, de-duplicates it, uses AI to score and enrich it, logs it to structured sheets, escalates the hottest leads, and auto-replies — with zero manual triage.</p>
-
-          <div class="screenshot-gallery">
-            <img src="Lead%20Capture%20%26%20AI%20Qualification%20%E2%80%94%20Gmail%20to%20Google%20Sheets.png" alt="Lead Capture and AI Qualification Make.com workflow" loading="lazy">
-          </div>
-
-          <div class="section-label">How it works</div>
-          <ul class="highlights">
-            <li><strong>1. Watch emails (Gmail trigger):</strong> Polls the inbox on a 15-minute schedule with a Gmail search query so only relevant messages are picked up, and marks fetched messages as read so they're never processed twice.</li>
-            <li><strong>2. AI qualification (Claude via Make AI):</strong> Each email is passed to Claude Haiku 4.5 with a strict prompt returning a single JSON object — best-guess company, extracted phone, category (Sales / Support / Partnership / Recruitment / Spam / Other), urgency, a 0–100 lead score, and a one-line summary.</li>
-            <li><strong>3. Parse JSON:</strong> The AI's response is parsed into individual fields for downstream mapping.</li>
-            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a "Known Leads" data store — if they've been seen before, the flow stops, so there are no duplicate rows or repeat auto-replies.</li>
-            <li><strong>5. Record in Data Store:</strong> New senders are written to the store (email, name, last score, timestamp) so future emails from them are recognized.</li>
-            <li><strong>6. Router:</strong> Fans the flow into three independent branches.</li>
-            <li><strong>7. Log all leads (Google Sheets):</strong> Every new lead is appended to the main "Leads" sheet as a 12-column enriched record.</li>
-            <li><strong>8. Escalate hot leads (Google Sheets):</strong> If the AI score is 70 or higher, the lead is also copied to a dedicated "Hot Leads" priority sheet for the sales team.</li>
-            <li><strong>9. Smart auto-reply (Gmail):</strong> Hot leads (score ≥ 70) receive an immediate, prioritized acknowledgement. Everything else is logged silently.</li>
-          </ul>
-
-          <div class="stack">
-            <span class="chip">Make.com</span><span class="chip">Anthropic Claude</span><span class="chip">Gmail</span>
-            <span class="chip">Google Sheets</span><span class="chip">Data Stores</span><span class="chip">Router</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 7: Fearless (Make.com) -->
-  <div class="card" data-id="c7">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">Make.com · Customer Support · Growth</span>
-        <h2 class="card-title">Fearless — Customer Support & Growth Automation</h2>
-      </div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc">An automated Make.com worker that watches a customer support inbox and handles incoming emails without manual effort. Every 15 minutes it checks for new messages and runs each through a five-step pipeline — reading the email, writing an on-brand reply, sending it, and logging the details for tracking and growth. The same reply that answers a question also does light, on-brand selling.</p>
-
-          <div class="screenshot-gallery">
-            <img src="Fearless%20%E2%80%94%20Customer%20Support%20%26%20Growth%20(Email).png" alt="Fearless Customer Support and Growth Automation workflow" loading="lazy">
-          </div>
-
-          <div class="section-label">How it works</div>
-          <table class="info-table">
-            <tr><th>Step</th><th>What happens</th></tr>
-            <tr><td>1. Watch inbox</td><td>Scans the Primary inbox for customer-type emails — returns, exchanges, sizing, orders, shipping, or buying interest. Picks up to two new messages per cycle.</td></tr>
-            <tr><td>2. AI reads & writes</td><td>Claude classifies the email (return, complaint, pre-sale inquiry, etc.), reads sentiment, writes a warm on-brand reply, and decides which offer to attach.</td></tr>
-            <tr><td>3. Auto-reply</td><td>The reply is emailed straight back to the customer automatically — usually within minutes, any time of day.</td></tr>
-            <tr><td>4. Log everything</td><td>Customer, request, sentiment, and the reply sent are recorded to a Support Log spreadsheet for tracking and pattern-spotting.</td></tr>
-            <tr><td>5. Capture leads</td><td>If the sender is a potential buyer rather than an existing customer, they're added to a Leads & Prospects sheet for follow-up.</td></tr>
-          </table>
-
-          <div class="section-label">Built-in growth levers</div>
-          <ul class="highlights">
-            <li><strong>Curious shopper</strong> (pre-sale/fit question) → answered warmly, plus a first-order discount code. Logged as a lead.</li>
-            <li><strong>Happy customer</strong> → thanked, asked for a quick review, and given a referral code to share.</li>
-            <li><strong>Upset customer</strong> → sincere apology, flagged for personal human follow-up, offered a win-back discount so they're retained, not lost.</li>
-          </ul>
-
-          <div class="section-label">Why it matters</div>
-          <ul class="highlights">
-            <li><strong>Speed and coverage:</strong> customers get a friendly, on-brand answer within minutes, day or night.</li>
-            <li><strong>Growth, not just maintenance:</strong> every email becomes a small revenue lever — converting shoppers, generating referrals, and winning back unhappy buyers automatically.</li>
-            <li><strong>A compounding asset:</strong> the Leads sheet builds a ready-made outreach list, the Support Log surfaces recurring issues worth fixing, and captured testimonials become social proof.</li>
-            <li><strong>Built-in safeguard:</strong> complaints and complex issues are flagged "needs human," and the AI is instructed never to invent refunds, order details, or firm promises.</li>
-          </ul>
-
-          <div class="stack">
-            <span class="chip">Make.com</span><span class="chip">Anthropic Claude</span><span class="chip">Gmail</span>
-            <span class="chip">Google Sheets</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 8: Client Pipeline (Zapier) -->
-  <div class="card" data-id="c8">
-    <div class="card-head has-body">
-      <div class="head-left">
-        <span class="card-tag">Zapier · CRM · Client Management</span>
-        <h2 class="card-title">Client Pipeline Automation</h2>
-      </div>
-      <div class="chevron">⌄</div>
-    </div>
-    <div class="card-body-wrap">
-      <div class="card-body-inner">
-        <div class="card-body">
-          <p class="card-desc">A lightweight CRM plus a sales-and-delivery assistant, built entirely around a single spreadsheet. The Client Pipeline Tracker sheet is the control panel — one row per client or job, with their name, email, project, and quote amount. Updating a single Status dropdown triggers the entire next step automatically, so the freelancer or business owner only ever touches the spreadsheet — no Gmail, no Drive, no copy-pasting emails.</p>
-
-          <div class="screenshot-gallery">
-            <img src="Client%20Pipeline%20Automation.png" alt="Client Pipeline Automation Zapier workflow" loading="lazy">
-          </div>
-
-          <div class="section-label">How it works</div>
-          <ul class="highlights">
-            <li><strong>1. Trigger — New or Updated Spreadsheet Row (Google Sheets):</strong> Fires whenever a client row is added or its Status is changed.</li>
-            <li><strong>2. Create Folder (Google Drive):</strong> A folder named after the client and project is created automatically on each run, so files stay organized without manual setup.</li>
-            <li><strong>3. Split into Paths (Zapier Paths):</strong> The Status value routes the row down one of five branches.</li>
-            <li><strong>→ Ready to Start:</strong> Sends a kickoff email.</li>
-            <li><strong>→ No Response:</strong> Sends an immediate check-in email, waits 3 days (Delay by Zapier), then automatically sends a follow-up — no need to remember to chase.</li>
-            <li><strong>→ Quoted:</strong> Sends the client an email with the exact quote amount pulled straight from the sheet.</li>
-            <li><strong>→ Approved:</strong> Sends a confirmation email.</li>
-            <li><strong>→ Paid and Closed:</strong> Sends a thank-you email.</li>
-          </ul>
-
-          <div class="section-label">Why it matters for a business</div>
-          <ul class="highlights">
-            <li>No lead goes cold — the follow-up chain runs itself, and most quotes die simply because nobody followed up</li>
-            <li>Every client gets a fast, consistent, professional response at each stage of the pipeline</li>
-            <li>Quoting, onboarding, and closing become one-click actions on a spreadsheet</li>
-            <li>Scales cheaply — whether there are 3 clients or 50, the workload of writing status emails stays at zero</li>
-            <li>The sheet doubles as a live pipeline report, showing at a glance how many jobs are quoted vs. approved vs. paid</li>
-          </ul>
-
-          <div class="stack">
-            <span class="chip">Zapier</span><span class="chip">Zapier Paths</span><span class="chip">Google Sheets</span>
-            <span class="chip">Google Drive</span><span class="chip">Gmail</span><span class="chip">Delay by Zapier</span>
-          </div>
-        </div>
+        <div class="edu-row" style="margin-top:6px;"><span class="edu-school" style="font-size:11.5px;">Electrical Installation & Maintenance NCII</span></div>
+        <div class="edu-detail">Concept Institute for Career Enhancement, Inc. · Jun–Jul 2019</div>
       </div>
     </div>
   </div>
 
 </div>
-
-<div class="contact-section">
-  <h2>Let's Collaborate</h2>
-  <p>Ready to automate your business? Get in touch and let's discuss your project.</p>
-  <form class="contact-form" id="contactForm">
-    <input type="text" id="cf-name" placeholder="Your Name" required>
-    <input type="email" id="cf-email" placeholder="Your Email" required>
-    <textarea id="cf-message" placeholder="Tell me about your project..." required></textarea>
-    <button type="submit" class="contact-submit" id="cf-submit">Send Message</button>
-    <div class="contact-status" id="cf-status"></div>
-  </form>
-</div>
-
-<div class="footer">Automation workflows built in n8n — connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.</div>
-
-<script>
-  document.getElementById('contactForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = document.getElementById('cf-name').value.trim();
-    const email = document.getElementById('cf-email').value.trim();
-    const message = document.getElementById('cf-message').value.trim();
-    const status = document.getElementById('cf-status');
-
-    if(!name || !email || !message){
-      status.textContent = 'Please fill out all fields.';
-      status.style.color = '#e07a7a';
-      return;
-    }
-
-    const to = 'pungzuwangdu11@gmail.com';
-    const subject = encodeURIComponent('Project Inquiry from ' + name);
-    const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
-    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-
-    status.textContent = 'Opening your email client...';
-    status.style.color = 'var(--accent2)';
-  });
-
-  document.querySelectorAll('.card').forEach(card => {
-    const head = card.querySelector('.card-head');
-    head.addEventListener('click', () => {
-      card.classList.toggle('open');
-    });
-  });
-
-  // ===== Avatar eye tracking + blinking (only runs if illustrated avatar is present) =====
-  (function(){
-    const avatar = document.getElementById('avatar');
-    const eyeL = document.getElementById('eyeL');
-    const eyeR = document.getElementById('eyeR');
-    if(!eyeL || !eyeR) return;
-    const maxOffset = 2.5;
-
-    function moveEyes(clientX, clientY){
-      const rect = avatar.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = clientX - cx;
-      const dy = clientY - cy;
-      const dist = Math.hypot(dx, dy) || 1;
-      const ox = (dx / dist) * maxOffset;
-      const oy = (dy / dist) * maxOffset;
-      eyeL.setAttribute('transform', `translate(${ox},${oy})`);
-      eyeR.setAttribute('transform', `translate(${ox},${oy})`);
-    }
-
-    window.addEventListener('mousemove', (e) => moveEyes(e.clientX, e.clientY));
-
-    function blink(){
-      const eyes = avatar.querySelectorAll('.avatar-eye');
-      eyes.forEach(eye => eye.classList.add('blink'));
-      setTimeout(() => eyes.forEach(eye => eye.classList.remove('blink')), 140);
-      setTimeout(blink, 2500 + Math.random() * 3000);
-    }
-    setTimeout(blink, 1800);
-  })();
-
-  // ===== Photo avatar parallax tilt (runs if a real photo is present) =====
-  (function(){
-    const avatar = document.getElementById('avatar');
-    const photo = document.getElementById('avatarPhoto');
-    if(!photo) return;
-    const maxShift = 6;
-
-    window.addEventListener('mousemove', (e) => {
-      const rect = avatar.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const dist = Math.hypot(dx, dy) || 1;
-      const shiftX = (dx / dist) * maxShift;
-      const shiftY = (dy / dist) * maxShift;
-      photo.style.transform = `translate(${shiftX}px, ${shiftY}px) scale(1.04)`;
-    });
-
-    avatar.addEventListener('mouseleave', () => {
-      photo.style.transform = 'translate(0,0) scale(1)';
-    });
-  })();
-</script>
 
 </body>
 </html>
