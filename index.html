@@ -728,6 +728,146 @@
     </div>
   </div>
 
+  <!-- 6: Lead Capture (Make.com) -->
+  <div class="card" data-id="c6">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">Make.com · Sales · AI Qualification</span>
+        <h2 class="card-title">Lead Capture & AI Qualification — Gmail → Google Sheets</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">Inbound leads arrive by email — contact-form notifications, quote requests, general enquiries. Left in an inbox they get missed, response times slip, and there's no single view of the pipeline. This automation captures every qualifying email, de-duplicates it, uses AI to score and enrich it, logs it to structured sheets, escalates the hottest leads, and auto-replies — with zero manual triage.</p>
+
+          <div class="screenshot-gallery">
+            <img src="Lead%20Capture%20%26%20AI%20Qualification%20%E2%80%94%20Gmail%20to%20Google%20Sheets.png" alt="Lead Capture and AI Qualification Make.com workflow" loading="lazy">
+          </div>
+
+          <div class="section-label">How it works</div>
+          <ul class="highlights">
+            <li><strong>1. Watch emails (Gmail trigger):</strong> Polls the inbox on a 15-minute schedule with a Gmail search query so only relevant messages are picked up, and marks fetched messages as read so they're never processed twice.</li>
+            <li><strong>2. AI qualification (Claude via Make AI):</strong> Each email is passed to Claude Haiku 4.5 with a strict prompt returning a single JSON object — best-guess company, extracted phone, category (Sales / Support / Partnership / Recruitment / Spam / Other), urgency, a 0–100 lead score, and a one-line summary.</li>
+            <li><strong>3. Parse JSON:</strong> The AI's response is parsed into individual fields for downstream mapping.</li>
+            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a "Known Leads" data store — if they've been seen before, the flow stops, so there are no duplicate rows or repeat auto-replies.</li>
+            <li><strong>5. Record in Data Store:</strong> New senders are written to the store (email, name, last score, timestamp) so future emails from them are recognized.</li>
+            <li><strong>6. Router:</strong> Fans the flow into three independent branches.</li>
+            <li><strong>7. Log all leads (Google Sheets):</strong> Every new lead is appended to the main "Leads" sheet as a 12-column enriched record.</li>
+            <li><strong>8. Escalate hot leads (Google Sheets):</strong> If the AI score is 70 or higher, the lead is also copied to a dedicated "Hot Leads" priority sheet for the sales team.</li>
+            <li><strong>9. Smart auto-reply (Gmail):</strong> Hot leads (score ≥ 70) receive an immediate, prioritized acknowledgement. Everything else is logged silently.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">Make.com</span><span class="chip">Anthropic Claude</span><span class="chip">Gmail</span>
+            <span class="chip">Google Sheets</span><span class="chip">Data Stores</span><span class="chip">Router</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7: Fearless (Make.com) -->
+  <div class="card" data-id="c7">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">Make.com · Customer Support · Growth</span>
+        <h2 class="card-title">Fearless — Customer Support & Growth Automation</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">An automated Make.com worker that watches a customer support inbox and handles incoming emails without manual effort. Every 15 minutes it checks for new messages and runs each through a five-step pipeline — reading the email, writing an on-brand reply, sending it, and logging the details for tracking and growth. The same reply that answers a question also does light, on-brand selling.</p>
+
+          <div class="screenshot-gallery">
+            <img src="Fearless%20%E2%80%94%20Customer%20Support%20%26%20Growth%20(Email).png" alt="Fearless Customer Support and Growth Automation workflow" loading="lazy">
+          </div>
+
+          <div class="section-label">How it works</div>
+          <table class="info-table">
+            <tr><th>Step</th><th>What happens</th></tr>
+            <tr><td>1. Watch inbox</td><td>Scans the Primary inbox for customer-type emails — returns, exchanges, sizing, orders, shipping, or buying interest. Picks up to two new messages per cycle.</td></tr>
+            <tr><td>2. AI reads & writes</td><td>Claude classifies the email (return, complaint, pre-sale inquiry, etc.), reads sentiment, writes a warm on-brand reply, and decides which offer to attach.</td></tr>
+            <tr><td>3. Auto-reply</td><td>The reply is emailed straight back to the customer automatically — usually within minutes, any time of day.</td></tr>
+            <tr><td>4. Log everything</td><td>Customer, request, sentiment, and the reply sent are recorded to a Support Log spreadsheet for tracking and pattern-spotting.</td></tr>
+            <tr><td>5. Capture leads</td><td>If the sender is a potential buyer rather than an existing customer, they're added to a Leads & Prospects sheet for follow-up.</td></tr>
+          </table>
+
+          <div class="section-label">Built-in growth levers</div>
+          <ul class="highlights">
+            <li><strong>Curious shopper</strong> (pre-sale/fit question) → answered warmly, plus a first-order discount code. Logged as a lead.</li>
+            <li><strong>Happy customer</strong> → thanked, asked for a quick review, and given a referral code to share.</li>
+            <li><strong>Upset customer</strong> → sincere apology, flagged for personal human follow-up, offered a win-back discount so they're retained, not lost.</li>
+          </ul>
+
+          <div class="section-label">Why it matters</div>
+          <ul class="highlights">
+            <li><strong>Speed and coverage:</strong> customers get a friendly, on-brand answer within minutes, day or night.</li>
+            <li><strong>Growth, not just maintenance:</strong> every email becomes a small revenue lever — converting shoppers, generating referrals, and winning back unhappy buyers automatically.</li>
+            <li><strong>A compounding asset:</strong> the Leads sheet builds a ready-made outreach list, the Support Log surfaces recurring issues worth fixing, and captured testimonials become social proof.</li>
+            <li><strong>Built-in safeguard:</strong> complaints and complex issues are flagged "needs human," and the AI is instructed never to invent refunds, order details, or firm promises.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">Make.com</span><span class="chip">Anthropic Claude</span><span class="chip">Gmail</span>
+            <span class="chip">Google Sheets</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8: Client Pipeline (Zapier) -->
+  <div class="card" data-id="c8">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">Zapier · CRM · Client Management</span>
+        <h2 class="card-title">Client Pipeline Automation</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A lightweight CRM plus a sales-and-delivery assistant, built entirely around a single spreadsheet. The Client Pipeline Tracker sheet is the control panel — one row per client or job, with their name, email, project, and quote amount. Updating a single Status dropdown triggers the entire next step automatically, so the freelancer or business owner only ever touches the spreadsheet — no Gmail, no Drive, no copy-pasting emails.</p>
+
+          <div class="screenshot-gallery">
+            <img src="Client%20Pipeline%20Automation.png" alt="Client Pipeline Automation Zapier workflow" loading="lazy">
+          </div>
+
+          <div class="section-label">How it works</div>
+          <ul class="highlights">
+            <li><strong>1. Trigger — New or Updated Spreadsheet Row (Google Sheets):</strong> Fires whenever a client row is added or its Status is changed.</li>
+            <li><strong>2. Create Folder (Google Drive):</strong> A folder named after the client and project is created automatically on each run, so files stay organized without manual setup.</li>
+            <li><strong>3. Split into Paths (Zapier Paths):</strong> The Status value routes the row down one of five branches.</li>
+            <li><strong>→ Ready to Start:</strong> Sends a kickoff email.</li>
+            <li><strong>→ No Response:</strong> Sends an immediate check-in email, waits 3 days (Delay by Zapier), then automatically sends a follow-up — no need to remember to chase.</li>
+            <li><strong>→ Quoted:</strong> Sends the client an email with the exact quote amount pulled straight from the sheet.</li>
+            <li><strong>→ Approved:</strong> Sends a confirmation email.</li>
+            <li><strong>→ Paid and Closed:</strong> Sends a thank-you email.</li>
+          </ul>
+
+          <div class="section-label">Why it matters for a business</div>
+          <ul class="highlights">
+            <li>No lead goes cold — the follow-up chain runs itself, and most quotes die simply because nobody followed up</li>
+            <li>Every client gets a fast, consistent, professional response at each stage of the pipeline</li>
+            <li>Quoting, onboarding, and closing become one-click actions on a spreadsheet</li>
+            <li>Scales cheaply — whether there are 3 clients or 50, the workload of writing status emails stays at zero</li>
+            <li>The sheet doubles as a live pipeline report, showing at a glance how many jobs are quoted vs. approved vs. paid</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">Zapier</span><span class="chip">Zapier Paths</span><span class="chip">Google Sheets</span>
+            <span class="chip">Google Drive</span><span class="chip">Gmail</span><span class="chip">Delay by Zapier</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="contact-section">
