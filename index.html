@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Klark John Cabungcal — Automation Engineer</title>
-<meta name="description" content="Automation engineering portfolio by Klark John Cabungcal — end-to-end n8n workflows connecting AI models, CRMs, and messaging platforms into self-healing automations.">
+<meta name="description" content="Automation engineering portfolio by Klark John Cabungcal — end-to-end n8n, Make.com, and Zapier workflows connecting AI models, CRMs, and messaging platforms into self-healing automations.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2314b8a6'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='white' font-family='Arial'%3EK%3C/text%3E%3C/svg%3E">
 <style>
   :root{
@@ -107,8 +107,8 @@
 
   /* ===== AVATAR ===== */
   .title-row{
-    display:flex; align-items:center; justify-content:center;
-    gap:18px; margin:0 0 12px;
+    display:flex; align-items:center; justify-content:flex-start;
+    gap:18px; margin:0 auto 12px; max-width:600px;
   }
   .title-row h1{ margin:0; }
   .title-col{ text-align:left; }
@@ -147,6 +147,30 @@
   }
 
   .wrap{max-width:1100px; margin:0 auto; padding:48px 24px 80px;}
+
+  /* ===== FILTER NAV ===== */
+  .filter-nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,20,0.9); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    padding:14px 24px;
+    display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+  }
+  .filter-btn{
+    background:var(--panel2); border:1px solid var(--border); color:var(--muted);
+    padding:8px 18px; border-radius:20px; font-size:0.82rem; font-weight:700;
+    cursor:pointer; transition:all .2s;
+  }
+  .filter-btn:hover{ border-color:var(--accent); color:var(--text); }
+  .filter-btn.active{
+    background:linear-gradient(90deg, var(--accent), var(--sea));
+    border-color:transparent; color:#04201e;
+  }
+  .filter-count{
+    font-size:0.7rem; opacity:0.75; margin-left:4px;
+  }
+  .card.hidden{ display:none; }
+
   .card{
     background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
     border:1px solid var(--border); border-radius:16px;
@@ -213,7 +237,6 @@
   }
   .footer{text-align:center; color:var(--muted); padding:30px; font-size:0.85rem; border-top:1px solid var(--border);}
 
-  /* ===== TABLE ===== */
   table.info-table{
     width:100%; border-collapse:collapse; margin:10px 0 20px;
     font-size:0.85rem; background:#081014; border-radius:10px; overflow:hidden;
@@ -229,7 +252,6 @@
   table.info-table td{ color:var(--text); }
   table.info-table tr:last-child td{ border-bottom:none; }
 
-  /* ===== SCREENSHOTS ===== */
   .screenshot-slot{
     margin:0 0 22px; border:1.5px dashed var(--border); border-radius:12px;
     background:#081014; padding:28px; text-align:center;
@@ -244,7 +266,6 @@
     width:100%; border-radius:10px; border:1px solid var(--border); display:block;
   }
 
-  /* ===== CONTACT SECTION ===== */
   .contact-section{
     max-width:700px; margin:0 auto 80px; padding:0 24px; text-align:center;
   }
@@ -283,6 +304,46 @@
   .contact-status{
     font-size:0.85rem; margin-top:4px; min-height:18px; color:var(--accent2);
   }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 640px){
+    .hero{ padding:40px 16px 28px; }
+    .title-row{ gap:10px; max-width:100%; }
+    .title-col{ text-align:left; }
+    .hero h1{ font-size:1.6rem; }
+    .name-tag{ font-size:1.3rem; text-align:center; }
+    .hero p{ font-size:0.92rem; }
+    .contact-line{ font-size:0.78rem; gap:8px; }
+    .contact-line span::after{ margin-left:8px; }
+    .social-row{ gap:8px; }
+    .social-btn{ padding:8px 14px; font-size:0.78rem; }
+    .badges{ gap:6px; }
+    .badge{ font-size:0.72rem; padding:5px 10px; }
+
+    .about-section, .cert-section{ padding:36px 16px; }
+    .about-section h2, .cert-section h2{ font-size:1.35rem; }
+    .cert-grid{ grid-template-columns:1fr; }
+
+    .filter-nav{ padding:10px 12px; gap:6px; }
+    .filter-btn{ padding:6px 12px; font-size:0.74rem; }
+
+    .wrap{ padding:28px 12px 50px; }
+    .card-head{ padding:18px 16px; }
+    .card-title{ font-size:1.08rem; }
+    .card-body{ padding:16px 16px 20px; }
+    .card-desc{ font-size:0.88rem; }
+
+    .flow{ padding:12px; gap:6px; }
+    .step{ font-size:0.7rem; padding:6px 9px; }
+
+    .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 0 20px; }
+    .table-scroll table.info-table{ margin:0; min-width:480px; }
+
+    .screenshot-gallery{ grid-template-columns:1fr; }
+
+    .contact-section{ padding:0 16px 50px; }
+    .contact-section h2{ font-size:1.5rem; }
+  }
 </style>
 </head>
 <body>
@@ -299,50 +360,30 @@
             </linearGradient>
           </defs>
           <circle class="avatar-ring" cx="75" cy="80" r="62"/>
-
-          <!-- shoulders / suit -->
           <path d="M20,160 C20,130 40,120 75,120 C110,120 130,130 130,160 Z" fill="#111417"/>
           <path d="M55,120 L60,160 L48,160 C48,140 50,128 55,120 Z" fill="#0d9488"/>
           <path d="M95,120 L90,160 L102,160 C102,140 100,128 95,120 Z" fill="#0d9488"/>
           <path d="M60,118 L75,132 L90,118 L84,124 L75,120 L66,124 Z" fill="#0a1210"/>
-
-          <!-- neck -->
           <rect x="62" y="108" width="26" height="20" rx="8" fill="#e0ab7c"/>
-
-          <!-- face -->
           <ellipse cx="75" cy="82" rx="40" ry="45" fill="#e8b98a"/>
-
-          <!-- ears -->
           <circle cx="36" cy="84" r="6.5" fill="#e0ab7c"/>
           <circle cx="114" cy="84" r="6.5" fill="#e0ab7c"/>
-
-          <!-- short faded hair -->
           <path d="M34,70 C32,42 52,20 75,20 C99,20 118,43 116,70
                    C114,55 108,44 100,42 C97,35 88,30 75,30
                    C62,30 53,35 50,42 C42,44 36,55 34,70 Z"
                 fill="url(#hairGrad)"/>
           <path d="M36,66 C37,54 42,46 48,42 C44,50 42,58 42,66 Z" fill="#1c1714" opacity="0.6"/>
           <path d="M114,66 C113,54 108,46 102,42 C106,50 108,58 108,66 Z" fill="#1c1714" opacity="0.6"/>
-
-          <!-- eyebrows -->
           <path d="M48,72 Q57,66 66,71" stroke="#3a2e28" stroke-width="3" fill="none" stroke-linecap="round"/>
           <path d="M84,71 Q93,66 102,72" stroke="#3a2e28" stroke-width="3" fill="none" stroke-linecap="round"/>
-
-          <!-- eyes -->
           <g id="eyeL">
             <ellipse class="avatar-eye" cx="58" cy="80" rx="4.8" ry="5.5"/>
           </g>
           <g id="eyeR">
             <ellipse class="avatar-eye" cx="92" cy="80" rx="4.8" ry="5.5"/>
           </g>
-
-          <!-- nose -->
           <path d="M75,82 Q79,92 74,96" stroke="#c99367" stroke-width="2.3" fill="none" stroke-linecap="round"/>
-
-          <!-- light stubble -->
           <path d="M52,96 Q75,112 98,96 Q95,106 75,110 Q55,106 52,96 Z" fill="#3a2e28" opacity="0.12"/>
-
-          <!-- mouth -->
           <path id="mouth" d="M63,104 Q75,109 87,104" stroke="#a56b52" stroke-width="2.8" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
@@ -352,7 +393,7 @@
       <h1>Automation Engineering Portfolio</h1>
     </div>
   </div>
-  <p>End-to-end n8n workflows that replace manual, repetitive business processes — from lead qualification to AI video publishing — with reliable, self-healing automation.</p>
+  <p>End-to-end n8n, Make.com, and Zapier workflows that replace manual, repetitive business processes — from lead qualification to AI video publishing — with reliable, self-healing automation.</p>
 
   <div class="contact-line">
     <a href="mailto:pungzuwangdu11@gmail.com">
@@ -373,7 +414,7 @@
   <div class="edu-line"><strong>Bachelor of Science in Information Technology</strong></div>
 
   <div class="social-row">
-    <a class="social-btn outline" href="https://linkedin.com/in/your-linkedin-here" target="_blank" rel="noopener">
+    <a class="social-btn outline" href="https://www.linkedin.com/in/klark-john-cabungcal-205723249/" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3V9zm7 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06C21.9 8.58 23 10.9 23 14.1V21h-4v-6.14c0-1.46-.03-3.35-2.04-3.35-2.05 0-2.36 1.6-2.36 3.24V21h-4V9z"/></svg>
       LinkedIn
     </a>
@@ -400,7 +441,7 @@
 
 <div class="about-section">
   <h2>About Me</h2>
-  <p>I'm Klark John Cabungcal, an automation engineer focused on turning manual, repetitive business processes into reliable, self-healing systems using n8n. I work across the full stack of a workflow — form intake, AI-powered data extraction, CRM and calendar integrations, and multi-channel notifications — so a process can run unattended without someone babysitting it.</p>
+  <p>I'm Klark John Cabungcal, an automation engineer focused on turning manual, repetitive business processes into reliable, self-healing systems using n8n, Make.com, and Zapier. I work across the full stack of a workflow — form intake, AI-powered data extraction, CRM and calendar integrations, and multi-channel notifications — so a process can run unattended without someone babysitting it.</p>
   <p>My background is in Information Technology, and I got into automation because I kept noticing the same pattern: small businesses and teams doing the same manual tasks over and over, when the tools to eliminate that work already exist — they just need to be connected properly. That's what I build.</p>
   <p>I'm currently open to freelance automation projects and full-time opportunities. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
 </div>
@@ -446,10 +487,17 @@
   </div>
 </div>
 
+<div class="filter-nav" id="filterNav">
+  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(8)</span></button>
+  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(5)</span></button>
+  <button class="filter-btn" data-filter="make">Make.com <span class="filter-count">(2)</span></button>
+  <button class="filter-btn" data-filter="zapier">Zapier <span class="filter-count">(1)</span></button>
+</div>
+
 <div class="wrap" id="cardWrap">
 
   <!-- 1: Appointment Setter -->
-  <div class="card" data-id="c1">
+  <div class="card" data-id="c1" data-platform="n8n">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Scheduling · AI Extraction</span>
@@ -498,7 +546,7 @@
   </div>
 
   <!-- 2: E-Commerce -->
-  <div class="card" data-id="c2">
+  <div class="card" data-id="c2" data-platform="n8n">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · E-Commerce · Fulfillment</span>
@@ -518,7 +566,7 @@
           <div class="section-label">How it works</div>
           <ul class="highlights">
             <li><strong>Trigger — Order Received (Webhook):</strong> Listens for POST requests at /order-received — where a Jotform submission gets sent via Jotform's webhook integration.</li>
-            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy — field names vary (q2_customer_name, customerName, etc.) depending on how the form was built, and Jotform also sends a "pretty string" fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
+            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy — field names vary depending on how the form was built, and Jotform also sends a "pretty string" fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
             <li><strong>Fan-out to three parallel branches:</strong></li>
             <li><strong>→ Send Confirmation Email (Gmail):</strong> Sends an HTML order-confirmation email with order ID, items, and total.</li>
             <li><strong>→ Send Packing Instructions (Slack → #inventory):</strong> Posts order details plus a packing checklist for the fulfillment team.</li>
@@ -528,7 +576,7 @@
           <div class="section-label">Why it matters</div>
           <ul class="highlights">
             <li>Handles inconsistent Jotform field naming with a resilient lookup + "pretty string" fallback</li>
-            <li>Three actions fire in parallel instead of a slow sequential chain — customer, warehouse, and inventory all stay in sync instantly</li>
+            <li>Three actions fire in parallel instead of a slow sequential chain</li>
             <li>Retries 3x on every external call before escalating to a Slack failure alert</li>
           </ul>
 
@@ -542,7 +590,7 @@
   </div>
 
   <!-- 3: Invoice -->
-  <div class="card" data-id="c3">
+  <div class="card" data-id="c3" data-platform="n8n">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Finance · Collections</span>
@@ -553,16 +601,17 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">Manual invoice intake and collections follow-up is a classic small-business time sink — someone has to open, retype, confirm, remember to follow up, and escalate, all while juggling other work. This workflow replaces that entire chain end to end.</p>
+          <p class="card-desc">Manual invoice intake and collections follow-up is a classic small-business time sink. This workflow replaces that entire chain end to end.</p>
 
           <div class="screenshot-gallery">
             <img src="Invoice%20and%20Payment%20Automation.png" alt="Invoice and Payment Automation workflow" loading="lazy">
           </div>
 
           <div class="section-label">Who it's for</div>
-          <p class="card-desc" style="margin-bottom:16px;">Freelancers, small agencies, or an accounts-payable/receivable function at a small company — anyone processing a steady trickle of invoices without a full accounting department behind them. It fills the gap between "too small for enterprise software" and "too much volume to track in your head."</p>
+          <p class="card-desc" style="margin-bottom:16px;">Freelancers, small agencies, or an accounts-payable/receivable function at a small company — anyone processing a steady trickle of invoices without a full accounting department behind them.</p>
 
           <div class="section-label">What it replaces</div>
+          <div class="table-scroll">
           <table class="info-table">
             <tr><th>Manual task</th><th>Automated by</th></tr>
             <tr><td>Opening the invoice, reading it, typing details into a spreadsheet</td><td>JotForm intake + OCR cross-check + auto-logging</td></tr>
@@ -573,14 +622,13 @@
             <tr><td>Checking again before escalating</td><td>Second payment re-check before final notice</td></tr>
             <tr><td>Flagging genuinely overdue invoices to a human</td><td>Slack escalation alert</td></tr>
           </table>
+          </div>
 
           <div class="section-label">Business value</div>
           <ul class="highlights">
-            <li><strong>Time saved per invoice:</strong> even a conservative 5–10 minutes of manual entry plus follow-up overhead adds up fast across dozens of invoices a month — this turns that into a one-time setup cost instead of a recurring one</li>
-            <li><strong>Faster cash collection:</strong> reminders go out exactly on schedule, every time, with zero chance of a forgotten follow-up costing real cash flow delay</li>
-            <li><strong>Fewer errors, fewer awkward moments:</strong> OCR cross-checking catches form/invoice mismatches, and a payment re-check before escalation avoids sending an "URGENT OVERDUE" email to someone who already paid</li>
-            <li><strong>Visibility without extra software:</strong> the Google Sheet is the single source of truth, readable by anyone, with Slack keeping the team passively in the loop</li>
-            <li><strong>Resilience as a feature:</strong> retries on every external call and a dedicated error-alert channel mean a transient API hiccup doesn't silently kill a workflow meant to run unattended for weeks</li>
+            <li><strong>Time saved per invoice:</strong> even a conservative 5–10 minutes of manual entry plus follow-up overhead adds up fast — this turns that into a one-time setup cost</li>
+            <li><strong>Faster cash collection:</strong> reminders go out exactly on schedule, every time</li>
+            <li><strong>Fewer errors:</strong> OCR cross-checking catches mismatches, and a payment re-check before escalation avoids dunning someone who already paid</li>
             <li><strong>Scales without added headcount:</strong> processing invoice #50 costs the same as invoice #1</li>
           </ul>
 
@@ -594,7 +642,7 @@
   </div>
 
   <!-- 4: Lead Gen -->
-  <div class="card" data-id="c4">
+  <div class="card" data-id="c4" data-platform="n8n">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Sales · AI Qualification</span>
@@ -614,7 +662,7 @@
           </div>
 
           <div class="section-label">What it does</div>
-          <p class="card-desc" style="margin-bottom:16px;">Monitors a Gmail inbox, extracts lead intelligence (company, domain, buying signals), runs it through a locally-hosted Llama 3.2 model via Ollama using BANT qualification criteria, assigns a score (1–10) and tier (hot/warm/cold), then automatically creates contacts in HubSpot, sends Slack alerts to the sales team, and dispatches personalized email replies — all within seconds of the lead arriving.</p>
+          <p class="card-desc" style="margin-bottom:16px;">Monitors a Gmail inbox, extracts lead intelligence, runs it through a locally-hosted Llama 3.2 model via Ollama using BANT qualification criteria, assigns a score (1–10) and tier (hot/warm/cold), then automatically creates contacts in HubSpot, sends Slack alerts to the sales team, and dispatches personalized email replies — all within seconds.</p>
 
           <div class="flow">
             <span class="step">📧 Gmail Trigger</span><span class="arrow">→</span>
@@ -638,7 +686,7 @@
           <div class="section-label">Key highlights</div>
           <ul class="highlights">
             <li>Zero cloud AI cost — runs entirely on local hardware via Ollama</li>
-            <li>BANT-based scoring prompt evaluates budget signals, decision-maker indicators, urgency, and domain type (free vs. business email)</li>
+            <li>BANT-based scoring prompt evaluates budget signals, decision-maker indicators, urgency, and domain type</li>
             <li>Three-tier routing eliminates manual triage for the sales team</li>
             <li>Auto-replies personalized per tier with appropriate CTAs</li>
           </ul>
@@ -653,7 +701,7 @@
   </div>
 
   <!-- 5: Veo Video -->
-  <div class="card" data-id="c5">
+  <div class="card" data-id="c5" data-platform="n8n">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Media · AI Video</span>
@@ -664,7 +712,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc"><strong>One click. Two AI videos. Posted everywhere. Automatically.</strong> This fully automated system uses the latest Google Veo 3.1 AI to create short videos from scratch — then instantly publishes them to YouTube and Facebook at the same time, without lifting a finger.</p>
+          <p class="card-desc"><strong>One click. Two AI videos. Posted everywhere. Automatically.</strong> This fully automated system uses Google Veo 3.1 AI to create short videos from scratch — then instantly publishes them to YouTube and Facebook at the same time.</p>
 
           <div class="screenshot-gallery">
             <img src="Veo%20Video%20Generator%20-%20YouTube%20and%20Facebook.png" alt="Veo AI Video Generator workflow" loading="lazy">
@@ -691,15 +739,17 @@
           </div>
 
           <div class="section-label">What makes it powerful</div>
+          <div class="table-scroll">
           <table class="info-table">
             <tr><th>Feature</th><th>Details</th></tr>
             <tr><td>🧠 AI Script Writer</td><td>Gemini 2.5 Flash writes optimized prompts & titles</td></tr>
             <tr><td>🎬 Dual Clip Generation</td><td>2 unique 8-second vertical clips (9:16 reels format)</td></tr>
             <tr><td>🔊 AI Audio Included</td><td>Videos come with generated audio — no editing needed</td></tr>
             <tr><td>🔄 Smart Retry System</td><td>Auto-retries if AI filters or rejects content</td></tr>
-            <tr><td>📱 Reels-Ready Format</td><td>Vertical 1080×1920 — perfect for Facebook & YouTube Shorts</td></tr>
+            <tr><td>📱 Reels-Ready Format</td><td>Vertical 1080×1920</td></tr>
             <tr><td>🚀 Dual Publishing</td><td>Posts to YouTube + Facebook in the same moment</td></tr>
           </table>
+          </div>
 
           <div class="section-label">Timeline of one run</div>
           <ul class="highlights">
@@ -716,7 +766,7 @@
           <ul class="highlights">
             <li>Automatically retries if Google's AI safety filter blocks content</li>
             <li>Automatically regenerates scripts if video generation fails</li>
-            <li>Polls every 30 seconds to check video status — never misses a beat</li>
+            <li>Polls every 30 seconds to check video status</li>
           </ul>
 
           <div class="stack">
@@ -729,7 +779,7 @@
   </div>
 
   <!-- 6: Lead Capture (Make.com) -->
-  <div class="card" data-id="c6">
+  <div class="card" data-id="c6" data-platform="make">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">Make.com · Sales · AI Qualification</span>
@@ -740,7 +790,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">Inbound leads arrive by email — contact-form notifications, quote requests, general enquiries. Left in an inbox they get missed, response times slip, and there's no single view of the pipeline. This automation captures every qualifying email, de-duplicates it, uses AI to score and enrich it, logs it to structured sheets, escalates the hottest leads, and auto-replies — with zero manual triage.</p>
+          <p class="card-desc">Inbound leads arrive by email — contact-form notifications, quote requests, general enquiries. This automation captures every qualifying email, de-duplicates it, uses AI to score and enrich it, logs it to structured sheets, escalates the hottest leads, and auto-replies — with zero manual triage.</p>
 
           <div class="screenshot-gallery">
             <img src="lead-capture.png" alt="Lead Capture and AI Qualification Make.com workflow" loading="lazy">
@@ -748,15 +798,15 @@
 
           <div class="section-label">How it works</div>
           <ul class="highlights">
-            <li><strong>1. Watch emails (Gmail trigger):</strong> Polls the inbox on a 15-minute schedule with a Gmail search query so only relevant messages are picked up, and marks fetched messages as read so they're never processed twice.</li>
-            <li><strong>2. AI qualification (Claude via Make AI):</strong> Each email is passed to Claude Haiku 4.5 with a strict prompt returning a single JSON object — best-guess company, extracted phone, category (Sales / Support / Partnership / Recruitment / Spam / Other), urgency, a 0–100 lead score, and a one-line summary.</li>
-            <li><strong>3. Parse JSON:</strong> The AI's response is parsed into individual fields for downstream mapping.</li>
-            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a "Known Leads" data store — if they've been seen before, the flow stops, so there are no duplicate rows or repeat auto-replies.</li>
-            <li><strong>5. Record in Data Store:</strong> New senders are written to the store (email, name, last score, timestamp) so future emails from them are recognized.</li>
+            <li><strong>1. Watch emails (Gmail trigger):</strong> Polls the inbox on a 15-minute schedule, marking fetched messages as read so they're never processed twice.</li>
+            <li><strong>2. AI qualification (Claude via Make AI):</strong> Each email is passed to Claude Haiku 4.5, returning a JSON object — company, phone, category, urgency, a 0–100 lead score, and a summary.</li>
+            <li><strong>3. Parse JSON:</strong> The AI's response is parsed into individual fields.</li>
+            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a "Known Leads" data store — if seen before, the flow stops.</li>
+            <li><strong>5. Record in Data Store:</strong> New senders are recorded for future recognition.</li>
             <li><strong>6. Router:</strong> Fans the flow into three independent branches.</li>
-            <li><strong>7. Log all leads (Google Sheets):</strong> Every new lead is appended to the main "Leads" sheet as a 12-column enriched record.</li>
-            <li><strong>8. Escalate hot leads (Google Sheets):</strong> If the AI score is 70 or higher, the lead is also copied to a dedicated "Hot Leads" priority sheet for the sales team.</li>
-            <li><strong>9. Smart auto-reply (Gmail):</strong> Hot leads (score ≥ 70) receive an immediate, prioritized acknowledgement. Everything else is logged silently.</li>
+            <li><strong>7. Log all leads (Google Sheets):</strong> Every new lead is appended to the main "Leads" sheet.</li>
+            <li><strong>8. Escalate hot leads (Google Sheets):</strong> Score ≥ 70 also goes to a "Hot Leads" priority sheet.</li>
+            <li><strong>9. Smart auto-reply (Gmail):</strong> Hot leads receive an immediate, prioritized acknowledgement.</li>
           </ul>
 
           <div class="stack">
@@ -769,7 +819,7 @@
   </div>
 
   <!-- 7: Fearless (Make.com) -->
-  <div class="card" data-id="c7">
+  <div class="card" data-id="c7" data-platform="make">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">Make.com · Customer Support · Growth</span>
@@ -780,35 +830,37 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">An automated Make.com worker that watches a customer support inbox and handles incoming emails without manual effort. Every 15 minutes it checks for new messages and runs each through a five-step pipeline — reading the email, writing an on-brand reply, sending it, and logging the details for tracking and growth. The same reply that answers a question also does light, on-brand selling.</p>
+          <p class="card-desc">An automated Make.com worker that watches a customer support inbox and handles incoming emails without manual effort — reading, replying, and logging every message, while the same reply also does light, on-brand selling.</p>
 
           <div class="screenshot-gallery">
             <img src="fearless-support.png" alt="Fearless Customer Support and Growth Automation workflow" loading="lazy">
           </div>
 
           <div class="section-label">How it works</div>
+          <div class="table-scroll">
           <table class="info-table">
             <tr><th>Step</th><th>What happens</th></tr>
-            <tr><td>1. Watch inbox</td><td>Scans the Primary inbox for customer-type emails — returns, exchanges, sizing, orders, shipping, or buying interest. Picks up to two new messages per cycle.</td></tr>
-            <tr><td>2. AI reads & writes</td><td>Claude classifies the email (return, complaint, pre-sale inquiry, etc.), reads sentiment, writes a warm on-brand reply, and decides which offer to attach.</td></tr>
-            <tr><td>3. Auto-reply</td><td>The reply is emailed straight back to the customer automatically — usually within minutes, any time of day.</td></tr>
-            <tr><td>4. Log everything</td><td>Customer, request, sentiment, and the reply sent are recorded to a Support Log spreadsheet for tracking and pattern-spotting.</td></tr>
-            <tr><td>5. Capture leads</td><td>If the sender is a potential buyer rather than an existing customer, they're added to a Leads & Prospects sheet for follow-up.</td></tr>
+            <tr><td>1. Watch inbox</td><td>Scans the Primary inbox for customer-type emails. Picks up to two new messages per cycle.</td></tr>
+            <tr><td>2. AI reads & writes</td><td>Claude classifies the email, reads sentiment, writes a warm on-brand reply, and decides which offer to attach.</td></tr>
+            <tr><td>3. Auto-reply</td><td>The reply is emailed straight back automatically — usually within minutes.</td></tr>
+            <tr><td>4. Log everything</td><td>Customer, request, sentiment, and reply are recorded to a Support Log spreadsheet.</td></tr>
+            <tr><td>5. Capture leads</td><td>Potential buyers are added to a Leads & Prospects sheet for follow-up.</td></tr>
           </table>
+          </div>
 
           <div class="section-label">Built-in growth levers</div>
           <ul class="highlights">
-            <li><strong>Curious shopper</strong> (pre-sale/fit question) → answered warmly, plus a first-order discount code. Logged as a lead.</li>
-            <li><strong>Happy customer</strong> → thanked, asked for a quick review, and given a referral code to share.</li>
-            <li><strong>Upset customer</strong> → sincere apology, flagged for personal human follow-up, offered a win-back discount so they're retained, not lost.</li>
+            <li><strong>Curious shopper</strong> → answered warmly, plus a first-order discount code. Logged as a lead.</li>
+            <li><strong>Happy customer</strong> → thanked, asked for a review, given a referral code.</li>
+            <li><strong>Upset customer</strong> → sincere apology, flagged for human follow-up, offered a win-back discount.</li>
           </ul>
 
           <div class="section-label">Why it matters</div>
           <ul class="highlights">
-            <li><strong>Speed and coverage:</strong> customers get a friendly, on-brand answer within minutes, day or night.</li>
-            <li><strong>Growth, not just maintenance:</strong> every email becomes a small revenue lever — converting shoppers, generating referrals, and winning back unhappy buyers automatically.</li>
-            <li><strong>A compounding asset:</strong> the Leads sheet builds a ready-made outreach list, the Support Log surfaces recurring issues worth fixing, and captured testimonials become social proof.</li>
-            <li><strong>Built-in safeguard:</strong> complaints and complex issues are flagged "needs human," and the AI is instructed never to invent refunds, order details, or firm promises.</li>
+            <li><strong>Speed and coverage:</strong> friendly, on-brand answers within minutes, day or night</li>
+            <li><strong>Growth, not just maintenance:</strong> every email becomes a small revenue lever</li>
+            <li><strong>A compounding asset:</strong> Leads sheet builds an outreach list, Support Log surfaces recurring issues</li>
+            <li><strong>Built-in safeguard:</strong> complaints are flagged "needs human," AI never invents refunds or firm promises</li>
           </ul>
 
           <div class="stack">
@@ -821,7 +873,7 @@
   </div>
 
   <!-- 8: Client Pipeline (Zapier) -->
-  <div class="card" data-id="c8">
+  <div class="card" data-id="c8" data-platform="zapier">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">Zapier · CRM · Client Management</span>
@@ -832,7 +884,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A lightweight CRM plus a sales-and-delivery assistant, built entirely around a single spreadsheet. The Client Pipeline Tracker sheet is the control panel — one row per client or job, with their name, email, project, and quote amount. Updating a single Status dropdown triggers the entire next step automatically, so the freelancer or business owner only ever touches the spreadsheet — no Gmail, no Drive, no copy-pasting emails.</p>
+          <p class="card-desc">A lightweight CRM plus a sales-and-delivery assistant, built entirely around a single spreadsheet. Updating a single Status dropdown triggers the entire next step automatically — no Gmail, no Drive, no copy-pasting emails.</p>
 
           <div class="screenshot-gallery">
             <img src="client-pipeline.png" alt="Client Pipeline Automation Zapier workflow" loading="lazy">
@@ -841,22 +893,21 @@
           <div class="section-label">How it works</div>
           <ul class="highlights">
             <li><strong>1. Trigger — New or Updated Spreadsheet Row (Google Sheets):</strong> Fires whenever a client row is added or its Status is changed.</li>
-            <li><strong>2. Create Folder (Google Drive):</strong> A folder named after the client and project is created automatically on each run, so files stay organized without manual setup.</li>
+            <li><strong>2. Create Folder (Google Drive):</strong> A folder named after the client and project is created automatically on each run.</li>
             <li><strong>3. Split into Paths (Zapier Paths):</strong> The Status value routes the row down one of five branches.</li>
             <li><strong>→ Ready to Start:</strong> Sends a kickoff email.</li>
-            <li><strong>→ No Response:</strong> Sends an immediate check-in email, waits 3 days (Delay by Zapier), then automatically sends a follow-up — no need to remember to chase.</li>
-            <li><strong>→ Quoted:</strong> Sends the client an email with the exact quote amount pulled straight from the sheet.</li>
+            <li><strong>→ No Response:</strong> Sends a check-in, waits 3 days, then auto-sends a follow-up.</li>
+            <li><strong>→ Quoted:</strong> Sends the exact quote amount pulled from the sheet.</li>
             <li><strong>→ Approved:</strong> Sends a confirmation email.</li>
             <li><strong>→ Paid and Closed:</strong> Sends a thank-you email.</li>
           </ul>
 
           <div class="section-label">Why it matters for a business</div>
           <ul class="highlights">
-            <li>No lead goes cold — the follow-up chain runs itself, and most quotes die simply because nobody followed up</li>
-            <li>Every client gets a fast, consistent, professional response at each stage of the pipeline</li>
+            <li>No lead goes cold — most quotes die simply because nobody followed up</li>
+            <li>Every client gets a fast, consistent, professional response at each stage</li>
             <li>Quoting, onboarding, and closing become one-click actions on a spreadsheet</li>
-            <li>Scales cheaply — whether there are 3 clients or 50, the workload of writing status emails stays at zero</li>
-            <li>The sheet doubles as a live pipeline report, showing at a glance how many jobs are quoted vs. approved vs. paid</li>
+            <li>Scales cheaply — the workload of writing status emails stays at zero</li>
           </ul>
 
           <div class="stack">
@@ -882,7 +933,7 @@
   </form>
 </div>
 
-<div class="footer">Automation workflows built in n8n — connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.</div>
+<div class="footer">Automation workflows built in n8n, Make.com, and Zapier — connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.</div>
 
 <script>
   document.getElementById('contactForm').addEventListener('submit', function(e){
@@ -914,7 +965,23 @@
     });
   });
 
-  // ===== Avatar eye tracking + blinking (only runs if illustrated avatar is present) =====
+  // ===== Filter nav =====
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.card').forEach(card => {
+        if(filter === 'all' || card.dataset.platform === filter){
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // ===== Avatar eye tracking + blinking =====
   (function(){
     const avatar = document.getElementById('avatar');
     const eyeL = document.getElementById('eyeL');
@@ -944,30 +1011,6 @@
       setTimeout(blink, 2500 + Math.random() * 3000);
     }
     setTimeout(blink, 1800);
-  })();
-
-  // ===== Photo avatar parallax tilt (runs if a real photo is present) =====
-  (function(){
-    const avatar = document.getElementById('avatar');
-    const photo = document.getElementById('avatarPhoto');
-    if(!photo) return;
-    const maxShift = 6;
-
-    window.addEventListener('mousemove', (e) => {
-      const rect = avatar.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const dist = Math.hypot(dx, dy) || 1;
-      const shiftX = (dx / dist) * maxShift;
-      const shiftY = (dy / dist) * maxShift;
-      photo.style.transform = `translate(${shiftX}px, ${shiftY}px) scale(1.04)`;
-    });
-
-    avatar.addEventListener('mouseleave', () => {
-      photo.style.transform = 'translate(0,0) scale(1)';
-    });
   })();
 </script>
 
