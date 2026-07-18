@@ -403,17 +403,6 @@
   }
   #lightbox-close svg{ width:18px; height:18px; stroke:var(--text); }
 
-  /* ===== LIQUID CURSOR EFFECT ===== */
-  #liquidCanvas{
-    position:fixed; top:0; left:0; width:100vw; height:100vh;
-    pointer-events:none; z-index:0; opacity:0.5;
-    filter: blur(18px) contrast(28);
-    mix-blend-mode: screen;
-  }
-  .hero, .about-section, .cert-section, .filter-nav, .wrap, .contact-section, .footer, #lightbox, #chat-launcher, #chat-window{
-    position:relative; z-index:1;
-  }
-
   .contact-section{
     max-width:700px; margin:0 auto 80px; padding:48px 24px; text-align:center;
     position:relative;
@@ -527,8 +516,6 @@
 </style>
 </head>
 <body>
-
-<canvas id="liquidCanvas"></canvas>
 
 <div class="hero">
   <div class="title-row">
@@ -1213,61 +1200,6 @@
     document.addEventListener('keydown', (e) => {
       if(e.key === 'Escape') closeLightbox();
     });
-  })();
-
-  // ===== Liquid cursor motion =====
-  (function(){
-    const canvas = document.getElementById('liquidCanvas');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    function resize(){
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const colors = ['#14b8a6', '#2dd4bf', '#38bdf8', '#0d9488'];
-    const blobCount = 7;
-    const blobs = [];
-    let mouseX = w / 2, mouseY = h / 2;
-    let hasMouse = false;
-
-    for(let i = 0; i < blobCount; i++){
-      blobs.push({
-        x: w / 2, y: h / 2,
-        radius: 34 + Math.random() * 26,
-        ease: 0.06 + Math.random() * 0.06,
-        color: colors[i % colors.length],
-        offsetAngle: Math.random() * Math.PI * 2,
-        offsetRadius: 8 + Math.random() * 18
-      });
-    }
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      hasMouse = true;
-    });
-
-    function animate(){
-      ctx.clearRect(0, 0, w, h);
-      if(hasMouse){
-        blobs.forEach((b, i) => {
-          const tx = mouseX + Math.cos(b.offsetAngle + Date.now() * 0.0003 * (i % 2 === 0 ? 1 : -1)) * b.offsetRadius;
-          const ty = mouseY + Math.sin(b.offsetAngle + Date.now() * 0.0003 * (i % 2 === 0 ? 1 : -1)) * b.offsetRadius;
-          b.x += (tx - b.x) * b.ease;
-          b.y += (ty - b.y) * b.ease;
-
-          ctx.beginPath();
-          ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-          ctx.fillStyle = b.color;
-          ctx.fill();
-        });
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
   })();
 </script>
 
