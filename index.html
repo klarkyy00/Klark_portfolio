@@ -363,12 +363,20 @@
   }
   .screenshot-slot svg{ width:28px; height:28px; margin-bottom:8px; opacity:0.6; }
   .screenshot-gallery{
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
-    gap:12px; margin:0 0 22px;
+    display:flex; gap:12px; margin:0 0 22px;
+    overflow-x:auto; scroll-snap-type:x proximity;
+    cursor:grab; padding-bottom:6px; user-select:none;
+    scrollbar-width:thin; scrollbar-color:var(--accent2) var(--panel2);
   }
+  .screenshot-gallery.dragging{ cursor:grabbing; scroll-behavior:auto; }
+  .screenshot-gallery::-webkit-scrollbar{ height:6px; }
+  .screenshot-gallery::-webkit-scrollbar-track{ background:var(--panel2); border-radius:10px; }
+  .screenshot-gallery::-webkit-scrollbar-thumb{ background:var(--accent2); border-radius:10px; }
   .screenshot-gallery img{
-    width:100%; border-radius:10px; border:1px solid var(--border); display:block;
+    flex:0 0 auto; width:280px; height:170px; object-fit:cover;
+    border-radius:10px; border:1px solid var(--border); display:block;
     cursor:zoom-in; transition:transform .25s ease, box-shadow .25s ease;
+    scroll-snap-align:start;
   }
   .screenshot-gallery img:hover{
     transform:scale(1.03);
@@ -1178,6 +1186,7 @@
     document.querySelectorAll('.screenshot-gallery img').forEach(img => {
       img.addEventListener('click', (e) => {
         e.stopPropagation();
+        if(img.closest('.screenshot-gallery').dataset.wasDragged === 'true') return;
         lightboxImg.src = img.src;
         lightboxImg.classList.remove('zoomed');
         lightbox.classList.add('open');
@@ -1199,6 +1208,47 @@
 
     document.addEventListener('keydown', (e) => {
       if(e.key === 'Escape') closeLightbox();
+    });
+  })();
+
+  // ===== Drag-to-scroll screenshot galleries =====
+  (function(){
+    document.querySelectorAll('.screenshot-gallery').forEach(gallery => {
+      let isDown = false;
+      let startX = 0;
+      let scrollStart = 0;
+      let moved = 0;
+
+      gallery.dataset.wasDragged = 'false';
+
+      function start(x){
+        isDown = true;
+        moved = 0;
+        startX = x;
+        scrollStart = gallery.scrollLeft;
+        gallery.classList.add('dragging');
+      }
+      function move(x){
+        if(!isDown) return;
+        const dx = x - startX;
+        moved = Math.max(moved, Math.abs(dx));
+        gallery.scrollLeft = scrollStart - dx;
+      }
+      function end(){
+        if(!isDown) return;
+        isDown = false;
+        gallery.classList.remove('dragging');
+        gallery.dataset.wasDragged = moved > 6 ? 'true' : 'false';
+      }
+
+      gallery.addEventListener('mousedown', (e) => { start(e.pageX); e.preventDefault(); });
+      window.addEventListener('mousemove', (e) => move(e.pageX));
+      window.addEventListener('mouseup', end);
+      gallery.addEventListener('mouseleave', () => { if(isDown) end(); });
+
+      gallery.addEventListener('touchstart', (e) => start(e.touches[0].pageX), { passive:true });
+      gallery.addEventListener('touchmove', (e) => move(e.touches[0].pageX), { passive:true });
+      gallery.addEventListener('touchend', end);
     });
   })();
 </script>
