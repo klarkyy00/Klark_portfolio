@@ -383,6 +383,22 @@
     box-shadow:0 12px 30px -10px rgba(20,184,166,0.4);
   }
 
+  /* ===== VIDEO DEMOS ===== */
+  .video-gallery{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+    gap:12px; margin:0 0 22px;
+  }
+  .video-item{
+    border-radius:10px; border:1px solid var(--border); overflow:hidden;
+    background:#081014;
+  }
+  .video-item video{ width:100%; display:block; }
+  .video-caption{
+    font-size:0.72rem; color:var(--accent2); font-weight:700;
+    text-transform:uppercase; letter-spacing:0.04em;
+    padding:8px 10px; background:var(--panel2);
+  }
+
   /* ===== LIGHTBOX ===== */
   #lightbox{
     position:fixed; inset:0; z-index:500;
@@ -673,6 +689,27 @@
             <img src="Error.png" alt="Advanced Appointment Setter - error handling flow" loading="lazy">
           </div>
 
+          <div class="video-gallery">
+            <div class="video-item">
+              <video controls preload="metadata">
+                <source src="Advance%20appointment%20setter%20Confirm.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Confirmed Booking Demo</div>
+            </div>
+            <div class="video-item">
+              <video controls preload="metadata">
+                <source src="Advance%20appointment%20setter%20Re%20schedule.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Reschedule Flow Demo</div>
+            </div>
+            <div class="video-item">
+              <video controls preload="metadata">
+                <source src="Advance%20appointment%20setter%20Error.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Error Handling Demo</div>
+            </div>
+          </div>
+
           <div class="section-label">How it works, step by step</div>
           <ul class="highlights">
             <li><strong>1. Trigger — Webhook:</strong> Jotform posts form submissions to this webhook, using Jotform's auto-generated plain-English summary of all form answers.</li>
@@ -720,6 +757,15 @@
             <img src="E-commerce%20order%20Processing.png" alt="E-Commerce Order Processing workflow" loading="lazy">
           </div>
 
+          <div class="video-gallery">
+            <div class="video-item">
+              <video controls preload="metadata">
+                <source src="E-Commerce%20Order%20Processing.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Workflow Demo</div>
+            </div>
+          </div>
+
           <div class="section-label">How it works</div>
           <ul class="highlights">
             <li><strong>Trigger — Order Received (Webhook):</strong> Listens for POST requests at /order-received — where a Jotform submission gets sent via Jotform's webhook integration.</li>
@@ -762,6 +808,15 @@
 
           <div class="screenshot-gallery">
             <img src="Invoice%20and%20Payment%20Automation.png" alt="Invoice and Payment Automation workflow" loading="lazy">
+          </div>
+
+          <div class="video-gallery">
+            <div class="video-item">
+              <video controls preload="metadata">
+                <source src="Invoice%20%26%20Payment%20Automation.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Workflow Demo</div>
+            </div>
           </div>
 
           <div class="section-label">Who it's for</div>
