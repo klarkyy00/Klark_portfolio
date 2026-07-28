@@ -50,7 +50,22 @@
     margin-top:10px; font-size:0.82rem; color:var(--muted); font-weight:500;
   }
   .edu-line strong{ color:var(--text); font-weight:700; }
-  .badges{display:flex; gap:11px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
+  .badges{
+    display:flex; overflow:hidden; margin-top:20px;
+    width:100vw; position:relative; left:50%; right:50%;
+    margin-left:-50vw; margin-right:-50vw;
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+  .badges-track{
+    display:flex; gap:11px; flex-shrink:0;
+    animation:badges-scroll 22s linear infinite;
+  }
+  .badges:hover .badges-track{ animation-play-state:paused; }
+  @keyframes badges-scroll{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+  }
   .badge{
     position:relative;
     background:linear-gradient(180deg, rgba(18,32,41,0.9), rgba(14,23,32,0.9));
@@ -214,6 +229,7 @@
   .avatar img{
     width:100%; height:100%; object-fit:cover; display:block;
     border-radius:6px;
+    object-position:50% 15%;
   }
   @keyframes avatar-border-shimmer{
     0%{ background-position:0% 50%; }
@@ -545,7 +561,7 @@
   <div class="title-row">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar">
-        <img src="profile-photo.png" alt="Klark John Cabungcal" style="width:100%; height:100%; object-fit:cover; display:block;">
+        <img src="kj.jpeg.jpg" alt="Klark John Cabungcal" style="width:100%; height:100%; object-fit:cover; display:block;">
       </div>
     </div>
     <div class="title-col">
@@ -594,20 +610,36 @@
   </div>
 
   <div class="badges">
-    <span class="badge">n8n</span>
-    <span class="badge">Make.com</span>
-    <span class="badge">Zapier</span>
-    <span class="badge">Anthropic Claude</span>
-    <span class="badge">Gemini / Ollama AI</span>
-    <span class="badge">Prompt Engineering</span>
-    <span class="badge">REST APIs & Webhooks</span>
-    <span class="badge">JSON / Data Parsing</span>
-    <span class="badge">Google Workspace</span>
-    <span class="badge">Slack / Gmail API</span>
-    <span class="badge">Airtable · HubSpot</span>
-    <span class="badge">HighLevel CRM</span>
-    <span class="badge">SCADA Monitoring</span>
-    <span class="badge">JavaScript</span>
+    <div class="badges-track">
+      <span class="badge">n8n</span>
+      <span class="badge">Make.com</span>
+      <span class="badge">Zapier</span>
+      <span class="badge">Anthropic Claude</span>
+      <span class="badge">Gemini / Ollama AI</span>
+      <span class="badge">Prompt Engineering</span>
+      <span class="badge">REST APIs & Webhooks</span>
+      <span class="badge">JSON / Data Parsing</span>
+      <span class="badge">Google Workspace</span>
+      <span class="badge">Slack / Gmail API</span>
+      <span class="badge">Airtable · HubSpot</span>
+      <span class="badge">HighLevel CRM</span>
+      <span class="badge">SCADA Monitoring</span>
+      <span class="badge">JavaScript</span>
+      <span class="badge">n8n</span>
+      <span class="badge">Make.com</span>
+      <span class="badge">Zapier</span>
+      <span class="badge">Anthropic Claude</span>
+      <span class="badge">Gemini / Ollama AI</span>
+      <span class="badge">Prompt Engineering</span>
+      <span class="badge">REST APIs & Webhooks</span>
+      <span class="badge">JSON / Data Parsing</span>
+      <span class="badge">Google Workspace</span>
+      <span class="badge">Slack / Gmail API</span>
+      <span class="badge">Airtable · HubSpot</span>
+      <span class="badge">HighLevel CRM</span>
+      <span class="badge">SCADA Monitoring</span>
+      <span class="badge">JavaScript</span>
+    </div>
   </div>
   <p class="hint">Click any project below to <span>expand the full workflow</span></p>
 </div>
