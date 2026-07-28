@@ -61,6 +61,7 @@
   .badges-track{
     display:flex; gap:11px; flex-shrink:0;
     animation:badges-scroll 22s linear infinite;
+    will-change:transform;
   }
   .badges:hover .badges-track{ animation-play-state:paused; }
   @keyframes badges-scroll{
@@ -231,7 +232,7 @@
     width:100%; height:100%; border-radius:6px;
     background-image:url('kj.jpeg.jpg');
     background-size:280% auto;
-    background-position:50% 60%;
+    background-position:50% 50%;
     background-repeat:no-repeat;
   }
   @keyframes avatar-border-shimmer{
