@@ -51,11 +51,12 @@
   }
   .edu-line strong{ color:var(--text); font-weight:700; }
   .badges{
-    display:flex; overflow:hidden; margin-top:20px;
-    width:100vw; position:relative; left:50%; right:50%;
-    margin-left:-50vw; margin-right:-50vw;
+    display:flex; overflow:hidden; width:100%;
     -webkit-mask-image:linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
     mask-image:linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+  .badges-section{
+    max-width:1000px; margin:0 auto; padding:20px 24px;
   }
   .badges-track{
     display:flex; gap:11px; flex-shrink:0;
@@ -226,10 +227,12 @@
     animation:float 4s ease-in-out infinite, avatar-border-shimmer 5s linear infinite;
     box-shadow:0 0 20px -4px rgba(20,184,166,0.6), 0 0 40px -10px rgba(56,189,248,0.35);
   }
-  .avatar img{
-    width:100%; height:100%; object-fit:cover; display:block;
-    border-radius:6px;
-    object-position:50% 15%;
+  .avatar-photo{
+    width:100%; height:100%; border-radius:6px;
+    background-image:url('kj.jpeg.jpg');
+    background-size:280% auto;
+    background-position:50% 22%;
+    background-repeat:no-repeat;
   }
   @keyframes avatar-border-shimmer{
     0%{ background-position:0% 50%; }
@@ -561,7 +564,7 @@
   <div class="title-row">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar">
-        <img src="kj.jpeg.jpg" alt="Klark John Cabungcal" style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div class="avatar-photo"></div>
       </div>
     </div>
     <div class="title-col">
