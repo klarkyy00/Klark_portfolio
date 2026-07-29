@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <title>Klark John Cabungcal — Automation Engineer</title>
 <meta name="description" content="Automation engineering portfolio by Klark John Cabungcal — end-to-end n8n, Make.com, and Zapier workflows connecting AI models, CRMs, and messaging platforms into self-healing automations.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Klark John Cabungcal — Automation Engineer">
+<meta property="og:description" content="n8n, Make.com & Zapier automation portfolio — AI-integrated workflows, real project breakdowns, screenshots, and video demos.">
+<meta property="og:image" content="https://klarkyy00.github.io/Klark_portfolio/profile-photo.png">
+<meta property="og:url" content="https://klarkyy00.github.io/Klark_portfolio/">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Klark John Cabungcal — Automation Engineer">
+<meta name="twitter:description" content="n8n, Make.com & Zapier automation portfolio — AI-integrated workflows, real project breakdowns, screenshots, and video demos.">
+<meta name="twitter:image" content="https://klarkyy00.github.io/Klark_portfolio/profile-photo.png">
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2314b8a6'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='white' font-family='Arial'%3EK%3C/text%3E%3C/svg%3E">
 <style>
   :root{
@@ -132,6 +144,55 @@
     color:var(--muted); font-size:1rem; line-height:1.75; max-width:640px; margin:0 auto;
   }
   .about-section p + p{ margin-top:14px; }
+
+  /* ===== SERVICES ===== */
+  .services-section{
+    max-width:1000px; margin:0 auto; padding:56px 24px;
+    border-bottom:1px solid var(--border);
+  }
+  .services-section h2{
+    font-size:1.7rem; font-weight:800; margin-bottom:10px; color:var(--text); text-align:center;
+    background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2), var(--accent));
+    background-size:300% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:title-shimmer 6s linear infinite;
+    filter:drop-shadow(0 0 14px rgba(20,184,166,0.3));
+  }
+  .services-section > p.services-sub{
+    text-align:center; color:var(--muted); font-size:0.95rem; max-width:600px; margin:0 auto 32px;
+  }
+  .services-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:18px;
+  }
+  .service-card{
+    position:relative; overflow:hidden;
+    background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+    border:1px solid var(--border); border-radius:14px; padding:22px 20px;
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    box-shadow:0 0 16px -8px rgba(20,184,166,0.2);
+  }
+  .service-card:hover{
+    transform:translateY(-5px);
+    border-color:var(--accent2);
+    box-shadow:0 16px 40px -12px rgba(20,184,166,0.4), 0 0 30px -8px rgba(56,189,248,0.3);
+  }
+  .service-icon{
+    width:38px; height:38px; border-radius:10px;
+    background:linear-gradient(135deg, var(--accent), var(--sea));
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:14px;
+    box-shadow:0 4px 14px -2px rgba(20,184,166,0.5);
+  }
+  .service-icon svg{ width:19px; height:19px; stroke:#04201e; }
+  .service-card h3{ font-size:1.02rem; font-weight:700; color:var(--text); margin-bottom:8px; }
+  .service-card p{ font-size:0.85rem; color:var(--muted); line-height:1.55; margin-bottom:12px; }
+  .service-tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .service-tags span{
+    font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
+    background:rgba(20,184,166,0.12); color:var(--accent2);
+    padding:3px 9px; border-radius:6px;
+  }
 
   /* ===== CERTIFICATIONS ===== */
   .cert-section{
@@ -653,6 +714,49 @@
   <p>I'm currently open to freelance automation projects and full-time opportunities. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
 </div>
 
+<div class="services-section">
+  <h2>How I Can Help</h2>
+  <p class="services-sub">Common automations businesses need most — each adaptable to your specific process and tools.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"/></svg></div>
+      <h3>Lead Response Automation</h3>
+      <p>AI reads and scores inbound leads the moment they arrive, routes hot leads to your CRM instantly, and sends a reply before anyone else does.</p>
+      <div class="service-tags"><span>Email</span><span>CRM</span><span>AI Scoring</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0-11.25h4.5m-4.5 3.75h4.5m-9-3.75h.008v.008H10.5v-.008zM3 21V6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75V21"/></svg></div>
+      <h3>Booking & Scheduling Automation</h3>
+      <p>Customers book real availability instantly through a form, no back-and-forth emails, with automatic confirmations or alternative time offers.</p>
+      <div class="service-tags"><span>Calendar</span><span>AI Extraction</span><span>Forms</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z"/></svg></div>
+      <h3>Invoice & Payment Follow-Up</h3>
+      <p>Invoices get tracked automatically, reminders fire on schedule, and overdue notices only go out after a fresh payment status check.</p>
+      <div class="service-tags"><span>OCR</span><span>Reminders</span><span>Sheets</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM12 12h-.375m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg></div>
+      <h3>AI Customer Support Automation</h3>
+      <p>AI reads, classifies, and drafts replies to support emails, flags anything sensitive for a human, and logs everything for tracking.</p>
+      <div class="service-tags"><span>AI Replies</span><span>Logging</span><span>Escalation</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg></div>
+      <h3>Client Pipeline / Lightweight CRM</h3>
+      <p>One spreadsheet becomes your control panel — update a status, and quoting, onboarding, and follow-up emails all fire automatically.</p>
+      <div class="service-tags"><span>Zapier</span><span>Sheets</span><span>Follow-ups</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"/></svg></div>
+      <h3>Custom AI + API Integration</h3>
+      <p>No native connector for a tool you rely on? I build direct API/webhook integrations with proper auth, retries, and error alerts.</p>
+      <div class="service-tags"><span>APIs</span><span>Webhooks</span><span>Auth</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="cert-section">
   <h2>Certifications & Trainings</h2>
   <div class="cert-grid">
@@ -725,19 +829,19 @@
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="metadata">
+              <video controls preload="metadata" poster="Available%20date%20appoinment.png">
                 <source src="Advance%20appointment%20setter%20Confirm.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Confirmed Booking Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="metadata">
+              <video controls preload="metadata" poster="Unavailable%20date%20appointment.png">
                 <source src="Advance%20appointment%20setter%20Re%20schedule.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Reschedule Flow Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="metadata">
+              <video controls preload="metadata" poster="Error.png">
                 <source src="Advance%20appointment%20setter%20Error.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Error Handling Demo</div>
@@ -793,7 +897,7 @@
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="metadata">
+              <video controls preload="metadata" poster="E-commerce%20order%20Processing.png">
                 <source src="E-Commerce%20Order%20Processing.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Workflow Demo</div>
@@ -846,7 +950,7 @@
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="metadata">
+              <video controls preload="metadata" poster="Invoice%20and%20Payment%20Automation.png">
                 <source src="Invoice%20%26%20Payment%20Automation.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Workflow Demo</div>
