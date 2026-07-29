@@ -32,7 +32,7 @@
   }
   .hero{
     position:relative;
-    padding:64px 24px 40px; text-align:center;
+    padding:64px 24px 56px; text-align:center;
     background:radial-gradient(ellipse at top, #0f2a2c 0%, var(--bg) 70%);
     border-bottom:1px solid var(--border);
   }
@@ -115,7 +115,7 @@
 
   /* ===== SOCIAL / RESUME LINKS ===== */
   .social-row{
-    display:flex; gap:14px; justify-content:center; margin-top:18px; flex-wrap:wrap;
+    display:flex; gap:14px; justify-content:center; margin-top:18px; margin-bottom:8px; flex-wrap:wrap;
   }
   .social-btn{
     display:inline-flex; align-items:center; gap:7px;
@@ -192,6 +192,100 @@
     font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
     background:rgba(20,184,166,0.12); color:var(--accent2);
     padding:3px 9px; border-radius:6px;
+  }
+
+  /* ===== PROCESS SECTION ===== */
+  .process-section{
+    max-width:1000px; margin:0 auto; padding:56px 24px;
+    border-bottom:1px solid var(--border);
+  }
+  .process-section h2{
+    font-size:1.7rem; font-weight:800; margin-bottom:10px; color:var(--text); text-align:center;
+    background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2), var(--accent));
+    background-size:300% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:title-shimmer 6s linear infinite;
+    filter:drop-shadow(0 0 14px rgba(20,184,166,0.3));
+  }
+  .process-section > p.process-sub{
+    text-align:center; color:var(--muted); font-size:0.95rem; max-width:600px; margin:0 auto 40px;
+  }
+  .process-steps{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr));
+    gap:0;
+    position:relative;
+  }
+  .process-step{
+    position:relative; text-align:center; padding:0 16px;
+  }
+  .process-step::after{
+    content:'';
+    position:absolute; top:26px; left:calc(50% + 34px); right:calc(-50% + 34px);
+    height:2px;
+    background:linear-gradient(90deg, var(--accent2), var(--border));
+  }
+  .process-step:last-child::after{ display:none; }
+  .process-number{
+    width:52px; height:52px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--sea));
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 16px; position:relative; z-index:1;
+    font-size:1.3rem; font-weight:800; color:#04201e;
+    box-shadow:0 0 0 5px var(--bg), 0 4px 18px -2px rgba(20,184,166,0.6);
+    animation:process-pulse 3s ease-in-out infinite;
+  }
+  @keyframes process-pulse{
+    0%,100%{ box-shadow:0 0 0 5px var(--bg), 0 4px 18px -2px rgba(20,184,166,0.5); }
+    50%{ box-shadow:0 0 0 5px var(--bg), 0 4px 26px 2px rgba(45,212,191,0.75); }
+  }
+  .process-step h3{ font-size:1.02rem; font-weight:700; color:var(--text); margin-bottom:8px; }
+  .process-step p{ font-size:0.85rem; color:var(--muted); line-height:1.55; }
+  @media (max-width:768px){
+    .process-step::after{ display:none; }
+  }
+
+  /* ===== FAQ SECTION ===== */
+  .faq-section{
+    max-width:800px; margin:0 auto; padding:56px 24px;
+    border-bottom:1px solid var(--border);
+  }
+  .faq-section h2{
+    font-size:1.7rem; font-weight:800; margin-bottom:10px; color:var(--text); text-align:center;
+    background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2), var(--accent));
+    background-size:300% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:title-shimmer 6s linear infinite;
+    filter:drop-shadow(0 0 14px rgba(20,184,166,0.3));
+  }
+  .faq-section > p.faq-sub{
+    text-align:center; color:var(--muted); font-size:0.95rem; max-width:560px; margin:0 auto 32px;
+  }
+  .faq-item{
+    background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+    border:1px solid var(--border); border-radius:14px;
+    margin-bottom:12px; overflow:hidden; cursor:pointer;
+    transition:border-color .25s, box-shadow .25s;
+    box-shadow:0 0 14px -8px rgba(20,184,166,0.18);
+  }
+  .faq-item:hover{ border-color:var(--accent); }
+  .faq-item.open{ border-color:var(--accent2); box-shadow:0 0 24px -6px rgba(45,212,191,0.35); }
+  .faq-q{
+    padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:14px;
+  }
+  .faq-q h3{ font-size:0.95rem; font-weight:700; color:var(--text); }
+  .faq-chevron{
+    flex-shrink:0; width:26px; height:26px; border-radius:50%;
+    border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+    color:var(--accent2); transition:transform .3s ease, background .3s ease;
+  }
+  .faq-item.open .faq-chevron{ transform:rotate(180deg); background:rgba(45,212,191,0.15); }
+  .faq-a-wrap{
+    display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease;
+  }
+  .faq-item.open .faq-a-wrap{ grid-template-rows:1fr; }
+  .faq-a-inner{ overflow:hidden; }
+  .faq-a{
+    padding:0 20px 18px; font-size:0.87rem; color:var(--muted); line-height:1.6;
   }
 
   /* ===== CERTIFICATIONS ===== */
@@ -756,6 +850,86 @@
     </div>
   </div>
 </div>
+
+<div class="process-section">
+  <h2>How We'd Work Together</h2>
+  <p class="process-sub">A simple, predictable process from first message to a working automation.</p>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="process-number">1</div>
+      <h3>Discovery Call</h3>
+      <p>A short call (or async chat) to understand the manual process, where it breaks down, and what "done" actually looks like.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-number">2</div>
+      <h3>Proposal</h3>
+      <p>A clear scope, timeline, and cost — no surprises, no vague "let's see how it goes." You know exactly what you're getting.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-number">3</div>
+      <h3>Build & Test</h3>
+      <p>The automation gets built with error handling and edge cases in mind from day one, then tested against real scenarios before delivery.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-number">4</div>
+      <h3>Handoff & Support</h3>
+      <p>You get documentation on how it works, and I stay available to fix anything that breaks or adjust as your process evolves.</p>
+    </div>
+  </div>
+</div>
+
+<div class="faq-section">
+  <h2>Common Questions</h2>
+  <p class="faq-sub">Things people usually wonder before reaching out.</p>
+
+  <div class="faq-item" data-faq="1">
+    <div class="faq-q">
+      <h3>What if I don't know exactly what I need automated?</h3>
+      <div class="faq-chevron">⌄</div>
+    </div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">That's completely normal, and it's actually where most projects start. On our first call, I'll ask about your day-to-day workflow and point out the repetitive parts that are good automation candidates — you don't need to arrive with a technical spec.</div></div></div>
+  </div>
+
+  <div class="faq-item" data-faq="2">
+    <div class="faq-q">
+      <h3>How long does a typical project take?</h3>
+      <div class="faq-chevron">⌄</div>
+    </div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">It depends on scope, but most single-workflow automations (like lead routing, booking, or invoice follow-up) take about 1-2 weeks from kickoff to a tested, working system. I'll give you a specific timeline as part of the proposal, not a vague estimate.</div></div></div>
+  </div>
+
+  <div class="faq-item" data-faq="3">
+    <div class="faq-q">
+      <h3>What if something breaks after you're done?</h3>
+      <div class="faq-chevron">⌄</div>
+    </div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Every automation I build includes error alerts, so if something fails, you (and I) find out immediately instead of silently. I stay available after handoff to fix issues or adjust the workflow as your process changes.</div></div></div>
+  </div>
+
+  <div class="faq-item" data-faq="4">
+    <div class="faq-q">
+      <h3>Do you work with businesses outside the Philippines?</h3>
+      <div class="faq-chevron">⌄</div>
+    </div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Yes — all of my work is remote and platform-based (n8n, Make.com, Zapier all run in the cloud), so location isn't a barrier. I'm happy to adjust working hours to overlap with your team's timezone.</div></div></div>
+  </div>
+
+  <div class="faq-item" data-faq="5">
+    <div class="faq-q">
+      <h3>What if I already have an automation that's not working well?</h3>
+      <div class="faq-chevron">⌄</div>
+    </div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">I can review an existing workflow, find where it's breaking down or missing error handling, and either fix it or rebuild the parts that need it — you don't need to start from zero.</div></div></div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+</script>
 
 <div class="cert-section">
   <h2>Certifications & Trainings</h2>
