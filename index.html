@@ -801,14 +801,14 @@
   <p class="hint">Click any project below to <span>expand the full workflow</span></p>
 </div>
 
-<div class="about-section">
+<div class="about-section reveal">
   <h2>About Me</h2>
   <p>I'm Klark John Cabungcal, an automation engineer and technical operations specialist. For over 6 years, I've operated and maintained the SCADA-controlled Baggage Handling System at NAIA Terminal 3 — across four employers on the same critical infrastructure (BEUMER Group, MSV Construction, Xplore Phil. Inc., and currently Levlar) — monitoring sorter status, diagnosing conveyor and check-in faults, and keeping a real, high-stakes system running.</p>
   <p>In parallel, I taught myself n8n, Make.com, and Zapier, got certified in all three, and started building AI-integrated automations that connect CRMs, forms, and messaging platforms into workflows that run unattended. I got into it because I kept noticing the same pattern in both worlds — industrial and digital — repetitive processes that break down when a human has to remember every step, and reliable systems when the process is built right the first time.</p>
   <p>I'm currently open to freelance automation projects and full-time opportunities. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
 </div>
 
-<div class="services-section">
+<div class="services-section reveal">
   <h2>How I Can Help</h2>
   <p class="services-sub">Common automations businesses need most — each adaptable to your specific process and tools.</p>
   <div class="services-grid">
@@ -851,7 +851,7 @@
   </div>
 </div>
 
-<div class="process-section">
+<div class="process-section reveal">
   <h2>How We'd Work Together</h2>
   <p class="process-sub">A simple, predictable process from first message to a working automation.</p>
   <div class="process-steps">
@@ -878,7 +878,7 @@
   </div>
 </div>
 
-<div class="faq-section">
+<div class="faq-section reveal">
   <h2>Common Questions</h2>
   <p class="faq-sub">Things people usually wonder before reaching out.</p>
 
@@ -929,9 +929,28 @@
       item.classList.toggle('open');
     });
   });
+
+  // ===== Scroll-reveal motion =====
+  (function(){
+    document.querySelectorAll('.card, .cert-card, .service-card, .process-step').forEach(el => {
+      el.classList.add('reveal');
+    });
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+  })();
 </script>
 
-<div class="cert-section">
+<div class="cert-section reveal">
   <h2>Certifications & Trainings</h2>
   <div class="cert-grid">
     <div class="cert-card">
@@ -1466,7 +1485,7 @@
 
 </div>
 
-<div class="contact-section">
+<div class="contact-section reveal">
   <h2>Let's Collaborate</h2>
   <p>Ready to automate your business? Get in touch and let's discuss your project.</p>
   <form class="contact-form" id="contactForm">
