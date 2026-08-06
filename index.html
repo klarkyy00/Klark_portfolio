@@ -992,8 +992,8 @@
 </div>
 
 <div class="filter-nav" id="filterNav">
-  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(8)</span></button>
-  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(5)</span></button>
+  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(9)</span></button>
+  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(6)</span></button>
   <button class="filter-btn" data-filter="make">Make.com <span class="filter-count">(2)</span></button>
   <button class="filter-btn" data-filter="zapier">Zapier <span class="filter-count">(1)</span></button>
 </div>
@@ -1477,6 +1477,73 @@
           <div class="stack">
             <span class="chip">Zapier</span><span class="chip">Zapier Paths</span><span class="chip">Google Sheets</span>
             <span class="chip">Google Drive</span><span class="chip">Gmail</span><span class="chip">Delay by Zapier</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9: Sales Tracker -->
+  <div class="card" data-id="c9" data-platform="n8n">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · Sales Analytics · Dashboard</span>
+        <h2 class="card-title">Automated Sales Call Tracker & Dashboard</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A lightweight Google Sheets-based sales tracker that removes manual call logging entirely. Calendly bookings, attendance, and call outcomes get captured, classified, and organized automatically — giving a clear, filterable view of weekly and monthly performance without needing a full CRM.</p>
+
+          <div class="screenshot-gallery">
+            <img src="book.png" alt="Sales Tracker - booking capture flow" loading="lazy">
+            <img src="cancel%20or%20reschedule.png" alt="Sales Tracker - cancel or reschedule flow" loading="lazy">
+          </div>
+
+          <div class="video-gallery">
+            <div class="video-item">
+              <video controls preload="metadata" poster="book.png">
+                <source src="book.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Booking Demo</div>
+            </div>
+            <div class="video-item">
+              <video controls preload="metadata" poster="cancel%20or%20reschedule.png">
+                <source src="canceled.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Cancellation Demo</div>
+            </div>
+            <div class="video-item">
+              <video controls preload="metadata" poster="cancel%20or%20reschedule.png">
+                <source src="reschedule.mp4" type="video/mp4">
+              </video>
+              <div class="video-caption">Reschedule Demo</div>
+            </div>
+          </div>
+
+          <div class="section-label">How it works</div>
+          <ul class="highlights">
+            <li><strong>Booking capture:</strong> A Calendly webhook creates or updates a row whenever a call is booked, cancelled, or rescheduled — matched by a unique event ID to prevent duplicates.</li>
+            <li><strong>Attendance detection:</strong> Google Meet/Calendar data is checked to determine whether the call was actually attended.</li>
+            <li><strong>Transcript linking:</strong> Once available, the Gemini-generated call transcript is linked back to the correct booking row using the same event ID.</li>
+            <li><strong>AI outcome classification:</strong> Gemini reads the transcript and classifies the call as Closed, Not Closed, Follow-up Required, or Manual Review — returned as structured output, not freeform text, with a conservative default to Manual Review when uncertain.</li>
+            <li><strong>Auto-organization:</strong> Every row is automatically tagged by calendar week and month as it's written.</li>
+            <li><strong>Dashboard:</strong> A separate sheet view calculates calls booked, calls taken, calls closed, show rate, and close rate — filterable by a custom date range.</li>
+          </ul>
+
+          <div class="section-label">Why it matters</div>
+          <ul class="highlights">
+            <li>Removes manual tracking entirely — no more updating a spreadsheet by hand after every call</li>
+            <li>Duplicate prevention built in via unique event-ID matching, not just append-only logging</li>
+            <li>Keeps AI classification honest — ambiguous calls route to Manual Review instead of a forced, possibly wrong, automatic label</li>
+            <li>No new software to learn — Google Sheets remains the single source of truth</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Calendly API</span><span class="chip">Google Meet / Calendar</span>
+            <span class="chip">Gemini AI</span><span class="chip">Google Sheets</span>
           </div>
         </div>
       </div>
