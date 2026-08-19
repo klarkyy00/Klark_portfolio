@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #e5e5e5;
+    padding: 40px 20px;
+    color: #111;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 46px 52px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  }
+
+  .header {
+    text-align: center;
+    border-bottom: 3px solid #111;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .header .role {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #444;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .contact-row {
+    display: flex;
+    justify-content: center;
+    gap: 11px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 10.8px;
+    color: #333;
+  }
+  .contact-row span::after {
+    content: '·';
+    margin-left: 11px;
+    color: #aaa;
+  }
+  .contact-row span:last-child::after { content: none; }
+
+  .section { margin-bottom: 16px; }
+  .section-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 1.5px solid #111;
+    padding-bottom: 4px;
+    margin-bottom: 9px;
+  }
+
+  .summary {
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #222;
+  }
+
+  .skills-grid {
+    font-size: 10.8px;
+    line-height: 1.7;
+    color: #222;
+  }
+  .skill-tag { display: inline; }
+  .skill-tag:not(:last-child)::after {
+    content: " · ";
+    color: #999;
+  }
+
+  .item { margin-bottom: 11px; }
+  .item:last-child { margin-bottom: 0; }
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .item-title { font-size: 12.3px; font-weight: 700; }
+  .item-meta {
+    font-size: 9.8px;
+    color: #555;
+    font-style: italic;
+    white-space: nowrap;
+  }
+  .item-sub{
+    font-size: 10.8px; font-weight: 600; color: #333; margin-top: 1px;
+  }
+  ul.bullets { margin-top: 4px; padding-left: 15px; }
+  ul.bullets li {
+    font-size: 10.6px;
+    line-height: 1.42;
+    color: #222;
+    margin-bottom: 2px;
+  }
+
+  .edu-row { font-size: 11px; margin-bottom: 2px; }
+  .edu-school { font-weight: 700; }
+  .edu-detail { color: #555; font-size: 10.3px; }
+
+  .note-box {
+    font-size: 10px;
+    color: #555;
+    border-left: 2.5px solid #999;
+    padding: 5px 0 5px 11px;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  .placeholder { color: #999; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { box-shadow: none; padding: 22px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <h1>Klark John C. Cabungcal</h1>
+    <div class="role">Freelance AI Automation Specialist</div>
+    <div class="contact-row">
+      <span>kj_klark@yahoo.com</span>
+      <span>klarkyy02@gmail.com</span>
+      <span>0965 392 3930</span>
+      <span>San Jose, Batangas, PH</span>
+      <span>klarkyy00.github.io/Klark_portfolio</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Summary</div>
+    <p class="summary">
+      Freelance automation specialist certified across n8n, Make.com, and Zapier, building AI-integrated
+      systems that replace manual business processes with reliable, self-healing workflows. Hands-on
+      experience integrating Claude and Gemini directly into decision-making logic — lead scoring, email
+      classification, structured data extraction, and autonomous AI agents — not just chat-based AI use.
+      Every automation is built with error handling, audit trails, and human-review gates from day one,
+      not added as an afterthought. Backed by 10 documented projects and over 6 years of unrelated but
+      genuinely rigorous technical operations experience maintaining a live SCADA-controlled system.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Skills</div>
+    <div class="skills-grid">
+      <span class="skill-tag">n8n</span>
+      <span class="skill-tag">Make.com</span>
+      <span class="skill-tag">Zapier</span>
+      <span class="skill-tag">Anthropic Claude</span>
+      <span class="skill-tag">Gemini API</span>
+      <span class="skill-tag">Ollama / Local AI Models</span>
+      <span class="skill-tag">AI Agents</span>
+      <span class="skill-tag">Prompt Engineering</span>
+      <span class="skill-tag">REST APIs & Webhooks</span>
+      <span class="skill-tag">JSON / Structured Data Parsing</span>
+      <span class="skill-tag">CRM Integration (HubSpot, Airtable)</span>
+      <span class="skill-tag">HighLevel CRM</span>
+      <span class="skill-tag">Google Workspace Automation</span>
+      <span class="skill-tag">Slack / Gmail API</span>
+      <span class="skill-tag">JavaScript</span>
+      <span class="skill-tag">Process Documentation</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Featured Automation Projects</div>
+
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Job Optimizer Agent</span>
+        <span class="item-meta">n8n · Autonomous AI Agent</span>
+      </div>
+      <ul class="bullets">
+        <li>Built an autonomous agent that reads a portfolio site, independently decides search keywords, queries three job-board APIs as self-selected tools, scores and filters every result, and delivers matches via Slack, Sheets, and email with no human in the loop.</li>
+      </ul>
+    </div>
+
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Automated Sales Call Tracker & Dashboard</span>
+        <span class="item-meta">n8n</span>
+      </div>
+      <ul class="bullets">
+        <li>Built a Calendly-to-Sheets pipeline that captures bookings, detects attendance, links call transcripts, and uses AI to classify outcomes — with a conservative "Manual Review" fallback for ambiguous calls instead of forcing a wrong label.</li>
+      </ul>
+    </div>
+
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Lead Capture & AI Qualification — Gmail → Google Sheets</span>
+        <span class="item-meta">Make.com</span>
+      </div>
+      <ul class="bullets">
+        <li>AI-qualified lead pipeline using Claude to score, de-duplicate, and route inbound emails, auto-escalating hot leads with prioritized replies.</li>
+      </ul>
+    </div>
+
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Client Pipeline Automation</span>
+        <span class="item-meta">Zapier</span>
+      </div>
+      <ul class="bullets">
+        <li>Spreadsheet-driven CRM where a single status update triggers client emails, Drive folder creation, and a 3-day delayed follow-up chain.</li>
+      </ul>
+    </div>
+
+    <div class="item">
+      <div class="item-header">
+        <span class="item-title">Invoice & Payment Automation</span>
+        <span class="item-meta">n8n</span>
+      </div>
+      <ul class="bullets">
+        <li>Automated invoice intake, OCR verification, and staged payment follow-up/escalation, with a fresh payment re-check before any overdue notice goes out.</li>
+      </ul>
+    </div>
+
+    <div class="note-box">
+      5 additional projects (AI Appointment Setter, E-Commerce Order Processing, AI Video Generator, Fearless Customer Support & Growth, AI Lead Generation Pipeline) with full breakdowns and screenshots at my portfolio: klarkyy00.github.io/Klark_portfolio
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="section">
+      <div class="section-title">Experience</div>
+      <div class="item">
+        <div class="item-header">
+          <span class="item-title">Operation & Maintenance Specialist</span>
+        </div>
+        <span class="item-meta">Baggage Handling System, NAIA Terminal 3 · Dec 2019 – Present</span>
+        <ul class="bullets">
+          <li>Monitor and maintain a SCADA-controlled system via 4 employers on the same critical infrastructure — real-time fault diagnosis, preventive maintenance, and uptime discipline that transfers directly to reliable automation design.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Certifications</div>
+      <div class="edu-row"><span class="edu-school" style="font-size:10.8px;">AI Automation with n8n</span></div>
+      <div class="edu-detail">Technical Virtual Assistants PH</div>
+      <div class="edu-row" style="margin-top:5px;"><span class="edu-school" style="font-size:10.8px;">No Code Automation with Make.com</span></div>
+      <div class="edu-detail">Technical Virtual Assistants PH</div>
+      <div class="edu-row" style="margin-top:5px;"><span class="edu-school" style="font-size:10.8px;">No Code Automation with Zapier</span></div>
+      <div class="edu-detail">Technical Virtual Assistants PH</div>
+      <div class="edu-row" style="margin-top:5px;"><span class="edu-school" style="font-size:10.8px;">Prompt Engineering Full Training</span></div>
+      <div class="edu-detail">Technical Virtual Assistants PH</div>
+      <div class="edu-row" style="margin-top:5px;"><span class="edu-school" style="font-size:10.8px;">HighLevel CRM Full Training</span></div>
+      <div class="edu-detail">Technical Virtual Assistants PH</div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:14px;">
+    <div class="section-title">Education</div>
+    <div class="two-col">
+      <div>
+        <div class="edu-row"><span class="edu-school">BS Information Technology</span></div>
+        <div class="edu-detail">University of Batangas — Lipa, Batangas</div>
+      </div>
+      <div>
+        <div class="edu-row"><span class="edu-school">BS Information Technology</span></div>
+        <div class="edu-detail">De La Salle Lipa — Lipa City · 2013 – 2016</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
