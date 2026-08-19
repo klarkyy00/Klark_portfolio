@@ -992,8 +992,8 @@
 </div>
 
 <div class="filter-nav" id="filterNav">
-  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(10)</span></button>
-  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(7)</span></button>
+  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(11)</span></button>
+  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(8)</span></button>
   <button class="filter-btn" data-filter="make">Make.com <span class="filter-count">(2)</span></button>
   <button class="filter-btn" data-filter="zapier">Zapier <span class="filter-count">(1)</span></button>
 </div>
@@ -1600,6 +1600,58 @@
             <span class="chip">n8n</span><span class="chip">Gemini AI</span><span class="chip">HTTP Request Tools</span>
             <span class="chip">RemoteOK</span><span class="chip">Arbeitnow</span><span class="chip">Jobicy</span>
             <span class="chip">Google Sheets</span><span class="chip">Slack</span><span class="chip">Gmail</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11: Recruiting Tracker -->
+  <div class="card" data-id="c11" data-platform="n8n">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · Recruiting · AI Interview Scoring</span>
+        <h2 class="card-title">Automated Recruiting Tracker & Interview Scoring</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">An automated hiring pipeline that replaces manual candidate spreadsheet-tracking and first-pass interview screening. It captures every application the moment someone applies, scores every interview against its transcript consistently, and gives a single live dashboard showing the whole pipeline at a glance.</p>
+
+          <div class="screenshot-gallery">
+            <img src="Recruiting%20Tracker%20-%20Interview%20Scoring.png" alt="Recruiting Tracker - interview scoring output" loading="lazy">
+            <img src="Recruting%20bookings.png" alt="Recruiting Tracker - bookings view" loading="lazy">
+            <img src="Recruting%20dashboard.png" alt="Recruiting Tracker - dashboard view" loading="lazy">
+          </div>
+
+          <div class="section-label">How it works, step by step</div>
+          <ul class="highlights">
+            <li><strong>1. Application capture:</strong> A candidate applies via a Jotform application (name, email, role, source, resume). Within seconds they appear in the Candidates sheet and dashboard as "Applied" (or "Interview Scheduled" if a date was included) — fully automatic, zero manual entry.</li>
+            <li><strong>2. Interview conducted normally</strong> (Zoom/Meet with a Fireflies bot recording). Once Fireflies finishes transcribing, it reaches the same tracking workflow used for sales calls, which checks whether the transcript is an interview or a sales call and routes accordingly by matching the candidate's email — no manual step.</li>
+            <li><strong>3. AI interview scoring:</strong> Claude scores the interview against the transcript — a 1–10 score, a recommendation (Strong Yes / Yes / Maybe / No), strengths, concerns, and a summary — written back to the candidate's row automatically, flipping their stage to "Interviewed."</li>
+            <li><strong>4. Live dashboard:</strong> A two-tab dashboard (Pipeline overview + searchable Candidates table) rebuilds itself automatically on every change — filterable by stage or recommendation, searchable by name/email/role, with click-through to resumes and transcripts.</li>
+            <li><strong>5. Unattended safety net:</strong> Every 30 minutes, the system checks for any candidate whose interview happened over 24 hours ago with no matched transcript, flags them for Manual Review, and emails an alert — so a missed match never just quietly disappears.</li>
+          </ul>
+
+          <div class="section-label">What it removes from a recruiter's plate</div>
+          <ul class="highlights">
+            <li>Manually entering candidates into a spreadsheet</li>
+            <li>Re-listening to interviews to write a summary</li>
+            <li>Rebuilding or refreshing the pipeline dashboard by hand</li>
+            <li>Chasing down whether a transcript actually got matched to the right person</li>
+          </ul>
+
+          <div class="section-label">Where the human stays in the loop</div>
+          <ul class="highlights">
+            <li>The AI produces a screening aid, not a hiring decision — a person still reads the score/summary and decides who advances</li>
+            <li>Scope boundary is deliberate: there's no automated offer/rejection flow past the "Interviewed" stage</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Fireflies</span>
+            <span class="chip">Anthropic Claude</span><span class="chip">Google Sheets</span><span class="chip">Live HTML Dashboard</span>
           </div>
         </div>
       </div>
