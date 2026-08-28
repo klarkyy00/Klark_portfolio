@@ -671,6 +671,32 @@
     position:relative;
   }
 
+  /* ===== BOOKING SECTION ===== */
+  .booking-section{
+    max-width:800px; margin:0 auto; padding:56px 24px;
+    border-bottom:1px solid var(--border);
+    text-align:center;
+  }
+  .booking-section h2{
+    font-size:1.7rem; font-weight:800; margin-bottom:10px; color:var(--text);
+    background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2), var(--accent));
+    background-size:300% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:title-shimmer 6s linear infinite;
+    filter:drop-shadow(0 0 14px rgba(20,184,166,0.3));
+  }
+  .booking-section > p{
+    color:var(--muted); font-size:0.95rem; max-width:560px; margin:0 auto 28px;
+  }
+  .booking-frame-wrap{
+    border-radius:16px; overflow:hidden; border:1px solid var(--border);
+    box-shadow:0 0 30px -10px rgba(20,184,166,0.3);
+    background:var(--panel);
+  }
+  .booking-frame-wrap iframe{
+    width:100%; height:650px; border:none; display:block;
+  }
+
   /* ===== MOBILE ===== */
   @media (max-width: 640px){
     .hero{ padding:40px 16px 28px; }
@@ -1044,6 +1070,7 @@
 
 <div class="filter-nav" id="filterNav">
   <button class="filter-btn active" data-filter="all">All <span class="filter-count">(11)</span></button>
+  <button class="filter-btn" data-filter="client">Client Work <span class="filter-count">(2)</span></button>
   <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(8)</span></button>
   <button class="filter-btn" data-filter="make">Make.com <span class="filter-count">(2)</span></button>
   <button class="filter-btn" data-filter="zapier">Zapier <span class="filter-count">(1)</span></button>
@@ -1535,10 +1562,11 @@
   </div>
 
   <!-- 9: Sales Tracker -->
-  <div class="card" data-id="c9" data-platform="n8n">
+  <div class="card" data-id="c9" data-platform="n8n" data-client="client">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Sales Analytics · Dashboard</span>
+        <span class="card-tag" style="background:rgba(45,212,191,0.22); color:var(--accent2); margin-left:6px;">✓ Real Client Project</span>
         <h2 class="card-title">Automated Sales Call Tracker & Dashboard</h2>
       </div>
       <div class="chevron">⌄</div>
@@ -1549,14 +1577,20 @@
           <p class="card-desc">A lightweight Google Sheets-based sales tracker that removes manual call logging entirely. Calendly bookings, attendance, and call outcomes get captured, classified, and organized automatically — giving a clear, filterable view of weekly and monthly performance without needing a full CRM.</p>
 
           <div class="screenshot-gallery">
-            <img src="book.png" alt="Sales Tracker - booking capture flow" loading="lazy">
-            <img src="cancel%20or%20reschedule.png" alt="Sales Tracker - cancel or reschedule flow" loading="lazy">
-            <img src="worfklow%202.png" alt="Sales Tracker workflow view 2" loading="lazy">
-            <img src="workflow.png" alt="Sales Tracker workflow overview" loading="lazy">
-            <img src="dashboard.png" alt="Sales Tracker dashboard view" loading="lazy">
-            <img src="bookings.png" alt="Sales Tracker bookings view" loading="lazy">
-            <img src="calendar.png" alt="Sales Tracker calendar view" loading="lazy">
-            <img src="analytics.png" alt="Sales Tracker analytics view" loading="lazy">
+            <img src="Calendly%20Booking%20Sync.png" alt="Sales Tracker - Calendly booking sync" loading="lazy">
+            <img src="Calendly%20No-Show%20Sync.png" alt="Sales Tracker - Calendly no-show sync" loading="lazy">
+            <img src="Google%20Meet%20Interview%20Pipeline.png" alt="Sales Tracker - Google Meet interview pipeline" loading="lazy">
+            <img src="Google%20Meet%20Transcript%20%E2%86%92%20Sales%20Tracker.png" alt="Sales Tracker - Google Meet transcript linking" loading="lazy">
+            <img src="Grace%20Period%20Check.png" alt="Sales Tracker - grace period check logic" loading="lazy">
+            <img src="Manual%20Override%20API.png" alt="Sales Tracker - manual override API" loading="lazy">
+            <img src="Mark%20Attended%20API.png" alt="Sales Tracker - mark attended API" loading="lazy">
+            <img src="Rebuild%20Dashboard.png" alt="Sales Tracker - rebuild dashboard logic" loading="lazy">
+            <img src="Sales%20Dashboard%20Data%20API.png" alt="Sales Tracker - dashboard data API" loading="lazy">
+            <img src="Sales%20Dashboard%20Data%20API%202.png" alt="Sales Tracker - dashboard data API 2" loading="lazy">
+            <img src="Sales%20Tracker%20Setup.png" alt="Sales Tracker - setup overview" loading="lazy">
+            <img src="dashboard%20bookings.png" alt="Sales Tracker - dashboard bookings detail" loading="lazy">
+            <img src="dashboard%20sean.png" alt="Sales Tracker - live client dashboard" loading="lazy">
+            <img src="dashboard%20week%20month.png" alt="Sales Tracker - weekly and monthly dashboard view" loading="lazy">
           </div>
 
           <div class="video-gallery">
@@ -1658,10 +1692,11 @@
   </div>
 
   <!-- 11: Recruiting Tracker -->
-  <div class="card" data-id="c11" data-platform="n8n">
+  <div class="card" data-id="c11" data-platform="n8n" data-client="client">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Recruiting · AI Interview Scoring</span>
+        <span class="card-tag" style="background:rgba(45,212,191,0.22); color:var(--accent2); margin-left:6px;">✓ Real Client Project</span>
         <h2 class="card-title">Automated Recruiting Tracker & Interview Scoring</h2>
       </div>
       <div class="chevron">⌄</div>
@@ -1769,7 +1804,8 @@
       btn.classList.add('active');
       const filter = btn.dataset.filter;
       document.querySelectorAll('.card').forEach(card => {
-        if(filter === 'all' || card.dataset.platform === filter){
+        const matches = filter === 'all' || card.dataset.platform === filter || card.dataset.client === filter;
+        if(matches){
           card.classList.remove('hidden');
         } else {
           card.classList.add('hidden');
