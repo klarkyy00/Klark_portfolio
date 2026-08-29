@@ -69,7 +69,8 @@
     mask-image:linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
   }
   .badges-section{
-    max-width:1000px; margin:0 auto; padding:20px 24px;
+    max-width:640px; margin:36px auto; padding:20px 24px;
+    box-sizing:border-box; width:100%;
   }
   .badges-track{
     display:flex; gap:11px; flex-shrink:0;
@@ -339,14 +340,6 @@
     box-shadow:0 16px 40px -12px rgba(45,212,191,0.45), 0 0 30px -8px rgba(56,189,248,0.35);
     animation-play-state:paused;
   }
-  .cert-badge-icon{
-    width:34px; height:34px; border-radius:50%;
-    background:linear-gradient(135deg, var(--accent), var(--sea));
-    display:flex; align-items:center; justify-content:center;
-    margin-bottom:12px;
-    box-shadow:0 4px 14px -2px rgba(20,184,166,0.5);
-  }
-  .cert-badge-icon svg{ width:17px; height:17px; stroke:#04201e; }
   .cert-card h3{
     font-size:0.95rem; font-weight:700; color:var(--text); margin-bottom:6px; line-height:1.35;
   }
@@ -375,7 +368,6 @@
   }
   .avatar{
     width:64px; height:82px; position:relative;
-    animation:float 4s ease-in-out infinite;
     border-radius:8px;
     overflow:hidden;
     padding:2px;
@@ -697,6 +689,38 @@
     width:100%; height:650px; border:none; display:block;
   }
 
+  /* ===== SCROLL REVEAL MOTION ===== */
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+  }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+
+  /* ===== LETTER MOTION ===== */
+  .letters-wrap{ display:inline-block; }
+  .letter{
+    display:inline-block;
+    opacity:0; transform:translateY(22px) rotate(4deg);
+    animation:letter-in .6s cubic-bezier(.22,.61,.36,1) forwards;
+    transition:transform .2s ease, color .2s ease;
+    cursor:default;
+  }
+  .letter:hover{
+    transform:translateY(-6px) scale(1.15) !important;
+    color:var(--accent2);
+  }
+  @keyframes letter-in{
+    to{ opacity:1; transform:translateY(0) rotate(0); }
+  }
+
+  /* ===== SCROLL PROGRESS BAR ===== */
+  #scrollProgress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2));
+    z-index:999; transition:width .1s ease-out;
+    box-shadow:0 0 8px rgba(45,212,191,0.6);
+  }
+
   /* ===== MOBILE ===== */
   @media (max-width: 640px){
     .hero{ padding:40px 16px 28px; }
@@ -794,6 +818,10 @@
     </a>
   </div>
 
+  <p class="hint">Click any project below to <span>expand the full workflow</span></p>
+</div>
+
+<div class="badges-section">
   <div class="badges">
     <div class="badges-track">
       <span class="badge">n8n</span>
@@ -824,9 +852,22 @@
       <span class="badge">HighLevel CRM</span>
       <span class="badge">SCADA Monitoring</span>
       <span class="badge">JavaScript</span>
+      <span class="badge">n8n</span>
+      <span class="badge">Make.com</span>
+      <span class="badge">Zapier</span>
+      <span class="badge">Anthropic Claude</span>
+      <span class="badge">Gemini / Ollama AI</span>
+      <span class="badge">Prompt Engineering</span>
+      <span class="badge">REST APIs & Webhooks</span>
+      <span class="badge">JSON / Data Parsing</span>
+      <span class="badge">Google Workspace</span>
+      <span class="badge">Slack / Gmail API</span>
+      <span class="badge">Airtable · HubSpot</span>
+      <span class="badge">HighLevel CRM</span>
+      <span class="badge">SCADA Monitoring</span>
+      <span class="badge">JavaScript</span>
     </div>
   </div>
-  <p class="hint">Click any project below to <span>expand the full workflow</span></p>
 </div>
 
 <div class="about-section reveal">
@@ -950,82 +991,6 @@
     <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">I can review an existing workflow, find where it's breaking down or missing error handling, and either fix it or rebuild the parts that need it — you don't need to start from zero.</div></div></div>
   </div>
 </div>
-
-<script>
-  document.querySelectorAll('.faq-item').forEach(item => {
-    item.querySelector('.faq-q').addEventListener('click', () => {
-      item.classList.toggle('open');
-    });
-  });
-
-  // ===== Scroll-reveal motion =====
-  (function(){
-    document.querySelectorAll('.card, .cert-card, .service-card, .process-step').forEach(el => {
-      el.classList.add('reveal');
-    });
-
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-    revealEls.forEach(el => observer.observe(el));
-  })();
-
-  // ===== Scroll progress bar + hero parallax =====
-  (function(){
-    const progressBar = document.getElementById('scrollProgress');
-    const hero = document.querySelector('.hero');
-
-    function onScroll(){
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = pct + '%';
-
-      if(hero){
-        const heroHeight = hero.offsetHeight;
-        if(scrollTop < heroHeight * 1.3){
-          hero.style.backgroundPositionY = (scrollTop * 0.3) + 'px';
-        }
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  })();
-
-  // ===== Letter-by-letter motion for name/title =====
-  (function(){
-    document.querySelectorAll('[data-letters="true"]').forEach(el => {
-      const text = el.textContent;
-      const gradientStyle = getComputedStyle(el).backgroundImage;
-      el.textContent = '';
-      const wrap = document.createElement('span');
-      wrap.className = 'letters-wrap';
-      wrap.style.backgroundImage = gradientStyle;
-      wrap.style.backgroundSize = '300% 100%';
-      wrap.style.webkitBackgroundClip = 'text';
-      wrap.style.backgroundClip = 'text';
-      wrap.style.webkitTextFillColor = 'transparent';
-      wrap.style.animation = 'title-shimmer 6s linear infinite';
-
-      text.split('').forEach((ch, i) => {
-        const span = document.createElement('span');
-        span.className = 'letter';
-        span.textContent = ch === ' ' ? '\u00A0' : ch;
-        span.style.animationDelay = (i * 0.035) + 's';
-        wrap.appendChild(span);
-      });
-      el.appendChild(wrap);
-    });
-  })();
-</script>
 
 <div class="cert-section reveal">
   <h2>Certifications & Trainings</h2>
@@ -1574,7 +1539,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A lightweight Google Sheets-based sales tracker that removes manual call logging entirely. Calendly bookings, attendance, and call outcomes get captured, classified, and organized automatically — giving a clear, filterable view of weekly and monthly performance without needing a full CRM.</p>
+          <p class="card-desc">A production automation built for a real client (Willers Coaching) — an automated pipeline that turns every sales call into structured data with zero manual entry, and shows it on a live dashboard. Built entirely in n8n, wired to Calendly, Google Sheets/Drive/Meet, and Gemini AI. It solves a simple but common problem: coaches book discovery calls, run them, and rarely log consistently afterward — did they show up, did they buy, what's next — so there's no reliable view of booking volume, show rate, or close rate. This system logs all of that automatically from the call itself.</p>
 
           <div class="screenshot-gallery">
             <img src="Calendly%20Booking%20Sync.png" alt="Sales Tracker - Calendly booking sync" loading="lazy">
@@ -1593,48 +1558,32 @@
             <img src="dashboard%20week%20month.png" alt="Sales Tracker - weekly and monthly dashboard view" loading="lazy">
           </div>
 
-          <div class="video-gallery">
-            <div class="video-item">
-              <video controls preload="metadata" poster="book.png">
-                <source src="book.mp4" type="video/mp4">
-              </video>
-              <div class="video-caption">Booking Demo</div>
-            </div>
-            <div class="video-item">
-              <video controls preload="metadata" poster="cancel%20or%20reschedule.png">
-                <source src="canceled.mp4" type="video/mp4">
-              </video>
-              <div class="video-caption">Cancellation Demo</div>
-            </div>
-            <div class="video-item">
-              <video controls preload="metadata" poster="cancel%20or%20reschedule.png">
-                <source src="reschedule.mp4" type="video/mp4">
-              </video>
-              <div class="video-caption">Reschedule Demo</div>
-            </div>
-          </div>
-
-          <div class="section-label">How it works</div>
+          <div class="section-label">How it works, end to end</div>
           <ul class="highlights">
-            <li><strong>Booking capture:</strong> A Calendly webhook creates or updates a row whenever a call is booked, cancelled, or rescheduled — matched by a unique event ID to prevent duplicates.</li>
-            <li><strong>Attendance detection:</strong> Google Meet/Calendar data is checked to determine whether the call was actually attended.</li>
-            <li><strong>Transcript linking:</strong> Once available, the Gemini-generated call transcript is linked back to the correct booking row using the same event ID.</li>
-            <li><strong>AI outcome classification:</strong> Gemini reads the transcript and classifies the call as Closed, Not Closed, Follow-up Required, or Manual Review — returned as structured output, not freeform text, with a conservative default to Manual Review when uncertain.</li>
-            <li><strong>Auto-organization:</strong> Every row is automatically tagged by calendar week and month as it's written.</li>
-            <li><strong>Dashboard:</strong> A separate sheet view calculates calls booked, calls taken, calls closed, show rate, and close rate — filterable by a custom date range.</li>
+            <li><strong>Booking:</strong> A prospect books a call in Calendly. Calendly fires a signed webhook to n8n, which creates a row in the "Bookings" Google Sheet — name, email, event type, scheduled time, status Booked.</li>
+            <li><strong>The call:</strong> Runs on Google Meet, which saves the recording to a Drive folder automatically.</li>
+            <li><strong>Transcription:</strong> Every 10 minutes, n8n checks that folder. When it finds a new recording, it sends the video to Gemini, which transcribes the full conversation.</li>
+            <li><strong>Analysis:</strong> The transcript is matched back to the right booking row (by name + time), then Gemini classifies two things — attendance (Yes / No / Unverified, where Unverified means the transcript was too thin to tell rather than being guessed as a no-show), and outcome (Closed / Not Closed / Follow-up Required / Manual Review).</li>
+            <li><strong>Notes document:</strong> A formatted Google Doc is generated — summary, next steps, key details, and the full transcript — with a link added to the sheet row.</li>
+            <li><strong>Dashboard:</strong> The row updates and the dashboard rebuilds automatically, so booked/attended/closed counts, show rate, close rate, and weekly/monthly breakdowns are always current.</li>
           </ul>
 
-          <div class="section-label">Why it matters</div>
+          <div class="section-label">Supporting pieces</div>
           <ul class="highlights">
-            <li>Removes manual tracking entirely — no more updating a spreadsheet by hand after every call</li>
-            <li>Duplicate prevention built in via unique event-ID matching, not just append-only logging</li>
-            <li>Keeps AI classification honest — ambiguous calls route to Manual Review instead of a forced, possibly wrong, automatic label</li>
-            <li>No new software to learn — Google Sheets remains the single source of truth</li>
+            <li><strong>No-show sync:</strong> If Calendly marks a no-show, that flows to the row automatically.</li>
+            <li><strong>Reschedule handling:</strong> A moved call keeps both rows (original marked Rescheduled, new one linked to it) so history stays visible, but it's only counted once.</li>
+            <li><strong>Grace Period Check:</strong> A safety net — any call that came and went with no transcript after 24 hours gets flagged Manual Review instead of sitting forgotten.</li>
+            <li><strong>Manual controls:</strong> Two small endpoints (or direct sheet editing) let a human override attendance or outcome for anything the AI couldn't resolve.</li>
+            <li><strong>Error handler:</strong> Any workflow failure logs to a sheet and emails the client directly.</li>
+            <li><strong>Dashboard access:</strong> A single key-gated URL that opens in any browser and reads live from the sheet.</li>
           </ul>
+
+          <div class="section-label">Architecture note</div>
+          <p class="card-desc" style="margin-bottom:16px;">This isn't one large workflow — it's roughly 10 small, single-purpose workflows (Calendly Booking Sync, Interview Pipeline, Grace Period Check, Rebuild Dashboard, the two APIs, and others), all reading and writing the same Google Sheet as the single source of truth.</p>
 
           <div class="stack">
-            <span class="chip">n8n</span><span class="chip">Calendly API</span><span class="chip">Google Meet / Calendar</span>
-            <span class="chip">Gemini AI</span><span class="chip">Google Sheets</span>
+            <span class="chip">n8n</span><span class="chip">Calendly API</span><span class="chip">Google Meet / Drive</span>
+            <span class="chip">Gemini AI</span><span class="chip">Google Sheets</span><span class="chip">Google Docs</span>
           </div>
         </div>
       </div>
@@ -1744,6 +1693,14 @@
     </div>
   </div>
 
+</div>
+
+<div class="booking-section reveal">
+  <h2>Book a Free 30-Min Call</h2>
+  <p>Let's talk through what you need automated — no pressure, just a quick conversation about your process and whether I'm a good fit to help.</p>
+  <div class="booking-frame-wrap">
+    <iframe src="https://calendly.com/pungzuwangdu11/30min" title="Book a call"></iframe>
+  </div>
 </div>
 
 <div class="contact-section reveal">
@@ -1918,6 +1875,74 @@
       gallery.addEventListener('touchstart', (e) => start(e.touches[0].pageX), { passive:true });
       gallery.addEventListener('touchmove', (e) => move(e.touches[0].pageX), { passive:true });
       gallery.addEventListener('touchend', end);
+    });
+  })();
+
+  // ===== Scroll-reveal motion =====
+  (function(){
+    document.querySelectorAll('.card, .cert-card, .service-card, .process-step').forEach(el => {
+      el.classList.add('reveal');
+    });
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+  })();
+
+  // ===== Scroll progress bar + hero parallax =====
+  (function(){
+    const progressBar = document.getElementById('scrollProgress');
+    const hero = document.querySelector('.hero');
+
+    function onScroll(){
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+
+      if(hero){
+        const heroHeight = hero.offsetHeight;
+        if(scrollTop < heroHeight * 1.3){
+          hero.style.backgroundPositionY = (scrollTop * 0.3) + 'px';
+        }
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // ===== Letter-by-letter motion for name/title =====
+  (function(){
+    document.querySelectorAll('[data-letters="true"]').forEach(el => {
+      const text = el.textContent;
+      const gradientStyle = getComputedStyle(el).backgroundImage;
+      el.textContent = '';
+      const wrap = document.createElement('span');
+      wrap.className = 'letters-wrap';
+      wrap.style.backgroundImage = gradientStyle;
+      wrap.style.backgroundSize = '300% 100%';
+      wrap.style.webkitBackgroundClip = 'text';
+      wrap.style.backgroundClip = 'text';
+      wrap.style.webkitTextFillColor = 'transparent';
+      wrap.style.animation = 'title-shimmer 6s linear infinite';
+
+      text.split('').forEach((ch, i) => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = ch === ' ' ? '\u00A0' : ch;
+        span.style.animationDelay = (i * 0.035) + 's';
+        wrap.appendChild(span);
+      });
+      el.appendChild(wrap);
     });
   })();
 </script>
