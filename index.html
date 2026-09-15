@@ -346,6 +346,57 @@
   .cert-card .cert-org{ font-size:0.78rem; color:var(--accent2); font-weight:600; margin-bottom:4px; }
   .cert-card .cert-date{ font-size:0.75rem; color:var(--muted); }
 
+  /* ===== TESTIMONIALS ===== */
+  .testimonials-section{
+    max-width:900px; margin:0 auto; padding:56px 24px;
+    border-bottom:1px solid var(--border);
+  }
+  .testimonials-section h2{
+    font-size:1.7rem; font-weight:800; margin-bottom:10px; color:var(--text); text-align:center;
+    background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2), var(--accent));
+    background-size:300% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:title-shimmer 6s linear infinite;
+    filter:drop-shadow(0 0 14px rgba(20,184,166,0.3));
+  }
+  .testimonials-section > p.testimonials-sub{
+    text-align:center; color:var(--muted); font-size:0.95rem; max-width:560px; margin:0 auto 32px;
+  }
+  .testimonial-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:18px;
+  }
+  .testimonial-card{
+    position:relative;
+    background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+    border:1px solid var(--border); border-radius:14px; padding:24px 22px;
+    box-shadow:0 0 16px -8px rgba(20,184,166,0.2);
+  }
+  .testimonial-quote-mark{
+    font-size:2.5rem; color:var(--accent2); opacity:0.3; line-height:1; margin-bottom:8px;
+    font-family:Georgia, serif;
+  }
+  .testimonial-text{
+    font-size:0.92rem; color:var(--text); line-height:1.65; margin-bottom:16px;
+    font-style:italic;
+  }
+  .testimonial-author{
+    display:flex; align-items:center; gap:10px;
+  }
+  .testimonial-avatar{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--sea));
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; color:#04201e; font-size:0.9rem; flex-shrink:0;
+  }
+  .testimonial-name{ font-size:0.85rem; font-weight:700; color:var(--text); }
+  .testimonial-role{ font-size:0.75rem; color:var(--muted); }
+  .testimonial-pending{
+    border:1.5px dashed var(--border); background:#081014;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    color:var(--muted); font-size:0.85rem; padding:32px 22px; min-height:180px;
+  }
+
   /* ===== AVATAR ===== */
   .title-row{
     display:flex; align-items:center; justify-content:flex-start;
@@ -812,7 +863,7 @@
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 015 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.78-4.57 5.04.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.26 10.26 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
       GitHub
     </a>
-    <a class="social-btn solid" href="ai%20resume.pdf" download="Klark_Cabungcal_Resume.pdf">
+    <a class="social-btn solid" href="klark%20resume%20ai%20automation.pdf" download="Klark_Cabungcal_Resume.pdf">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
       Download Resume
     </a>
@@ -1033,10 +1084,31 @@
   </div>
 </div>
 
+<div class="testimonials-section reveal">
+  <h2>What Clients Say</h2>
+  <p class="testimonials-sub">Real feedback from businesses I've built automations for.</p>
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-quote-mark">"</div>
+      <div class="testimonial-text">[Placeholder — add a real quote here once you have one, e.g. what problem the automation solved for them and how it's helped since]</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">S</div>
+        <div>
+          <div class="testimonial-name">Sean</div>
+          <div class="testimonial-role">Willers Coaching — Sales Call Tracker Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-pending">
+      + Add another testimonial once you have one from a client
+    </div>
+  </div>
+</div>
+
 <div class="filter-nav" id="filterNav">
-  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(11)</span></button>
-  <button class="filter-btn" data-filter="client">Client Work <span class="filter-count">(2)</span></button>
-  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(8)</span></button>
+  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(12)</span></button>
+  <button class="filter-btn" data-filter="client">Client Work <span class="filter-count">(3)</span></button>
+  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(9)</span></button>
   <button class="filter-btn" data-filter="make">Make.com <span class="filter-count">(2)</span></button>
   <button class="filter-btn" data-filter="zapier">Zapier <span class="filter-count">(1)</span></button>
 </div>
@@ -1687,6 +1759,48 @@
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Jotform</span><span class="chip">Fireflies</span>
             <span class="chip">Anthropic Claude</span><span class="chip">Google Sheets</span><span class="chip">Live HTML Dashboard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12: Instagram DM Lead Tracking -->
+  <div class="card" data-id="c12" data-platform="n8n" data-client="client">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · Lead Tracking · In Progress</span>
+        <span class="card-tag" style="background:rgba(45,212,191,0.22); color:var(--accent2); margin-left:6px;">✓ Real Client Project</span>
+        <h2 class="card-title">Instagram DM Lead Tracking & Booking Matching</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A real client project currently in progress — connecting Instagram DM conversations (via ManyChat) to a lead-tracking sheet, and matching those DM leads back to actual Calendly bookings, so a business can see the full path from "commented/DM'd" to "booked a call" in one place instead of two disconnected systems.</p>
+
+          <div class="screenshot-slot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-5 4 4 5-6 4 5"/><circle cx="8" cy="8" r="1.5"/></svg><br>
+            Build in progress — screenshots coming once complete
+          </div>
+
+          <div class="section-label">Progress so far</div>
+          <ul class="highlights">
+            <li><strong>Lead-tracking sheet:</strong> Set up as the source of truth for captured DM leads.</li>
+            <li><strong>First workflow (built & tested):</strong> Captures ManyChat tags and creates or updates the corresponding lead record automatically.</li>
+          </ul>
+
+          <div class="section-label">What's planned next</div>
+          <ul class="highlights">
+            <li><strong>ManyChat automation build:</strong> Tags, a "setter" field, and the DM-side automations inside ManyChat itself.</li>
+            <li><strong>Instagram Business connection:</strong> Linking the client's Instagram account to ManyChat so DM conversations flow into the system.</li>
+            <li><strong>Booking-to-DM matching:</strong> Adding an "Instagram handle" field to the client's existing Calendly form (non-disruptive to the current form) so a booked call can be matched back to the original DM lead that generated it — closing the loop from first contact to booked appointment.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">ManyChat</span><span class="chip">Instagram Business API</span>
+            <span class="chip">Calendly</span><span class="chip">Google Sheets</span>
           </div>
         </div>
       </div>
