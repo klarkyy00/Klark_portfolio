@@ -17,6 +17,32 @@
 <meta name="twitter:image" content="https://klarkyy00.github.io/Klark_portfolio/profile-photo.png">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%2314b8a6'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='white' font-family='Arial'%3EK%3C/text%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Klark John Cabungcal",
+  "jobTitle": "Automation Engineer",
+  "url": "https://klarkyy00.github.io/Klark_portfolio/",
+  "email": "kj_klark@yahoo.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "San Jose",
+    "addressRegion": "Batangas",
+    "addressCountry": "PH"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/in/klark-john-cabungcal-205723249/",
+    "https://github.com/klarkyy00"
+  ],
+  "knowsAbout": ["n8n", "Make.com", "Zapier", "AI Automation", "Anthropic Claude", "Google Gemini", "Workflow Automation", "Prompt Engineering"],
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "University of Batangas" },
+    { "@type": "CollegeOrUniversity", "name": "De La Salle Lipa" }
+  ]
+}
+</script>
 <style>
   :root{
     --bg:#0a0e14; --panel:#0e1720; --panel2:#122029;
@@ -223,8 +249,26 @@
     content:'';
     position:absolute; top:26px; left:calc(50% + 34px); right:calc(-50% + 34px);
     height:2px;
-    background:linear-gradient(90deg, var(--accent2), var(--border));
+    background:linear-gradient(90deg,
+      var(--border) 0%,
+      var(--border) 35%,
+      var(--accent2) 42%,
+      #fff 50%,
+      var(--accent2) 58%,
+      var(--border) 65%,
+      var(--border) 100%);
+    background-size:300% 100%;
+    animation:wire-flow 2.4s linear infinite;
+    box-shadow:0 0 6px rgba(45,212,191,0.4);
   }
+  @keyframes wire-flow{
+    0%{ background-position:100% 0; }
+    100%{ background-position:-200% 0; }
+  }
+  .process-step:nth-child(1)::after{ animation-delay:0s; }
+  .process-step:nth-child(2)::after{ animation-delay:.6s; }
+  .process-step:nth-child(3)::after{ animation-delay:1.2s; }
+  .process-step:nth-child(4)::after{ animation-delay:1.8s; }
   .process-step:last-child::after{ display:none; }
   .process-number{
     width:52px; height:52px; border-radius:50%;
@@ -281,9 +325,10 @@
   }
   .faq-item.open .faq-chevron{ transform:rotate(180deg); background:rgba(45,212,191,0.15); }
   .faq-a-wrap{
-    display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease;
+    max-height:0; overflow:hidden;
+    transition:max-height .35s ease;
   }
-  .faq-item.open .faq-a-wrap{ grid-template-rows:1fr; }
+  .faq-item.open .faq-a-wrap{ max-height:400px; }
   .faq-a-inner{ overflow:hidden; }
   .faq-a{
     padding:0 20px 18px; font-size:0.87rem; color:var(--muted); line-height:1.6;
@@ -810,6 +855,18 @@
 
     .contact-section{ padding:0 16px 50px; }
     .contact-section h2{ font-size:1.5rem; }
+  }
+
+  /* ===== REDUCED MOTION SUPPORT ===== */
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .badges-track{ animation: none !important; }
+    .reveal{ opacity: 1 !important; transform: none !important; }
   }
 </style>
 </head>
