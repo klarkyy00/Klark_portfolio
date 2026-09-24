@@ -1106,9 +1106,9 @@
 </div>
 
 <div class="filter-nav" id="filterNav">
-  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(12)</span></button>
+  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(13)</span></button>
   <button class="filter-btn" data-filter="client">Client Work <span class="filter-count">(3)</span></button>
-  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(9)</span></button>
+  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(10)</span></button>
   <button class="filter-btn" data-filter="make">Make.com <span class="filter-count">(2)</span></button>
   <button class="filter-btn" data-filter="zapier">Zapier <span class="filter-count">(1)</span></button>
 </div>
@@ -1801,6 +1801,109 @@
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">ManyChat</span><span class="chip">Instagram Business API</span>
             <span class="chip">Calendly</span><span class="chip">Google Sheets</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13: Customer Support Triage -->
+  <div class="card" data-id="c13" data-platform="n8n">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · Customer Support · AI Triage</span>
+        <h2 class="card-title">Support Inbox → AI Triage</h2>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A three-workflow n8n system that reads incoming support email, classifies and drafts a reply with Gemini, and only ever sends after a human approves. Built and validated end-to-end — 3 workflows, 31 total nodes, Gemini 2.5 Flash, 0 errors / 0 warnings on validation, ~2 hours build time. Currently inactive pending go-live.</p>
+
+          <div class="screenshot-gallery">
+            <img src="CS1.png" alt="Customer Support Triage - screenshot 1" loading="lazy">
+            <img src="CS2.png" alt="Customer Support Triage - screenshot 2" loading="lazy">
+            <img src="CS3.png" alt="Customer Support Triage - screenshot 3" loading="lazy">
+            <img src="CS4.png" alt="Customer Support Triage - screenshot 4" loading="lazy">
+            <img src="Customer%20Suport%20Triage.png" alt="Customer Support Triage workflow overview" loading="lazy">
+            <img src="Customer%20Support%20Dashboard.png" alt="Customer Support Dashboard" loading="lazy">
+            <img src="Customer%20Support%20Error%20handling.png" alt="Customer Support Error handling flow" loading="lazy">
+          </div>
+
+          <div class="section-label">What I built — three focused workflows</div>
+          <div class="flow">
+            <span class="step">📧 Gmail Trigger</span><span class="arrow">→</span>
+            <span class="step">🧠 Classify (Gemini)</span><span class="arrow">→</span>
+            <span class="step">✍️ Draft reply (Gemini)</span><span class="arrow">→</span>
+            <span class="step">🗂 Log to Airtable</span><span class="arrow">→</span>
+            <span class="step">💬 Slack if flagged</span>
+          </div>
+          <div class="flow">
+            <span class="step">⏱ Every 1 min</span><span class="arrow">→</span>
+            <span class="step">Find "Approved" rows</span><span class="arrow">→</span>
+            <span class="step">Create Gmail draft</span><span class="arrow">→</span>
+            <span class="step">Mark sent / failed</span>
+          </div>
+          <div class="flow">
+            <span class="split neg">⚠️ Error Trigger</span><span class="arrow">→</span>
+            <span class="step">Slack: workflow crashed</span>
+          </div>
+
+          <div class="section-label">How it works, start to finish</div>
+          <ul class="highlights">
+            <li><strong>1. Gmail Trigger</strong> fires on new inbox mail — a standard polling trigger, no webhook to expose or maintain.</li>
+            <li><strong>2. Prompt Config</strong> stamps every editable setting onto the item: which two Gemini models to use, the 0.8 confidence threshold, the company name/signature, and both full system prompts. Nothing below this node has a hard-coded prompt — everything reads from here.</li>
+            <li><strong>3. Normalize Message</strong> strips quoted reply chains, collapses whitespace, and caps the body at 8,000 characters before it reaches a model — also extracts a clean message ID, thread ID, sender info, and subject.</li>
+            <li><strong>4. Skip Already-Processed Emails</strong> de-duplicates on message ID against the last 10,000 items seen — across executions, not just within one run.</li>
+            <li><strong>5. Process One at a Time</strong> (batch size 1) isolates each email so one bad message can't take the rest of the batch down, and keeps Gemini calls well under rate limits.</li>
+            <li><strong>6. Create Log Record</strong> upserts an Airtable row at Status = Processing before any AI call runs — this is what makes crash-recovery work.</li>
+            <li><strong>7. Classify Request</strong> — Gemini 2.5 Flash at temperature 0, constrained by a structured-output schema (with auto-fix) to exactly one of 6 categories, a 0–1 confidence score, a boolean needs_human_review, a reason, and a one-line summary.</li>
+            <li><strong>8. Draft Reply</strong> — Gemini 2.5 Flash at temperature 0.4, writes the reply using the classification, the original email, and the editable signature.</li>
+            <li><strong>9. Evaluate Flags</strong> computes why (if at all) this needs a human: confidence below threshold, category is Refund Request, or the model's own needs_human_review.</li>
+            <li><strong>10. Save Triage Result</strong> writes category, confidence, summary, draft, and status back onto the same Airtable row.</li>
+            <li><strong>11. Branch on Needs Human Review?</strong> — flagged rows post to #support-triage in Slack with a deep link straight to the Airtable record; clean rows just loop to the next email.</li>
+            <li><strong>12. Separately</strong>, once a person sets a row's status to Approved in Airtable, a scheduled workflow (polling every minute) creates a real Gmail draft — never sends — and flips the row to "Draft in Gmail" so it can't be drafted twice.</li>
+            <li><strong>13. Independent of all of the above</strong>, a dedicated error-alert workflow sits on an Error Trigger and pings Slack with the workflow name, failed node, error, and execution link if the main workflow ever crashes outright.</li>
+          </ul>
+
+          <div class="section-label">Why I structured it this way</div>
+          <ul class="highlights">
+            <li><strong>Human-in-the-loop, not human-on-the-loop:</strong> the AI never sends anything. It proposes a category and a draft; a person approves in Airtable; only then does a real Gmail draft get created — and even that still needs a human to hit send.</li>
+            <li><strong>Three workflows, three triggers:</strong> triage (event), drafting (schedule), and crash-alerting (failure) are different concerns on different clocks. Each can be tested, paused, or changed without touching the others.</li>
+            <li><strong>One place to edit the AI:</strong> every model name, threshold, and prompt lives in a single Prompt Config node — a non-engineer can retune tone or swap models without opening an expression.</li>
+            <li><strong>Structured output over free text:</strong> the classifier is contractually forced into 6 known categories with a numeric confidence, so routing logic reads real fields instead of parsing prose.</li>
+            <li><strong>Two temperatures, two jobs:</strong> 0 for classification — repeatable, boring, correct. 0.4 for drafting — natural-sounding without wandering off the brand voice.</li>
+            <li><strong>Airtable as the shared spine:</strong> one Status field that all three workflows read and write is the entire coordination mechanism — no queue, no extra database, easy for a human to audit by eye.</li>
+          </ul>
+
+          <div class="section-label">Edge cases & error handling</div>
+          <ul class="highlights">
+            <li><strong>Duplicate / re-triggered emails:</strong> cross-execution dedup on message ID, plus the log write is an upsert keyed on the same field, so a re-run can't create a second row.</li>
+            <li><strong>Low-confidence or ambiguous classification:</strong> anything under the 0.8 threshold routes to Needs Review regardless of category.</li>
+            <li><strong>Refund requests:</strong> always routed to Needs Review, even at high confidence, because money leaving the business gets a standing human check.</li>
+            <li><strong>Angry, legal, security, or churn-risk emails:</strong> the classifier prompt itself lists these as explicit needs_human_review triggers.</li>
+            <li><strong>Long emails / quoted thread history:</strong> body is stripped of quoted replies and capped at 8,000 characters before it reaches the model.</li>
+            <li><strong>Missing sender name:</strong> falls back to "unknown" rather than breaking the prompt template.</li>
+            <li><strong>A single email fails AI or Airtable:</strong> retried 3× with backoff, then isolated — that one row is marked Error with the real error text and Slacked, while the batch-of-1 loop keeps going.</li>
+            <li><strong>The whole workflow crashes</strong> (bad credential, n8n restart mid-run): the separate Error Trigger workflow still fires and pings Slack, catching what the per-item handling above can't.</li>
+            <li><strong>Double-drafting an approved reply:</strong> the draft-sender flips status to "Draft in Gmail" the moment it succeeds, so the next minute's poll skips it.</li>
+          </ul>
+
+          <div class="section-label">What I'd improve before production</div>
+          <ul class="highlights">
+            <li>Swap the placeholder identity for the real client's name and signature — a one-field change in Prompt Config.</li>
+            <li>Calibrate the 0.8 confidence threshold and the 6-category taxonomy against a batch of real historical tickets instead of intuition.</li>
+            <li>Build a small labeled eval set for the classifier so future prompt or model changes are regression-tested, not eyeballed.</li>
+            <li>Make replies thread-aware — a reply on an existing thread currently opens a brand-new logged request instead of linking back via thread ID.</li>
+            <li>Move the draft-sender off a 1-minute poll onto an Airtable-automation webhook, so approved replies go out the moment they're approved.</li>
+            <li>Add a fallback model or provider for the two Gemini calls so a provider outage doesn't stall the inbox.</li>
+            <li>At real ticket volume, weigh Airtable-as-system-of-record against a dedicated helpdesk tool for SLAs and multi-agent assignment.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Gemini 2.5 Flash</span><span class="chip">Gmail API</span>
+            <span class="chip">Airtable</span><span class="chip">Slack</span>
           </div>
         </div>
       </div>
