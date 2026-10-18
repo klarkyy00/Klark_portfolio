@@ -893,6 +893,105 @@
     50%{ opacity:0.4; }
     100%{ stroke-dashoffset:-354; opacity:0.9; }
   }
+
+  /* ===== PROFESSIONAL POLISH ===== */
+  html, body{ overflow-x:clip; }
+  body{
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(20,184,166,0.12), transparent 60%),
+      linear-gradient(rgba(45,212,191,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45,212,191,0.025) 1px, transparent 1px);
+    background-size:100% 100%, 48px 48px, 48px 48px;
+    background-attachment:fixed;
+  }
+  .side-lightning{ opacity:0.4; }
+
+  /* Top navigation */
+  .top-nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(10,14,20,0.82); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  .top-nav-inner{
+    max-width:1100px; margin:0 auto; padding:0 24px; height:58px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .nav-brand{
+    display:flex; align-items:center; gap:10px; text-decoration:none;
+    color:var(--text); font-weight:800; font-size:0.95rem; letter-spacing:0.01em;
+  }
+  .nav-logo{
+    width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, var(--accent), var(--sea)); color:#04201e; font-weight:800; font-size:0.85rem;
+    box-shadow:0 0 14px -2px rgba(45,212,191,0.6);
+  }
+  .nav-links{ display:flex; align-items:center; gap:2px; }
+  .nav-links a{
+    color:var(--muted); text-decoration:none; font-size:0.82rem; font-weight:600;
+    padding:8px 13px; border-radius:8px; transition:color .2s, background .2s;
+  }
+  .nav-links a:hover{ color:var(--text); background:rgba(45,212,191,0.08); }
+  .nav-links a.active{ color:var(--accent2); background:rgba(45,212,191,0.12); }
+  .nav-links a.nav-cta{
+    margin-left:8px; color:#04201e; background:linear-gradient(90deg, var(--sea), var(--accent2));
+    box-shadow:0 4px 16px -4px rgba(45,212,191,0.6);
+  }
+  .nav-links a.nav-cta:hover{ color:#04201e; transform:translateY(-1px); }
+  .filter-nav{ top:58px; }
+  .about-section, .services-section, .cert-section, .booking-section, .contact-section{ scroll-margin-top:72px; }
+
+  /* Hero call-to-action buttons */
+  .hero-cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:26px; }
+  .hero-cta{
+    display:inline-flex; align-items:center; gap:8px; padding:13px 26px; border-radius:12px;
+    font-weight:700; font-size:0.92rem; text-decoration:none;
+    transition:transform .18s, box-shadow .2s, border-color .2s, color .2s;
+  }
+  .hero-cta:hover{ transform:translateY(-2px); }
+  .hero-cta.primary{
+    background:linear-gradient(90deg, var(--sea), var(--accent2)); color:#04201e;
+    box-shadow:0 8px 28px -8px rgba(45,212,191,0.6);
+  }
+  .hero-cta.primary:hover{ box-shadow:0 12px 34px -8px rgba(45,212,191,0.8); }
+  .hero-cta.ghost{ border:1.5px solid var(--border); color:var(--text); background:rgba(18,32,41,0.6); }
+  .hero-cta.ghost:hover{ border-color:var(--accent2); color:var(--accent2); }
+
+  /* Stats strip */
+  .stats-strip{ max-width:1000px; margin:-28px auto 0; padding:0 24px; position:relative; z-index:3; }
+  .stats-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:1px;
+    background:var(--border); border:1px solid var(--border); border-radius:16px; overflow:hidden;
+    box-shadow:0 20px 50px -20px rgba(20,184,166,0.35);
+  }
+  .stat{ background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%); padding:22px 14px; text-align:center; }
+  .stat-num{
+    font-size:2.1rem; font-weight:800; line-height:1.1;
+    background:linear-gradient(90deg, var(--accent2), var(--sea));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .stat-label{
+    margin-top:6px; font-size:0.72rem; font-weight:700; color:var(--muted);
+    text-transform:uppercase; letter-spacing:0.07em;
+  }
+
+  /* Consistent section headings with accent bar */
+  .about-section h2, .cert-section h2{
+    background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2), var(--accent));
+    background-size:300% 100%;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:title-shimmer 6s linear infinite;
+  }
+  .about-section h2::after, .services-section h2::after, .process-section h2::after, .faq-section h2::after,
+  .cert-section h2::after, .testimonials-section h2::after, .booking-section h2::after, .contact-section h2::after{
+    content:''; display:block; width:48px; height:3px; margin:14px auto 0; border-radius:3px;
+    background:linear-gradient(90deg, var(--accent), var(--sea));
+  }
+
+  @media (max-width:760px){
+    .nav-links a:not(.nav-cta){ display:none; }
+    .stats-grid{ grid-template-columns:repeat(2, 1fr); }
+    .stats-strip{ margin-top:-18px; }
+  }
 </style>
 </head>
 <body>
@@ -915,6 +1014,20 @@
 <svg class="side-lightning right" viewBox="0 0 70 800" preserveAspectRatio="none">
   <path d="M35,0 L20,90 L45,95 L15,200 L40,205 L10,320 L38,326 L12,440 L42,446 L18,560 L44,566 L14,680 L36,686 L22,800"/>
 </svg>
+
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a class="nav-brand" href="#top"><span class="nav-logo">K</span><span>Klark Cabungcal</span></a>
+    <div class="nav-links">
+      <a href="#about" data-target="about">About</a>
+      <a href="#services" data-target="services">Services</a>
+      <a href="#certs" data-target="certs">Certifications</a>
+      <a href="#filterNav" data-target="filterNav">Projects</a>
+      <a href="#contact" data-target="contact">Contact</a>
+      <a class="nav-cta" href="#book">Book a Call</a>
+    </div>
+  </div>
+</nav>
 
 <div class="hero">
   <div class="title-row">
@@ -968,7 +1081,21 @@
     </a>
   </div>
 
+  <div class="hero-cta-row">
+    <a class="hero-cta primary" href="#filterNav">View My Work</a>
+    <a class="hero-cta ghost" href="#book">Book a Free Call</a>
+  </div>
+
   <p class="hint">Click any project below to <span>expand the full workflow</span></p>
+</div>
+
+<div class="stats-strip">
+  <div class="stats-grid">
+    <div class="stat"><div class="stat-num" data-target="13">13</div><div class="stat-label">Projects documented</div></div>
+    <div class="stat"><div class="stat-num" data-target="3">3</div><div class="stat-label">Platforms certified</div></div>
+    <div class="stat"><div class="stat-num" data-target="2">2</div><div class="stat-label">Client projects delivered</div></div>
+    <div class="stat"><div class="stat-num" data-target="6" data-suffix="+">6+</div><div class="stat-label">Years running live SCADA systems</div></div>
+  </div>
 </div>
 
 <div class="badges-section">
@@ -1879,15 +2006,26 @@
         <div class="card-body">
           <p class="card-desc">A real client project currently in progress — connecting Instagram DM conversations (via ManyChat) to a lead-tracking sheet, and matching those DM leads back to actual Calendly bookings, so a business can see the full path from "commented/DM'd" to "booked a call" in one place instead of two disconnected systems.</p>
 
-          <div class="screenshot-slot">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-5 4 4 5-6 4 5"/><circle cx="8" cy="8" r="1.5"/></svg><br>
-            Build in progress — screenshots coming once complete
+          <div class="screenshot-gallery">
+            <img src="ig%20lead%20dashboard%20workflow.png" alt="IG lead pipeline - dashboard workflow" loading="lazy">
+            <img src="ig%20lead%20calendly%20sync.png" alt="IG lead pipeline - Calendly sync workflow" loading="lazy">
+            <img src="new%20convo%20logger.png" alt="IG lead pipeline - new conversation logger" loading="lazy">
+            <img src="many%20chat%20tag.png" alt="IG lead pipeline - ManyChat tag capture" loading="lazy">
+            <img src="daily%20update.png" alt="IG lead pipeline - daily update workflow" loading="lazy">
+            <img src="follow%20up.png" alt="IG lead pipeline - follow-up workflow" loading="lazy">
+            <img src="ig%20dashboard.png" alt="IG lead pipeline - dashboard" loading="lazy">
+            <img src="leads.png" alt="IG lead pipeline - leads view" loading="lazy">
+            <img src="reports.png" alt="IG lead pipeline - reports view" loading="lazy">
           </div>
 
-          <div class="section-label">Progress so far</div>
+          <div class="section-label">What's built (shown above)</div>
           <ul class="highlights">
-            <li><strong>Lead-tracking sheet:</strong> Set up as the source of truth for captured DM leads.</li>
-            <li><strong>First workflow (built & tested):</strong> Captures ManyChat tags and creates or updates the corresponding lead record automatically.</li>
+            <li><strong>Lead-tracking sheet:</strong> The source of truth for captured DM leads.</li>
+            <li><strong>ManyChat tag capture:</strong> Captures ManyChat tags and creates or updates the corresponding lead record automatically.</li>
+            <li><strong>New conversation logger:</strong> Logs each new Instagram DM conversation as a lead record.</li>
+            <li><strong>Calendly sync:</strong> Matches booked calls back to the original DM lead using the Instagram handle.</li>
+            <li><strong>Follow-up and daily update workflows:</strong> Scheduled workflows that keep lead status current and surface leads needing follow-up.</li>
+            <li><strong>Dashboard and reports:</strong> A live view of leads and reporting, rebuilt from the same lead sheet.</li>
           </ul>
 
           <div class="section-label">What's planned next</div>
@@ -2234,6 +2372,45 @@
 
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  })();
+
+  // ===== Nav anchors, active-section highlight, stat count-up =====
+  (function(){
+    const anchors = { about:'.about-section', services:'.services-section', certs:'.cert-section', book:'.booking-section', contact:'.contact-section' };
+    Object.keys(anchors).forEach(id => {
+      const el = document.querySelector(anchors[id]);
+      if(el && !el.id) el.id = id;
+    });
+
+    const links = document.querySelectorAll('.nav-links a[data-target]');
+    const secs = Array.from(links).map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+    function setActive(){
+      let current = null;
+      secs.forEach(s => { if(s.getBoundingClientRect().top <= 140) current = s.id; });
+      links.forEach(a => a.classList.toggle('active', a.dataset.target === current));
+    }
+    window.addEventListener('scroll', setActive, { passive:true });
+    setActive();
+
+    const nums = document.querySelectorAll('.stat-num');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if(!en.isIntersecting) return;
+        const el = en.target;
+        const target = Number(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const start = performance.now();
+        const dur = 1200;
+        function tick(now){
+          const p = Math.min((now - start) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suffix;
+          if(p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        io.unobserve(el);
+      });
+    }, { threshold:0.5 });
+    nums.forEach(n => { n.textContent = '0' + (n.dataset.suffix || ''); io.observe(n); });
   })();
 </script>
 
