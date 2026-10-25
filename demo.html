@@ -55,16 +55,18 @@ const LEADS={leads,count:leads.length,generatedAt:new Date().toISOString(),warni
   followed_up:leads.filter(l=>l.followed_up_at).length,replied:leads.filter(replied).length,interested:leads.filter(l=>l.stage==='interested').length,not_interested:leads.filter(l=>l.stage==='not_interested').length,skipped:0},byGap:group('gap_type'),byIndustry:group('industry')}};
 
 // inbox: first email, follow-up, replies
-const firstText=l=>{const e=EMAILS[l.dom];return 'Hi '+l.company.replace(/\.$/,'')+' team,\n\n'+(e?e[1]+' '+e[2]:l.recommendation+'.')+'\n\nWould it help if I sent a short example of how it could look on your site?'+SIGN};
+const firstText=l=>{const e=EMAILS[l.dom];return 'Hi '+l.company.replace(/\.$/,'')+' team,\n\n'+(e?e[1]+' '+e[2]:l.recommendation+'.')+'\n\n'+OFFERS[l.dom.length%OFFERS.length]+SIGN};
+// the offer: a free website audit report (same as the real emails)
+const OFFERS=['I put together a free audit of your site with the fixes that would help your customers most. Want me to send it over?','Would a free audit of your site be useful? I\'ll send a short report of what I checked and the fixes that would help most, no strings attached.','I\'ve done a free audit of your site. Want me to send you the report? It\'s short and there\'s no obligation.'];
 const REPLIES={replied:'Hi Klark,\n\nThanks for the note. We do miss a lot of after-hours calls. Roughly what does something like that cost, and how long does it take to set up? Would it work with the scheduling software we already use?\n\nMike\nLone Star Plumbing & Drain',
-  interested:'Hi Klark,\n\nGood timing, online booking has been on our list for months. Yes, please send the example. Are you free for a quick call Thursday or Friday afternoon (Central time)?\n\nDr. Patel\nBright Smile Family Dental',
+  interested:'Hi Klark,\n\nGood timing, online booking has been on our list for months. Yes, please send the audit. Are you free for a quick call Thursday or Friday afternoon (Central time)?\n\nDr. Patel\nBright Smile Family Dental',
   not_interested:'Hi Klark, thanks, but we just signed with a scheduling vendor. Please take us off your list.\n\nFront desk, Cedar Park Pediatrics'};
 let qid=1;const conversations=[],queued=[];
 for(const l of leads){const id=qid++;
   if(l.stage==='queued'){queued.push({queue_id:id,company:l.company,email:l.email,subject:l.email_subject,body:firstText(l),queued_at:ago(0,5),gap_type:l.gap_type});continue}
   if(!reached(l))continue;
   const msgs=[{id:'m'+id+'a',direction:'out',kind:'first_email',from:'Klark <klark@klarkyytech.example>',to:l.email,subject:l.email_subject,date:l.emailed_at,text:firstText(l),unread:false}];
-  if(l.followed_up_at)msgs.push({id:'m'+id+'b',direction:'out',kind:'follow_up',from:'Klark <klark@klarkyytech.example>',to:l.email,subject:'Re: '+l.email_subject,date:l.followed_up_at,text:'Hi '+l.company.replace(/\.$/,'')+' team,\n\nJust bumping this up in case it got buried. I put together a quick example of how it could work on '+l.website.replace(/^https:\/\/www\.|\/$/g,'')+'. Happy to send it over, no obligation.'+SIGN,unread:false});
+  if(l.followed_up_at)msgs.push({id:'m'+id+'b',direction:'out',kind:'follow_up',from:'Klark <klark@klarkyytech.example>',to:l.email,subject:'Re: '+l.email_subject,date:l.followed_up_at,text:'Hi '+l.company.replace(/\.$/,'')+' team,\n\nJust bumping this up in case it got buried. The free audit of '+l.website.replace(/^https:\/\/www\.|\/$/g,'')+' is ready, with what I checked and the fixes that would help most. Should I send it over?'+SIGN,unread:false});
   if(l.replied_at)msgs.push({id:'m'+id+'c',direction:'in',kind:'reply',from:l.company+' <'+l.email+'>',to:'Klark',subject:'Re: '+l.email_subject,date:l.replied_at,text:REPLIES[l.stage],unread:l.stage!=='not_interested'});
   conversations.push({queue_id:id,company:l.company,email:l.email,domain:l.email.split('@')[1],website:l.website,gap_type:l.gap_type,subject:l.email_subject,status:'sent',sent_at:l.emailed_at,
     followup_sent_at:l.followed_up_at,followup_status:l.followed_up_at?'sent':'',reply_status:l.reply_status,reply_summary:l.reply_summary,thread_found:true,message_count:msgs.length,
