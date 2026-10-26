@@ -154,7 +154,8 @@ html.theme-dark{--ink:#e5ece6;--muted:#a1b8b0;--line:#254740;--paper:#112c27;--b
 <div class="modal-backdrop" id="detailModal"><div class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="dTitle"><div class="detail-head"><div><h2 id="dTitle"></h2><p id="dSub"></p></div><span class="detail-score" id="dScore"></span></div><div class="detail-body"><div class="detail-block"><b>Contact</b><span id="dContact"></span></div><div class="detail-block"><b>Outreach</b><div id="dOutreach"></div></div><div class="detail-block"><b>Biggest problem</b><span id="dHeadline"></span></div><div class="detail-block"><b>Issues found</b><ul id="dIssues"></ul></div><div class="detail-block"><b>Missing automation</b><ul id="dMissing"></ul></div><div class="detail-block"><b>Recommendation</b><span id="dRec"></span></div><div class="detail-block pitch"><b>Outreach message</b><span id="dAngle"></span></div></div><div class="modal-actions"><a class="btn" id="dSite" target="_blank" rel="noopener" style="text-decoration:none">Visit site ↗</a><button type="button" class="btn" id="dClose">Close</button><button type="button" class="btn btn-primary" id="dCopy">Copy outreach message</button></div></div></div>
 <script>
 // ---- SETTINGS: the only place to change the n8n address (e.g. a new ngrok domain or a cloud server) ----
-window.KLARKYY_CONFIG = { N8N: 'https://awkward-wolverine-map.ngrok-free.dev' };
+// Opened from this PC (file://): talk to n8n directly, no tunnel needed (saves ngrok's monthly request limit).
+window.KLARKYY_CONFIG = { N8N: location.protocol === 'file:' ? 'http://localhost:5678' : 'https://awkward-wolverine-map.ngrok-free.dev' };
 
 // ---- Access gate: the page holds no key. The password is asked once per browser and checked by n8n. ----
 (()=>{
