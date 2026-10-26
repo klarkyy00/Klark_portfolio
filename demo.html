@@ -138,7 +138,7 @@ html.theme-dark{--ink:#e5ece6;--muted:#a1b8b0;--line:#254740;--paper:#112c27;--b
 <div class="stat"><div class="stat-head">Sites down <span class="stat-icon">!</span></div><div class="stat-value" id="downCount">—</div><div class="stat-foot">unreachable websites, urgent pitch</div></div>
 </section>
 <section class="card pipeline-card" id="pipelineCard"><div class="card-head"><div><h2>Outreach pipeline</h2><p>From audited lead to interested reply, live from the outreach queue</p></div><span class="badge" id="pipelineBadge">—</span></div><div class="pipeline-body"><div class="funnel" id="funnel"><div class="funnel-empty">Loading pipeline…</div></div><div class="gap-stats"><h3>Which gap gets replies</h3><table class="mini-table"><thead><tr><th>Gap</th><th>Emailed</th><th>Replied</th><th>Interested</th></tr></thead><tbody id="gapStats"><tr><td colspan="4" class="muted-cell">No emails sent yet</td></tr></tbody></table><h3 style="margin-top:14px">By industry</h3><table class="mini-table"><thead><tr><th>Industry</th><th>Emailed</th><th>Replied</th><th>Interested</th></tr></thead><tbody id="industryStats"><tr><td colspan="4" class="muted-cell">No emails sent yet</td></tr></tbody></table></div></div></section>
-<section class="workflow-panel" id="workflowPanel"><div class="workflow-main"><span class="workflow-icon">⌘</span><div><h2>Website Opportunity Finder <span style="font-weight:400;color:#849087">· live from n8n</span></h2><p>Finds local businesses on OpenStreetMap, audits their websites with Gemini, and logs leads scoring 8+ to Google Sheets, Slack #website-leads and HubSpot. The dashboard classifies and filters businesses by industry.</p></div></div><span class="workflow-status" id="workflowStatus">Connecting…</span><div class="workflow-details"><button class="btn" id="refreshLeads">↻ Refresh now</button><a class="subtle-link" id="sheetLink" target="_blank" rel="noopener" style="text-decoration:none">Open leads sheet ↗</a><small id="workflowInfo" style="color:var(--muted);font-size:10px">Loading leads…</small><small style="color:var(--muted);font-size:10px">Auto-refreshes every 60 seconds while this tab is open.</small></div><div class="workflow-alert" id="workflowAlert"></div></section><section class="health-panel" id="healthPanel" hidden><div class="hp-head"><h2>System health</h2><span class="hp-badge" id="hpBadge">Checking…</span><small id="hpTime"></small></div><div class="hp-grid" id="hpGrid"></div></section><section class="capture-kit"><div class="capture-card"><div class="eyebrow" style="margin-bottom:7px">Website conversion</div><h2>Turn visitors into leads</h2><p>Preview a simple inquiry form for your services. Leads are saved to the Leads folder in your Obsidian vault when the dashboard server is running.</p><form class="capture-form" id="capturePreview"><input name="name" required placeholder="Your name"><input name="email" type="email" required placeholder="Work email"><select name="service"><option>AI workflow setup</option><option>Lead generation system</option><option>Automation consulting</option><option>AI customer support</option></select><select name="industry" aria-label="Business industry"><option value="other">Business industry</option><option value="healthcare">Healthcare &amp; Medical</option><option value="construction">Construction &amp; Trades</option><option value="real_estate">Real Estate</option><option value="professional_services">Professional Services</option><option value="retail">Retail &amp; E-commerce</option><option value="food_hospitality">Food &amp; Hospitality</option><option value="education">Education</option><option value="finance_insurance">Finance &amp; Insurance</option><option value="technology">Technology</option><option value="automotive">Automotive</option><option value="beauty_wellness">Beauty &amp; Wellness</option><option value="manufacturing_logistics">Manufacturing &amp; Logistics</option></select><input name="website" type="url" placeholder="Your website (optional)"><input class="capture-full" name="message" placeholder="What would you like to automate?"><button class="btn btn-primary capture-full" type="submit">Request a free AI audit →</button></form><div class="capture-success" id="captureSuccess">Inquiry saved. The dashboard syncs eligible n8n audit leads into the same Obsidian folder.</div></div><div class="embed-card"><h2>Connect your website</h2><p>Paste your active n8n Webhook URL to generate a small form embed for your site.</p><label class="embed-label" for="webhookUrl">n8n production webhook URL</label><input class="embed-url" id="webhookUrl" type="url" placeholder="https://your-n8n-domain/webhook/lead-capture"><div style="display:flex;gap:8px;margin-top:9px"><button class="btn" id="saveWebhook">Save URL</button><button class="btn btn-primary" id="copyEmbed">Copy embed code</button></div><label class="embed-label" for="embedCode">Website embed snippet</label><textarea class="codebox" id="embedCode" readonly></textarea><p class="capture-note">For live delivery, configure an n8n Webhook node and a Sheets/CRM destination. The supplied audit workflow uses a manual trigger and needs adaptation for visitor submissions. Set CORS, spam protection, and privacy terms before publishing a public form.</p></div></section><section class="dashboard-grid"><div class="left-col">
+<section class="workflow-panel" id="workflowPanel"><div class="workflow-main"><span class="workflow-icon">⌘</span><div><h2>Website Opportunity Finder <span style="font-weight:400;color:#849087">· live from n8n</span></h2><p>Finds local businesses on OpenStreetMap, audits their websites with Gemini, and logs leads scoring 8+ to Google Sheets, Slack #website-leads and HubSpot. The dashboard classifies and filters businesses by industry.</p></div></div><span class="workflow-status" id="workflowStatus">Connecting…</span><div class="workflow-details"><button class="btn" id="refreshLeads">↻ Refresh now</button><a class="subtle-link" id="sheetLink" target="_blank" rel="noopener" style="text-decoration:none">Open leads sheet ↗</a><small id="workflowInfo" style="color:var(--muted);font-size:10px">Loading leads…</small><small style="color:var(--muted);font-size:10px">Auto-refreshes every 60 seconds while this tab is open.</small></div><div class="workflow-alert" id="workflowAlert"></div></section><section class="health-panel" id="healthPanel" hidden><div class="hp-head"><h2>System health</h2><span class="hp-badge" id="hpBadge">Checking…</span><small id="hpTime"></small></div><div class="hp-grid" id="hpGrid"></div></section><section class="wa-queue" id="waQueue" hidden></section><section class="capture-kit"><div class="capture-card"><div class="eyebrow" style="margin-bottom:7px">Website conversion</div><h2>Turn visitors into leads</h2><p>Preview a simple inquiry form for your services. Leads are saved to the Leads folder in your Obsidian vault when the dashboard server is running.</p><form class="capture-form" id="capturePreview"><input name="name" required placeholder="Your name"><input name="email" type="email" required placeholder="Work email"><select name="service"><option>AI workflow setup</option><option>Lead generation system</option><option>Automation consulting</option><option>AI customer support</option></select><select name="industry" aria-label="Business industry"><option value="other">Business industry</option><option value="healthcare">Healthcare &amp; Medical</option><option value="construction">Construction &amp; Trades</option><option value="real_estate">Real Estate</option><option value="professional_services">Professional Services</option><option value="retail">Retail &amp; E-commerce</option><option value="food_hospitality">Food &amp; Hospitality</option><option value="education">Education</option><option value="finance_insurance">Finance &amp; Insurance</option><option value="technology">Technology</option><option value="automotive">Automotive</option><option value="beauty_wellness">Beauty &amp; Wellness</option><option value="manufacturing_logistics">Manufacturing &amp; Logistics</option></select><input name="website" type="url" placeholder="Your website (optional)"><input class="capture-full" name="message" placeholder="What would you like to automate?"><button class="btn btn-primary capture-full" type="submit">Request a free AI audit →</button></form><div class="capture-success" id="captureSuccess">Inquiry saved. The dashboard syncs eligible n8n audit leads into the same Obsidian folder.</div></div><div class="embed-card"><h2>Connect your website</h2><p>Paste your active n8n Webhook URL to generate a small form embed for your site.</p><label class="embed-label" for="webhookUrl">n8n production webhook URL</label><input class="embed-url" id="webhookUrl" type="url" placeholder="https://your-n8n-domain/webhook/lead-capture"><div style="display:flex;gap:8px;margin-top:9px"><button class="btn" id="saveWebhook">Save URL</button><button class="btn btn-primary" id="copyEmbed">Copy embed code</button></div><label class="embed-label" for="embedCode">Website embed snippet</label><textarea class="codebox" id="embedCode" readonly></textarea><p class="capture-note">For live delivery, configure an n8n Webhook node and a Sheets/CRM destination. The supplied audit workflow uses a manual trigger and needs adaptation for visitor submissions. Set CORS, spam protection, and privacy terms before publishing a public form.</p></div></section><section class="dashboard-grid"><div class="left-col">
 <div class="card"><div class="card-head"><div><h2>Lead activity</h2><p>Leads found by the AI website audit, per day</p></div><select class="filter" id="period"><option value="30">Last 30 days</option><option value="14">Last 14 days</option><option value="7">Last 7 days</option></select></div><div class="chart-wrap"><div class="chart-legend"><div><b id="chartTotal">—</b> <small>leads in this period</small></div><span class="chip" id="chartChip">live</span></div><svg class="chart" viewBox="0 0 700 145" preserveAspectRatio="none" aria-label="Lead activity chart"><defs><linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6ad5bd" stop-opacity=".48"/><stop offset="1" stop-color="#6ad5bd" stop-opacity="0"/></linearGradient></defs><path id="chartArea" d="M0 140 H700 V145 H0Z" fill="url(#fill)"/><path id="chartLine" d="M0 140 H700" fill="none" stroke="#259c87" stroke-width="2.4" vector-effect="non-scaling-stroke"/></svg><div class="chart-labels" id="chartLabels"></div></div></div>
 <div class="card source-card"><div class="card-head"><div><h2>Leads by industry</h2><p>Which business types the audit flagged</p></div></div><div class="source-list" id="industryList"><div class="source-row"><div class="source-name">Loading…</div></div></div></div>
 </div><div class="right-col">
@@ -233,7 +233,7 @@ async function loadLeads(){
     if(res.status===401){window.klarkyyLock('The password changed. Please enter the new one.');return}
     const data=await res.json().catch(()=>({}));
     if(!res.ok)throw new Error(data.error?(data.error+(data.detail?' ('+data.detail+')':'')):'HTTP '+res.status);
-    liveLeads=Array.isArray(data.leads)?data.leads:[];liveLeads.forEach(l=>{if(!STAGES[l.stage])l.stage='new'});livePipeline=data.pipeline||null;lastSync=new Date();window.klarkyyWarn?.(data.warnings||[]);syncAuditLeadsToVault(liveLeads);
+    liveLeads=Array.isArray(data.leads)?data.leads:[];liveLeads.forEach(l=>{if(!STAGES[l.stage])l.stage='new'});window.waStats=data.whatsapp||null;livePipeline=data.pipeline||null;lastSync=new Date();window.klarkyyWarn?.(data.warnings||[]);syncAuditLeadsToVault(liveLeads);
     try{demoStore.setItem(LEADS_CACHE,JSON.stringify({at:lastSync.toISOString(),leads:liveLeads,pipeline:livePipeline}))}catch(x){}
     window.klarkyyOffline('');
     panel.classList.remove('errored');panel.classList.add('live');
@@ -251,7 +251,7 @@ async function loadLeads(){
   }
 }
 
-function renderAll(){renderStats();renderPipeline();renderChart();renderIndustries();renderAttention();renderTable()}
+function renderAll(){renderStats();renderPipeline();renderChart();renderIndustries();renderAttention();renderTable();window.renderWaQueue&&window.renderWaQueue()}
 
 function pct(a,b){return b?Math.round(a/b*100)+'%':'—'}
 function renderPipeline(){
@@ -608,6 +608,69 @@ async function checkVersion(){
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){loadLeads?.();loadHealth();checkVersion()}});
 document.getElementById('refreshLeads')?.addEventListener('click',()=>loadHealth(true));
 setTimeout(()=>loadHealth(true),1500);setInterval(loadHealth,60000);setInterval(checkVersion,VERSION_MS);
+})();
+</script>
+<script>
+// ---- WhatsApp send queue: one message at a time, paced, and marked in n8n so it leaves the list ----
+(()=>{
+const GAP_MIN = 3, DAILY_SOFT_LIMIT = 15, LAST = 'klarkyy-wa-last-sent';
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const css = document.createElement('style'); css.textContent = `
+.wa-queue{margin:0 0 16px;background:var(--paper,#fff);border:1px solid var(--line);border-radius:14px;box-shadow:0 3px 12px #1a30210a;padding:16px 18px}
+.wa-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:12px}.wa-head h2{font:700 14px Manrope,system-ui,sans-serif;margin:0}
+.wa-pill{font-size:10px;font-weight:700;border-radius:99px;padding:3px 9px;background:#f1f3f0;color:#5f6d64}.wa-pill.good{background:#e3f4d6;color:#3d7a2a}.wa-pill.warn{background:#fdf1e4;color:#9a5b1e}
+.wa-next{border:1px solid var(--line);border-radius:12px;padding:12px 14px}.wa-next b{font-size:13px}.wa-next small{color:var(--muted)}
+.wa-msg{white-space:pre-wrap;font-size:12px;line-height:1.5;margin:8px 0 12px;color:var(--ink);background:#f6f8f4;border-radius:10px;padding:10px 12px}
+.wa-btns{display:flex;flex-wrap:wrap;gap:8px}.wa-btns button{border:0;border-radius:9px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer}
+.wa-send{background:#1f8f4e;color:#fff}.wa-send:disabled{background:#9fbfab;cursor:not-allowed}.wa-alt{background:#f1f3f0;color:#3b463f}
+html.theme-dark .wa-queue{background:#18221c}html.theme-dark .wa-msg{background:#202c24}`; document.head.appendChild(css);
+
+const txNow = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+let busy = false, tick = null;
+function lastSent() {
+  let t = 0; try { t = Number(demoStore.getItem(LAST) || 0); } catch (e) {}
+  const server = Date.parse((window.waStats || {}).last_sent_at || '') || 0;
+  return Math.max(t, server);
+}
+async function mark(lead, action) {
+  const url = window.KLARKYY_CONFIG.N8N + '/webhook/whatsapp-mark?key=' + encodeURIComponent(window.klarkyyDashKey ? window.klarkyyDashKey() : '');
+  const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: lead.wa_id, action }) });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  lead.wa_link = ''; lead.wa_status = action;
+  if (action === 'sent') { const st = window.waStats || (window.waStats = {}); st.sent_today = (st.sent_today || 0) + 1; st.last_sent_at = new Date().toISOString(); }
+}
+window.renderWaQueue = function () {
+  const box = document.getElementById('waQueue'); if (!box) return;
+  const queue = (typeof liveLeads !== 'undefined' ? liveLeads : []).filter(l => l.wa_link && l.wa_id).sort((a, b) => (b.score || 0) - (a.score || 0));
+  const st = window.waStats || {};
+  if (!queue.length && !st.sent_today) { box.hidden = true; return; }
+  box.hidden = false;
+  const tx = txNow(), h = tx.getHours(), wd = tx.getDay(), open = wd >= 1 && wd <= 5 && h >= 9 && h < 18;
+  const wait = Math.max(0, GAP_MIN * 60000 - (Date.now() - lastSent()));
+  const capped = (st.sent_today || 0) >= DAILY_SOFT_LIMIT;
+  const next = queue[0];
+  box.innerHTML = '<div class="wa-head"><h2>WhatsApp to send</h2>'
+    + '<span class="wa-pill">' + queue.length + ' waiting</span>'
+    + '<span class="wa-pill ' + (capped ? 'warn' : 'good') + '">sent today ' + (st.sent_today || 0) + ' / ' + DAILY_SOFT_LIMIT + '</span>'
+    + '<span class="wa-pill ' + (open ? 'good' : 'warn') + '">Texas ' + tx.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + (open ? ' · business hours' : ' · outside business hours') + '</span></div>'
+    + (next ? '<div class="wa-next"><b>' + esc(next.company) + '</b> <small>· ' + esc(next.phone) + ' · score ' + esc(next.score) + '/10 · ' + esc(next.headline || '') + '</small>'
+      + '<div class="wa-msg">' + esc(next.wa_message) + '</div><div class="wa-btns">'
+      + '<button class="wa-send" id="waSend"' + (wait || capped || busy ? ' disabled' : '') + '>' + (capped ? 'Daily limit reached' : wait ? 'Next send in ' + Math.floor(wait / 60000) + ':' + String(Math.ceil(wait / 1000) % 60).padStart(2, '0') : 'Send next on WhatsApp') + '</button>'
+      + '<button class="wa-alt" id="waNotOn">Not on WhatsApp</button><button class="wa-alt" id="waSkip">Skip</button></div>'
+      + '<small style="display:block;margin-top:8px">Opens WhatsApp with the message ready: check it, then press Send. Sends are spaced ' + GAP_MIN + ' min apart so WhatsApp doesn\'t flag your number.</small></div>'
+      : '<div class="wa-next"><small>All WhatsApp messages are sent. New ones appear here when the lead finder finds phone-only businesses.</small></div>');
+  if (!next) return;
+  const act = async (action, openLink) => {
+    if (busy) return; busy = true;
+    if (openLink) { window.open(next.wa_link, '_blank', 'noopener'); try { demoStore.setItem(LAST, String(Date.now())); } catch (e) {} }
+    try { await mark(next, action); } catch (e) { alert('Could not save that in n8n (' + e.message + '). Is your PC on?'); }
+    busy = false; window.renderWaQueue(); window.renderAttention && window.renderAttention();
+  };
+  document.getElementById('waSend').onclick = () => act('sent', true);
+  document.getElementById('waNotOn').onclick = () => act('not_on_whatsapp', false);
+  document.getElementById('waSkip').onclick = () => act('skip', false);
+  clearTimeout(tick); if (wait) tick = setTimeout(window.renderWaQueue, 1000);
+};
 })();
 </script>
 </body></html>
