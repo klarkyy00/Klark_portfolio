@@ -626,7 +626,7 @@ const css = document.createElement('style'); css.textContent = `
 html.theme-dark .wa-queue{background:#18221c}html.theme-dark .wa-msg{background:#202c24}`; document.head.appendChild(css);
 
 const txNow = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-let busy = false, tick = null;
+let busy = false, tick = null, pending = null; // pending = wa_id opened in WhatsApp, waiting for "did it send?"
 function lastSent() {
   let t = 0; try { t = Number(demoStore.getItem(LAST) || 0); } catch (e) {}
   const server = Date.parse((window.waStats || {}).last_sent_at || '') || 0;
@@ -648,27 +648,36 @@ window.renderWaQueue = function () {
   const tx = txNow(), h = tx.getHours(), wd = tx.getDay(), open = wd >= 1 && wd <= 5 && h >= 9 && h < 18;
   const wait = Math.max(0, GAP_MIN * 60000 - (Date.now() - lastSent()));
   const capped = (st.sent_today || 0) >= DAILY_SOFT_LIMIT;
-  const next = queue[0];
+  const next = queue.find(l => l.wa_id === pending) || queue[0];
+  const asking = !!next && next.wa_id === pending;
   box.innerHTML = '<div class="wa-head"><h2>WhatsApp to send</h2>'
     + '<span class="wa-pill">' + queue.length + ' waiting</span>'
     + '<span class="wa-pill ' + (capped ? 'warn' : 'good') + '">sent today ' + (st.sent_today || 0) + ' / ' + DAILY_SOFT_LIMIT + '</span>'
     + '<span class="wa-pill ' + (open ? 'good' : 'warn') + '">Texas ' + tx.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + (open ? ' · business hours' : ' · outside business hours') + '</span></div>'
     + (next ? '<div class="wa-next"><b>' + esc(next.company) + '</b> <small>· ' + esc(next.phone) + ' · score ' + esc(next.score) + '/10 · ' + esc(next.headline || '') + '</small>'
-      + '<div class="wa-msg">' + esc(next.wa_message) + '</div><div class="wa-btns">'
+      + '<div class="wa-msg">' + esc(next.wa_message) + '</div>'
+      + (asking ? '<b style="display:block;margin-bottom:8px">Did the message send in WhatsApp?</b><div class="wa-btns">'
+      + '<button class="wa-send" id="waYes">Yes, sent</button><button class="wa-alt" id="waNotOn">Not on WhatsApp</button><button class="wa-alt" id="waReopen">Open WhatsApp again</button></div>'
+      + '<small style="display:block;margin-top:8px">If WhatsApp said the number is invalid or not on WhatsApp, press "Not on WhatsApp": it won\'t count toward today\'s ' + DAILY_SOFT_LIMIT + ' and you can call them instead.</small></div>'
+      : '<div class="wa-btns">'
       + '<button class="wa-send" id="waSend"' + (wait || capped || busy ? ' disabled' : '') + '>' + (capped ? 'Daily limit reached' : wait ? 'Next send in ' + Math.floor(wait / 60000) + ':' + String(Math.ceil(wait / 1000) % 60).padStart(2, '0') : 'Send next on WhatsApp') + '</button>'
       + '<button class="wa-alt" id="waNotOn">Not on WhatsApp</button><button class="wa-alt" id="waSkip">Skip</button></div>'
-      + '<small style="display:block;margin-top:8px">Opens WhatsApp with the message ready: check it, then press Send. Sends are spaced ' + GAP_MIN + ' min apart so WhatsApp doesn\'t flag your number.</small></div>'
+      + '<small style="display:block;margin-top:8px">Opens WhatsApp with the message ready: check it, then press Send. Sends are spaced ' + GAP_MIN + ' min apart so WhatsApp doesn\'t flag your number.</small></div>')
       : '<div class="wa-next"><small>All WhatsApp messages are sent. New ones appear here when the lead finder finds phone-only businesses.</small></div>');
   if (!next) return;
-  const act = async (action, openLink) => {
+  const act = async (action) => {
     if (busy) return; busy = true;
-    if (openLink) { window.open(next.wa_link, '_blank', 'noopener'); try { demoStore.setItem(LAST, String(Date.now())); } catch (e) {} }
-    try { await mark(next, action); } catch (e) { alert('Could not save that in n8n (' + e.message + '). Is your PC on?'); }
+    if (action === 'sent') { try { demoStore.setItem(LAST, String(Date.now())); } catch (e) {} }
+    try { await mark(next, action); pending = null; } catch (e) { alert('Could not save that in n8n (' + e.message + '). Is your PC on?'); }
     busy = false; window.renderWaQueue(); window.renderAttention && window.renderAttention();
   };
-  document.getElementById('waSend').onclick = () => act('sent', true);
-  document.getElementById('waNotOn').onclick = () => act('not_on_whatsapp', false);
-  document.getElementById('waSkip').onclick = () => act('skip', false);
+  const openWa = () => { window.open(next.wa_link, '_blank', 'noopener'); pending = next.wa_id; window.renderWaQueue(); };
+  const on = (id, fn) => { const b = document.getElementById(id); if (b) b.onclick = fn; };
+  on('waSend', openWa);
+  on('waReopen', openWa);
+  on('waYes', () => act('sent'));
+  on('waNotOn', () => act('not_on_whatsapp'));
+  on('waSkip', () => act('skip'));
   clearTimeout(tick); if (wait) tick = setTimeout(window.renderWaQueue, 1000);
 };
 })();
