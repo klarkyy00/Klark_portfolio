@@ -122,7 +122,7 @@ html.theme-dark{--ink:#e5ece6;--muted:#a1b8b0;--line:#254740;--paper:#112c27;--b
 <aside class="sidebar">
 <div class="brand"><span class="brand-mark"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="brandNodeGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d5fff5"/><stop offset="1" stop-color="#fff"/></linearGradient></defs><rect width="64" height="64" rx="17" fill="#078f7b"/><circle cx="32" cy="32" r="29" fill="none" stroke="#e9fff9" stroke-opacity=".22"/><circle cx="32" cy="32" r="26" fill="#d5fff5" fill-opacity=".055"/><g transform="rotate(45 32 32) translate(-78 -14.75) scale(.55)"><path d="M180 72 200 50 220 72 200 94 200 120M180 72 174 99M220 72 226 99" fill="none" stroke="url(#brandNodeGradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="200" cy="94" r="5" fill="#d5fff5"/><g fill="#078f7b" stroke="url(#brandNodeGradient)" stroke-width="5"><circle cx="180" cy="72" r="10"/><circle cx="200" cy="50" r="10"/><circle cx="220" cy="72" r="10"/><circle cx="200" cy="120" r="10"/><circle cx="174" cy="99" r="9"/><circle cx="226" cy="99" r="9"/></g></g></svg></span><span>KLARKYY<span class="brand-name-tech">TECH</span></span></div>
 <div class="workspace-wrap"><button class="workspace" id="workspaceSwitcher" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceMenu"><div class="avatar">A</div><div class="workspace-copy"><b>Acme Studio</b><small>Service workspace <span class="workspace-chevron" aria-hidden="true">⌄</span></small></div></button><div class="workspace-menu" id="workspaceMenu" hidden><b id="workspaceMenuName">KlarkyyTech</b><small>Active service workspace</small><button type="button" id="workspaceSettings">Workspace settings</button></div></div>
-<div class="nav-label">Workspace</div><nav class="nav"><button class="active" data-view="Overview"><span>▦</span>Overview</button><button data-view="Leads"><span>♧</span>Leads <span class="count">24</span></button><button data-view="Conversations"><span>▤</span>Conversations</button><button data-view="Sent emails"><span>✉</span>Sent emails</button><button data-view="Automations"><span>✳</span>Automations</button></nav>
+<div class="nav-label">Workspace</div><nav class="nav"><button class="active" data-view="Overview"><span>▦</span>Overview</button><button data-view="Leads"><span>♧</span>Leads <span class="count">24</span></button><button data-view="Conversations"><span>▤</span>Conversations</button><button data-view="Sent emails"><span>✉</span>Sent emails</button><button data-view="Sent WhatsApp"><span>✆</span>Sent WhatsApp</button><button data-view="Automations"><span>✳</span>Automations</button></nav>
 <div class="nav-label">Growth</div><nav class="nav"><button data-view="Services"><span>◈</span>Services</button><button data-view="Website capture"><span>⌘</span>Website capture</button><button data-view="Analytics"><span>⌁</span>Analytics</button></nav>
 <div class="nav-label">Manage</div><nav class="nav"><button data-view="Integrations"><span>⧉</span>Integrations</button><button data-view="Settings"><span>⚙</span>Settings</button></nav>
 <div class="side-bottom"><div class="plan"><strong>Monthly lead target</strong><p>64 of 100 qualified leads this month</p><div class="progress"><i></i></div></div><div class="profile"><div class="avatar">K</div><div><b>Klark</b><small>Owner · KlarkyyTech</small></div></div></div>
@@ -225,6 +225,7 @@ function updateGreeting(){const now=new Date(),h=now.getHours();$('greeting').te
 updateGreeting();setInterval(updateGreeting,60000);
 $('sheetLink').href='#';const demoNote=e=>{e&&e.preventDefault&&e.preventDefault();alert('In your own dashboard this opens your Google Sheet of leads.')};$('sheetLink').onclick=demoNote;$('viewSheet').onclick=demoNote;
 
+window.klarkyyReloadLeads=()=>loadLeads();
 async function loadLeads(){
   const panel=$('workflowPanel');
   try{
@@ -233,7 +234,7 @@ async function loadLeads(){
     if(res.status===401){window.klarkyyLock('The password changed. Please enter the new one.');return}
     const data=await res.json().catch(()=>({}));
     if(!res.ok)throw new Error(data.error?(data.error+(data.detail?' ('+data.detail+')':'')):'HTTP '+res.status);
-    liveLeads=Array.isArray(data.leads)?data.leads:[];liveLeads.forEach(l=>{if(!STAGES[l.stage])l.stage='new'});window.waStats=data.whatsapp||null;livePipeline=data.pipeline||null;lastSync=new Date();window.klarkyyWarn?.(data.warnings||[]);syncAuditLeadsToVault(liveLeads);
+    liveLeads=Array.isArray(data.leads)?data.leads:[];liveLeads.forEach(l=>{if(!STAGES[l.stage])l.stage='new'});window.waStats=data.whatsapp||null;window.waMessages=Array.isArray(data.whatsapp_messages)?data.whatsapp_messages:[];livePipeline=data.pipeline||null;lastSync=new Date();window.klarkyyWarn?.(data.warnings||[]);syncAuditLeadsToVault(liveLeads);
     try{demoStore.setItem(LEADS_CACHE,JSON.stringify({at:lastSync.toISOString(),leads:liveLeads,pipeline:livePipeline}))}catch(x){}
     window.klarkyyOffline('');
     panel.classList.remove('errored');panel.classList.add('live');
@@ -413,7 +414,7 @@ panel.querySelector("#klark-form").addEventListener("submit",e=>{e.preventDefaul
 const main=document.querySelector(".main"),overview=main.querySelector(".content"),route=document.createElement("div");
 route.className="content route-content";route.hidden=true;main.appendChild(route);
 const crumb=document.querySelector(".crumb b"),moved=new Map();
-const viewMap={"Overview":"Overview","Leads":"Leads","Conversations":"Conversations","Sent emails":"Sent emails","Automations":"Automations","Services":"Services","Website capture":"Website capture","Analytics":"Analytics","Integrations":"Integrations","Settings":"Settings"};
+const viewMap={"Overview":"Overview","Leads":"Leads","Conversations":"Conversations","Sent emails":"Sent emails","Sent WhatsApp":"Sent WhatsApp","Automations":"Automations","Services":"Services","Website capture":"Website capture","Analytics":"Analytics","Integrations":"Integrations","Settings":"Settings"};
 const css=document.createElement("style");css.textContent=`
 .route-content{max-width:1550px;min-height:calc(100vh - 68px)}.route-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}.route-header h1{font:700 27px Manrope;margin:6px 0}.route-header p{color:var(--muted);font-size:13px;margin:0;max-width:650px;line-height:1.55}.route-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.route-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #1a30210a}.route-card h2{font:700 14px Manrope;margin:0 0 7px}.route-card p{font-size:11px;color:var(--muted);line-height:1.55;margin:0}.route-kpi{font:700 24px Manrope;margin:13px 0 4px}.route-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.route-list{margin-top:14px;display:grid;gap:9px}.route-list-item{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding:12px 0}.route-avatar{width:32px;height:32px;border-radius:10px;background:#e5f5f1;color:#35533f;display:grid;place-items:center;font-weight:700;font-size:10px;flex:none}.route-list-copy{min-width:0;flex:1}.route-list-copy b{font-size:12px}.route-list-copy small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.route-tag{display:inline-flex;border-radius:99px;padding:5px 8px;background:#e5f5f1;color:#55773e;font-size:9px;font-weight:700}.route-note{border:1px solid #e7eddf;background:#f7faF3;border-radius:11px;padding:13px;color:#66745f;font-size:11px;line-height:1.55;margin-top:14px}.route-form{max-width:650px;display:grid;gap:12px}.route-form label{font-size:11px;font-weight:700}.route-form input,.route-form textarea{display:block;width:100%;margin-top:6px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:10px;font:12px 'DM Sans',sans-serif}.route-form textarea{min-height:85px;resize:vertical}.route-chart{height:230px;background:linear-gradient(180deg,#eff6e6,transparent);border-radius:12px;padding:15px}.route-chart svg{width:100%;height:100%}.route-empty{text-align:center;padding:34px 15px;color:var(--muted);font-size:12px}
 html.theme-dark .route-card{background:#112c27;color:var(--ink)}html.theme-dark .route-form input,html.theme-dark .route-form textarea{background:#16332e;border-color:var(--line);color:var(--ink)}html.theme-dark .route-note{background:#16332e;border-color:var(--line);color:#c2ddd7}html.theme-dark .route-list-item{border-color:var(--line)}html.theme-dark .route-chart{background:linear-gradient(180deg,#163b35,transparent)}
@@ -439,6 +440,11 @@ function render(view){
    const list=document.getElementById("conversationList");getAllSavedLeads().then(items=>{if(!list.isConnected)return;list.innerHTML="";if(!items.length){list.innerHTML='<div class="route-empty">No saved inquiries yet. Leads appear here after a website form, chatbot, n8n sync, or manual entry.</div>';return}items.sort((a,b)=>String(b.updatedAt||b.added||b.createdAt||"").localeCompare(String(a.updatedAt||a.added||a.createdAt||""))).forEach(x=>{const row=document.createElement("div");row.className="route-list-item";const avatar=document.createElement("span");avatar.className="route-avatar";avatar.textContent=(x.name||"L").split(/\s+/).slice(0,2).map(v=>v[0]||"").join("").toUpperCase();const copy=document.createElement("div");copy.className="route-list-copy";const b=document.createElement("b");b.textContent=x.name||"New lead";const sm=document.createElement("small");sm.textContent=(x.email||"No email")+" · "+(x.source||"Lead");copy.append(b,sm);const tag=document.createElement("span");tag.className="route-tag";tag.textContent=x.service||"Inquiry";row.append(avatar,copy,tag);list.appendChild(row)})});
    document.getElementById("openChatRoute").onclick=()=>document.getElementById("klark-chat-launcher")?.click();
    if(window.renderOutreachInbox)window.renderOutreachInbox(document.getElementById("outreachInbox"),"conversations");
+ }
+ if(view==="Sent WhatsApp"){
+   route.innerHTML=head("Workspace","Sent WhatsApp","Every WhatsApp message you sent from the dashboard, plus numbers that turned out not to be on WhatsApp.",'<button class="btn btn-primary" id="refreshSentWa">↻ Refresh</button>')+'<div id="waSent"></div>';
+   window.renderWaSent&&window.renderWaSent();
+   document.getElementById("refreshSentWa").onclick=async()=>{const b=document.getElementById("refreshSentWa");b.disabled=true;try{await window.klarkyyReloadLeads()}finally{b.disabled=false;window.renderWaSent()}};
  }
  if(view==="Sent emails"&&window.renderOutreachInbox){
    route.innerHTML=head("Workspace","Sent emails","Every outreach email sent from your Gmail (first emails and follow-ups), plus emails waiting in the send queue.",'<button class="btn btn-primary" id="refreshSentEmails">↻ Refresh</button>')+'<div id="outreachSent"></div>';
@@ -639,6 +645,30 @@ async function mark(lead, action) {
   lead.wa_link = ''; lead.wa_status = action;
   if (action === 'sent') { const st = window.waStats || (window.waStats = {}); st.sent_today = (st.sent_today || 0) + 1; st.last_sent_at = new Date().toISOString(); }
 }
+// ---- Sent WhatsApp page: history of handled messages (from the leads API: whatsapp_messages) ----
+window.renderWaSent = function () {
+  const el = document.getElementById('waSent'); if (!el) return;
+  const rows = window.waMessages || [];
+  const RESULT = { sent: ['Sent', 'reply'], not_on_whatsapp: ['Not on WhatsApp', 'no'], skipped: ['Skipped', ''] };
+  const when = s => { const d = new Date(s); return isNaN(d) ? '' : d.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); };
+  const st = window.waStats || {}, count = r => rows.filter(m => m.result === r).length;
+  el.innerHTML = '<div class="ib-kpis">'
+    + '<div class="ib-kpi"><b>' + count('sent') + '</b><small>sent in total</small></div>'
+    + '<div class="ib-kpi"><b>' + (st.sent_today || 0) + ' / ' + DAILY_SOFT_LIMIT + '</b><small>sent today (Texas)</small></div>'
+    + '<div class="ib-kpi"><b>' + count('not_on_whatsapp') + '</b><small>not on WhatsApp: phone them</small></div>'
+    + '<div class="ib-kpi"><b>' + (st.pending || 0) + '</b><small>still waiting to send</small></div></div>'
+    + '<div class="ib-card"><div class="ib-head"><h2>WhatsApp messages</h2><small>' + rows.length + ' message' + (rows.length === 1 ? '' : 's') + ' · click a row to read it</small></div>'
+    + (rows.length ? '<div class="table-scroll"><table class="ib-table"><thead><tr><th>When</th><th>To</th><th>Message</th><th>Result</th></tr></thead><tbody>'
+      + rows.map(m => { const r = RESULT[m.result] || [m.result, ''];
+        return '<tr><td style="width:150px">' + esc(when(m.at)) + '</td><td><b>' + esc(m.company) + '</b><br><small style="color:var(--muted)">'
+          + (m.phone ? '<a href="tel:' + esc(String(m.phone).replace(/[^+\d]/g, '')) + '" onclick="event.stopPropagation()">' + esc(m.phone) + '</a>' : 'no phone') + '</small></td>'
+          + '<td>' + esc(m.gap || String(m.message || '').split(String.fromCharCode(10))[0]) + '<div class="ib-body">' + esc(m.message) + '</div></td>'
+          + '<td><span class="ib-tag ' + r[1] + '">' + esc(r[0]) + '</span></td></tr>'; }).join('')
+      + '</tbody></table></div>'
+      : '<div class="ib-empty">No WhatsApp messages sent yet. When you press "Yes, sent" in the WhatsApp queue on the Overview, the message shows up here.</div>')
+    + '</div>';
+  el.querySelectorAll('.ib-table tbody tr').forEach(tr => tr.onclick = () => tr.classList.toggle('open'));
+};
 window.renderWaQueue = function () {
   const box = document.getElementById('waQueue'); if (!box) return;
   const queue = (typeof liveLeads !== 'undefined' ? liveLeads : []).filter(l => l.wa_link && l.wa_id).sort((a, b) => (b.score || 0) - (a.score || 0));
@@ -669,7 +699,7 @@ window.renderWaQueue = function () {
     if (busy) return; busy = true;
     if (action === 'sent') { try { demoStore.setItem(LAST, String(Date.now())); } catch (e) {} }
     try { await mark(next, action); pending = null; } catch (e) { alert('Could not save that in n8n (' + e.message + '). Is your PC on?'); }
-    busy = false; window.renderWaQueue(); window.renderAttention && window.renderAttention();
+    busy = false; window.renderWaQueue(); window.renderAttention && window.renderAttention(); window.renderWaSent && window.renderWaSent();
   };
   const openWa = () => { window.open(next.wa_link, '_blank', 'noopener'); pending = next.wa_id; window.renderWaQueue(); };
   const on = (id, fn) => { const b = document.getElementById(id); if (b) b.onclick = fn; };
