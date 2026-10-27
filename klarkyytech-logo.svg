@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250" role="img" aria-labelledby="title desc">
-<title id="title">KlarkyyTech circular network mark</title>
-<desc id="desc">A connected-node network symbol inside a circle, with a transparent background.</desc>
-<circle cx="125" cy="125" r="105" fill="#07977f"/>
-<circle cx="125" cy="125" r="96" fill="#d5fff5" fill-opacity=".045" stroke="#d5fff5" stroke-opacity=".2" stroke-width="2"/>
-<g stroke="#d5fff5" stroke-width="12" stroke-linecap="round" fill="none"><path d="M61 112 105 81 167 79M61 112 71 161 109 136 165 132M167 79 165 132 135 180"/></g>
-<g fill="#078b78" stroke="#f1fffb" stroke-width="10"><circle cx="61" cy="112" r="20"/><circle cx="105" cy="81" r="20"/><circle cx="167" cy="79" r="20"/><circle cx="71" cy="161" r="20"/><circle cx="165" cy="132" r="20"/><circle cx="135" cy="180" r="20"/></g><circle cx="109" cy="136" r="10" fill="#d5fff5"/>
-</svg>
