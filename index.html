@@ -1019,6 +1019,12 @@
     background:linear-gradient(90deg, var(--accent), var(--sea));
   }
 
+  @media (max-width:1000px){
+    .nav-links a{ padding:8px 8px; font-size:0.78rem; }
+    .nav-links a.nav-cta{ margin-left:4px; }
+    .top-nav-inner{ padding:0 16px; }
+  }
+  @media (max-width:860px){ .nav-brand span:last-child{ display:none; } }
   @media (max-width:760px){
     .nav-links a:not(.nav-cta){ display:none; }
     .stats-grid{ grid-template-columns:repeat(2, 1fr); }
@@ -1055,6 +1061,7 @@
       <a href="#services" data-target="services">Services</a>
       <a href="#certs" data-target="certs">Certifications</a>
       <a href="#websites" data-target="websites">Websites</a>
+      <a href="#dashboards" data-target="dashboards">Dashboard</a>
       <a href="#filterNav" data-target="filterNav">Projects</a>
       <a href="#contact" data-target="contact">Contact</a>
       <a class="nav-cta" href="#book">Book a Call</a>
@@ -1398,6 +1405,46 @@
     </a>
   </div>
   <p class="websites-more"><a class="hero-cta ghost" href="https://web-projects-af0.pages.dev/" target="_blank" rel="noopener">See the full showcase ↗</a></p>
+</div>
+
+<div class="websites-section reveal" id="dashboards">
+  <h2>Dashboards</h2>
+  <p class="websites-sub">Live dashboards I've built on top of n8n automations. These are demo copies with sample data, so client information stays private.</p>
+  <div class="websites-grid">
+    <a class="site-tile" href="demo.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-klarkyytech.jpg" alt="Lead Intelligence dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">Lead generation &amp; outreach</span><h3>Lead Intelligence</h3><p>Finds local businesses with weak websites, scores them with AI and runs the email outreach.</p></div>
+    </a>
+    <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/sales-tracker.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-sales-tracker.jpg" alt="Sales Call Tracker dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">Sales calls · coaching business</span><h3>Sales Call Tracker</h3><p>Tracks every booked sales call: who showed up, who bought, and how the month compares.</p></div>
+    </a>
+    <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/support-triage.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-support-triage.jpg" alt="Support Triage Desk dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">AI customer support</span><h3>Support Triage Desk</h3><p>Sorts incoming support emails with AI and drafts a reply for a person to check and send.</p></div>
+    </a>
+    <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/marketing-ledger.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-marketing-ledger.jpg" alt="Marketing Ledger dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">Social marketing · insurance agency</span><h3>Marketing Ledger</h3><p>One screen for an agency’s organic social marketing: posts, DMs, leads and booked consultations.</p></div>
+    </a>
+    <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/lead-signal.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-lead-signal.jpg" alt="Lead Signal dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">Prospect CRM · ad agency</span><h3>Lead Signal</h3><p>Ranks prospects for a Meta ads agency by how much they would gain from running ads.</p></div>
+    </a>
+    <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/command-center.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-command-center.jpg" alt="Sales Command Center dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">Sales calls + Instagram leads</span><h3>Sales Command Center</h3><p>Instagram DM leads and booked sales calls side by side, from first DM to closed deal.</p></div>
+    </a>
+    <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/recruiting-tracker.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-recruiting-tracker.jpg" alt="Automated Recruiting Tracker &amp; Interview Scoring dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">Recruiting · AI interview scoring</span><h3>Automated Recruiting Tracker &amp; Interview Scoring</h3><p>Logs every application automatically and scores every interview from its transcript.</p></div>
+    </a>
+    <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/ig-lead-pipeline.html" target="_blank" rel="noopener">
+      <div class="site-shot"><img src="dashboards/dash-ig-lead-pipeline.jpg" alt="IG Lead Pipeline dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-info"><span class="site-type">Instagram DM setting · ManyChat</span><h3>IG Lead Pipeline</h3><p>Tracks every Instagram DM lead a setter team works in ManyChat, from first message to booked call.</p></div>
+    </a>
+  </div>
+  <p class="websites-more"><a class="hero-cta ghost" href="https://web-projects-af0.pages.dev/#dashboards" target="_blank" rel="noopener">See the full showcase ↗</a></p>
 </div>
 
 <div class="testimonials-section reveal">
