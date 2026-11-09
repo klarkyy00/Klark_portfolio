@@ -1,23 +1,25 @@
 /* =====================================================================
-   hero-3d.js — premium 3D hero scene for the portfolio (Three.js r160)
+   hero-3d.js — "AI chat orb" hero scene for the portfolio (Three.js r160)
 
    What it draws
-   - An "automation core": a glowing energy core inside a faceted crystal,
-     wrapped in a wireframe cage and three orbit rings with data packets.
-   - Tool labels (n8n, Make, Zapier, AI, API, CRM) orbiting the core, each
-     linked to it by a faint line with a travelling energy pulse.
-   - A soft particle field with "plexus" connecting lines that drift,
-     shy away from the cursor and burst outwards on click.
+   - A smooth, liquid AI orb: a noise-displaced sphere whose surface flows
+     through cyan, blue, violet and a hint of pink, with a bright rim.
+   - It "speaks": while the hint beside it types a question, the surface
+     ripples like a voice and ripple rings pulse outwards.
+   - A soft particle field with faint connecting lines that drift and shy
+     away from the cursor.
+   - A typing hint ("Ask me anything…") under the orb. Clicking the orb or
+     the hint opens the website chat assistant (klarkyytech-chat.js).
 
    Where it sits
    - Wide screens: in the empty space to the right of the hero text.
-   - Narrow screens: as a halo orbiting the avatar (the avatar covers the
-     core), so it never sits behind the text.
+   - Narrow screens: as a glowing aura behind the avatar (no hint), so it
+     never sits behind the text.
 
    Behaviour
-   - Camera fly-in on load, gentle float/rotation/pulse, cursor parallax,
-     hover = stronger glow, click on the core = expand + particle burst.
-   - prefers-reduced-motion: one still frame, no animation or fly-in.
+   - Camera fly-in on load, cursor parallax, hover = brighter and livelier,
+     click = ripple burst + opens the chat.
+   - prefers-reduced-motion: one still frame and a static hint.
    - No WebGL / script error: the CSS fallback (.hero3d-fallback) stays.
    - Pauses when the hero is off screen or the tab is hidden; drops bloom
      and resolution automatically if the device can't hold ~40 fps.
@@ -39,19 +41,25 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 /* ---------- CUSTOMIZE HERE ---------- */
 const CONFIG = {
   colors: {
-    bg: 0x0a0e14,       // must match the page background (--bg)
-    cyan: 0x22d3ee,     // core + crystal edges
-    blue: 0x3b82f6,     // rings, rim light
-    purple: 0xa78bfa,   // cage, accents
-    teal: 0x2dd4bf,     // portfolio accent, used in particles
+    bg: 0x0a0e14,                                   // must match the page background (--bg)
+    orb: [0x22d3ee, 0x3b82f6, 0x8b5cf6, 0xec4899],  // orb surface gradient: cyan → blue → violet → pink
+    particles: [0x22d3ee, 0x3b82f6, 0x8b5cf6, 0x2dd4bf],
+    lines: 0x60a5fa,
   },
-  labels: ['n8n', 'Make', 'Zapier', 'AI', 'API', 'CRM'], // orbiting tool labels
+  prompts: [                                        // questions the hint types out
+    'Ask me anything…',
+    'What can you automate for my business?',
+    'How would n8n save me time?',
+    'Can you build my website?',
+    'How do I book a free call?',
+  ],
+  openChatOnClick: true,    // click the orb or hint = open the website chat
   speed: 1,                 // global animation speed (0.5 = calmer, 1.5 = livelier)
-  bloom: { strength: 0.7, radius: 0.5, threshold: 0.22 },
-  particles: { desktop: 240, mobile: 110 },
-  linkDistance: 1.15,       // max plexus line length (in core-sized units)
-  parallax: 0.22,           // how far the scene tilts towards the cursor
-  flyInSeconds: 2.6,        // camera entrance duration
+  bloom: { strength: 0.75, radius: 0.6, threshold: 0.2 },
+  particles: { desktop: 200, mobile: 90 },
+  linkDistance: 0.9,        // max connecting-line length (in orb-sized units)
+  parallax: 0.2,            // how far the scene tilts towards the cursor
+  flyInSeconds: 2.4,        // camera entrance duration
 };
 /* ------------------------------------ */
 
@@ -66,16 +74,13 @@ function webglAvailable() {
   } catch (e) { return false; }
 }
 
-if (hero && wrap && canvas && webglAvailable()) {
-  try { init(); } catch (e) { console.warn('hero-3d disabled:', e); } // fallback stays visible
-}
 
 function init() {
   const C = CONFIG.colors;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
-  const DIST = 10;            // final camera distance
-  const ORBIT_R = 2.25;       // label orbit radius (defines the object's size)
+  const DIST = 18;            // final camera distance (far + narrow lens = no edge stretching)
+  const REACH = 1.9;          // outermost ripple radius in orb radii (defines the layout size)
 
   /* ---------- renderer, scene, camera ---------- */
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, alpha: false, powerPreference: 'high-performance' });
@@ -87,9 +92,8 @@ function init() {
 
   const scene = new THREE.Scene();
   scene.background = backgroundTexture(); // same teal-at-top glow the hero had in CSS
-  scene.fog = new THREE.FogExp2(C.bg, 0.03);
 
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  const camera = new THREE.PerspectiveCamera(23, 1, 0.1, 120);
   camera.position.set(0, 0, DIST);
 
   const composer = new EffectComposer(renderer);
@@ -99,89 +103,78 @@ function init() {
   composer.addPass(new OutputPass());
   let useBloom = true;
 
-  /* ---------- lights ---------- */
-  scene.add(new THREE.AmbientLight(0x223344, 0.6));
-  const keyLight = new THREE.PointLight(C.cyan, 30, 30); keyLight.position.set(3, 2, 4); scene.add(keyLight);
-  const fillLight = new THREE.PointLight(C.purple, 22, 30); fillLight.position.set(-3, -1, 3); scene.add(fillLight);
-  const rim = new THREE.DirectionalLight(C.blue, 2.2); rim.position.set(0, 2, -5); scene.add(rim);
-
-  /* ---------- the object: obj (position) > tilt (parallax) > spin (rotation) ---------- */
+  /* ---------- the orb: obj (position/scale) > tilt (parallax) ---------- */
   const glowTex = glowTexture();
-  const obj = new THREE.Group();
-  const tilt = new THREE.Group();
-  const spin = new THREE.Group();
-  obj.add(tilt); tilt.add(spin); scene.add(obj);
+  const obj = new THREE.Group(), tilt = new THREE.Group();
+  obj.add(tilt); scene.add(obj);
 
-  // energy core + its soft "volumetric" glow
-  const coreMat = new THREE.MeshStandardMaterial({ color: 0x0b1220, emissive: C.cyan, emissiveIntensity: 1.35, roughness: 0.3, metalness: 0.2 });
-  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.55, 4), coreMat);
-  spin.add(core);
-  const coreGlow = sprite(glowTex, C.cyan, 2.6, 0.35); tilt.add(coreGlow);
-  const haze = sprite(glowTex, C.purple, 9, 0.16); haze.position.z = -2.5; tilt.add(haze);
-
-  // faceted crystal with glowing edges
-  const crystalGeo = new THREE.IcosahedronGeometry(1.05, 0);
-  const crystal = new THREE.Mesh(crystalGeo, new THREE.MeshPhysicalMaterial({
-    color: 0x0f1b2e, metalness: 0.6, roughness: 0.15, transparent: true, opacity: 0.35,
-    flatShading: true, emissive: C.blue, emissiveIntensity: 0.08, side: THREE.DoubleSide, depthWrite: false }));
-  const crystalEdges = new THREE.LineSegments(new THREE.EdgesGeometry(crystalGeo),
-    new THREE.LineBasicMaterial({ color: C.cyan, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending }));
-  crystal.add(crystalEdges);
-  spin.add(crystal);
-
-  // outer wireframe cage + glowing vertices
-  const cageGeo = new THREE.IcosahedronGeometry(1.5, 1);
-  const cage = new THREE.LineSegments(new THREE.EdgesGeometry(cageGeo),
-    new THREE.LineBasicMaterial({ color: C.purple, transparent: true, opacity: 0.28, blending: THREE.AdditiveBlending }));
-  const cageDots = new THREE.Points(cageGeo, new THREE.PointsMaterial({
-    color: C.purple, size: 0.09, map: glowTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
-  cage.add(cageDots);
-  tilt.add(cage);
-
-  // three tilted orbit rings, each carrying two data packets
-  const rings = [];
-  [[1.85, C.blue, 1.1, 0.3], [2.0, C.cyan, -0.5, 1.2], [2.15, C.purple, 0.4, -0.9]].forEach(([r, color, rx, rz], i) => {
-    const g = new THREE.Group(); g.rotation.set(rx, 0, rz);
-    g.add(new THREE.Mesh(new THREE.TorusGeometry(r, 0.006, 6, 160),
-      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false })));
-    const packets = [0, Math.PI].map(phase => {
-      const p = new THREE.Mesh(new THREE.SphereGeometry(0.045, 10, 10), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      p.add(sprite(glowTex, color, 0.55, 0.9));
-      g.add(p);
-      return { mesh: p, phase };
-    });
-    tilt.add(g);
-    rings.push({ group: g, r, packets, speed: 0.55 + i * 0.18 });
+  const orbColors = C.orb.map(c => new THREE.Color(c));
+  const orbMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uTime: { value: 0 }, uAmp: { value: 0.05 }, uFreq: { value: 1.6 }, uGlow: { value: 1 },
+      uC1: { value: orbColors[0] }, uC2: { value: orbColors[1] }, uC3: { value: orbColors[2] }, uC4: { value: orbColors[3] },
+    },
+    vertexShader: NOISE + `
+      uniform float uTime, uAmp, uFreq;
+      varying vec3 vNormal, vView, vPos; varying float vNoise;
+      void main(){
+        // two layers of flowing noise push the surface in and out (the "voice")
+        float n  = snoise(normal * uFreq + vec3(0.0, 0.0, uTime * 0.35));
+        float n2 = snoise(normal * uFreq * 2.3 - vec3(uTime * 0.5));
+        vec3 p = position + normal * (n * uAmp + n2 * uAmp * 0.35);
+        vNoise = n; vPos = position;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        vView = normalize(-mv.xyz);
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * mv;
+      }`,
+    fragmentShader: NOISE + `
+      uniform float uTime, uGlow; uniform vec3 uC1, uC2, uC3, uC4;
+      varying vec3 vNormal, vView, vPos; varying float vNoise;
+      void main(){
+        float fres = pow(1.0 - max(dot(vNormal, vView), 0.0), 2.0);
+        // soft diagonal gradient (cyan -> blue -> violet) bent by slow, low-frequency liquid swirls
+        float f = snoise(vPos * 0.9 + vec3(uTime * 0.18, -uTime * 0.12, uTime * 0.08)) * 0.5 + 0.5;
+        float g = snoise(vPos * 1.3 - vec3(uTime * 0.15)) * 0.5 + 0.5;
+        float d = clamp(0.5 + 0.32 * (vPos.y + vPos.x * 0.6) + (f - 0.5) * 0.75, 0.0, 1.0);
+        vec3 col = mix(uC1, uC2, smoothstep(0.0, 0.55, d));
+        col = mix(col, uC3, smoothstep(0.45, 1.0, d));
+        col = mix(col, uC4, smoothstep(0.62, 1.0, g) * 0.22);
+        float center = pow(1.0 - fres, 3.0);               // luminous heart facing the viewer
+        vec3 c = col * (0.5 + 0.3 * f) + mix(col, vec3(1.0), 0.45) * center * 0.22
+               + col * fres * 1.4 * uGlow + vec3(1.0) * pow(fres, 5.0) * 0.35 * uGlow;
+        gl_FragColor = vec4(c, 1.0);
+      }`,
   });
+  const orb = new THREE.Mesh(new THREE.IcosahedronGeometry(1, isMobile ? 32 : 64), orbMat);
+  tilt.add(orb);
+  const aura = sprite(glowTex, 0x6d7cf7, 3.6, 0.42); aura.position.z = -0.6; tilt.add(aura);
+  const haze = sprite(glowTex, 0x8b5cf6, 8.5, 0.14); haze.position.z = -2.5; tilt.add(haze);
 
-  // orbiting tool labels, linked to the core by lines with travelling pulses
-  const labels = CONFIG.labels.map((text, i, all) => {
-    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: labelTexture(text, i % 2 ? '#a78bfa' : '#22d3ee'), transparent: true, depthWrite: false }));
-    s.scale.set(0.82, 0.36, 1);
-    tilt.add(s);
-    const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
-    const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: C.cyan, transparent: true, opacity: 0.18, blending: THREE.AdditiveBlending }));
-    tilt.add(line);
-    const pulse = sprite(glowTex, C.cyan, 0.32, 0.9); tilt.add(pulse);
-    return { sprite: s, line, pulse, angle: (i / all.length) * Math.PI * 2, yOff: (i % 3 - 1) * 0.55 };
+  // ripple rings that pulse out while the orb "speaks" (pool, face the camera)
+  const ripples = Array.from({ length: 6 }, (_, i) => {
+    const m = new THREE.Mesh(new THREE.RingGeometry(0.985, 1, 128),
+      new THREE.MeshBasicMaterial({ color: i % 2 ? 0x8b5cf6 : 0x22d3ee, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+    obj.add(m);
+    return { mesh: m, t: 1, strength: 1 };
   });
+  let nextRipple = 0;
+  function emitRipple(strength) {
+    const r = ripples[nextRipple++ % ripples.length];
+    r.t = 0; r.strength = strength;
+  }
 
-  // click shockwave
-  const shock = new THREE.Mesh(new THREE.RingGeometry(0.985, 1, 128),
-    new THREE.MeshBasicMaterial({ color: C.cyan, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
-  obj.add(shock);
-
-  /* ---------- particle field (world space) + plexus lines ---------- */
+  /* ---------- particle field (world space) + connecting lines ---------- */
   const N = isMobile ? CONFIG.particles.mobile : CONFIG.particles.desktop;
-  const nNear = Math.round(N * 0.75);          // clustered around the object; the rest drift across the hero
+  const nNear = Math.round(N * 0.7);           // clustered around the orb; the rest drift across the hero
   const seeds = [], home = new Float32Array(N * 3), pos = new Float32Array(N * 3), vel = new Float32Array(N * 3);
   const colArr = new Float32Array(N * 3), sizeArr = new Float32Array(N);
-  const palette = [C.cyan, C.blue, C.purple, C.teal, 0xe2e8f0].map(c => new THREE.Color(c));
+  const palette = C.particles.map(c => new THREE.Color(c)).concat([new THREE.Color(0xe2e8f0)]);
   for (let i = 0; i < N; i++) {
     seeds.push({ u: Math.random(), v: Math.random(), w: Math.random(), f: 0.2 + Math.random() * 0.5, ph: Math.random() * 6.28 });
     const c = palette[Math.floor(Math.random() * (i < nNear ? 4 : 5))];
     colArr.set([c.r, c.g, c.b], i * 3);
-    sizeArr[i] = (i < nNear ? 0.05 : 0.035) + Math.random() * 0.06;
+    sizeArr[i] = (i < nNear ? 0.045 : 0.035) + Math.random() * 0.05;
   }
   const pGeo = new THREE.BufferGeometry();
   pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -203,7 +196,7 @@ function init() {
   points.frustumCulled = false;
   scene.add(points);
 
-  const MAX_SEG = isMobile ? 160 : 320;
+  const MAX_SEG = isMobile ? 120 : 240;
   const segPos = new Float32Array(MAX_SEG * 6), segCol = new Float32Array(MAX_SEG * 6);
   const segGeo = new THREE.BufferGeometry();
   segGeo.setAttribute('position', new THREE.BufferAttribute(segPos, 3));
@@ -211,9 +204,46 @@ function init() {
   const segments = new THREE.LineSegments(segGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
   segments.frustumCulled = false;
   scene.add(segments);
-  const lineColor = new THREE.Color(C.cyan);
+  const lineColor = new THREE.Color(C.lines);
 
-  /* ---------- layout: where the object goes and how big it is ---------- */
+  /* ---------- the typing hint (DOM) ---------- */
+  const hint = document.createElement('button');
+  hint.type = 'button';
+  hint.className = 'hero3d-hint';
+  hint.setAttribute('aria-label', 'Open the AI chat assistant');
+  hint.innerHTML = '<span class="hero3d-hint-spark">✦</span><span class="hero3d-hint-text"></span><span class="hero3d-hint-caret"></span>';
+  hero.appendChild(hint);
+  const hintText = hint.querySelector('.hero3d-hint-text');
+  injectHintStyles();
+  let talking = false;   // true while the hint is typing: the orb "speaks"
+
+  function startTyping() {
+    if (reduced) { hintText.textContent = CONFIG.prompts[0]; return; }
+    let p = 0, i = 0, phase = 'type';
+    (function step() {
+      const text = CONFIG.prompts[p % CONFIG.prompts.length];
+      if (phase === 'type') {
+        talking = true;
+        hintText.textContent = text.slice(0, ++i);
+        if (i >= text.length) { phase = 'hold'; talking = false; return setTimeout(step, 2200); }
+        return setTimeout(step, 38 + Math.random() * 45);
+      }
+      if (phase === 'hold') { phase = 'erase'; return setTimeout(step, 30); }
+      hintText.textContent = text.slice(0, --i);
+      if (i <= 0) { phase = 'type'; p++; return setTimeout(step, 450); }
+      setTimeout(step, 18);
+    })();
+  }
+
+  function openChat() {
+    if (!CONFIG.openChatOnClick) return;
+    const launcher = document.getElementById('klark-chat-launcher');
+    if (launcher) launcher.click();
+    else location.hash = '#book';                 // no chat on the page: go to the booking section
+  }
+  hint.addEventListener('click', () => { burst(); setTimeout(openChat, 250); });
+
+  /* ---------- layout: where the orb goes and how big it is ---------- */
   const anchor = new THREE.Vector3();
   let W = 1, H = 1, objScale = 1, worldW = 1, worldH = 1, mode = 'side';
   const tanHalf = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
@@ -223,7 +253,7 @@ function init() {
     const hr = hero.getBoundingClientRect(), mid = hr.left + hr.width / 2, range = document.createRange();
     let half = 0;
     for (const el of hero.children) {
-      if (el === wrap) continue;
+      if (el === wrap || el === hint) continue;
       range.selectNodeContents(el);
       const r = range.getBoundingClientRect();
       if (r.width) half = Math.max(half, mid - r.left, r.right - mid);
@@ -245,25 +275,32 @@ function init() {
     let ax, ay, rPx;
     if (side >= 190) {
       mode = 'side';
-      ax = W - side / 2 - 8; ay = H * 0.46; rPx = Math.min(side * 0.36, H * 0.3, 230);
+      rPx = Math.min(side * 0.4, H * 0.32, 240);
+      ax = W - side / 2 - 8; ay = H * 0.42;
     } else {
-      mode = 'halo';                                 // orbit the avatar instead
+      mode = 'halo';                                 // glowing aura behind the avatar
       const av = document.getElementById('avatar');
       const ar = av ? av.getBoundingClientRect() : { left: hr.left + W / 2 - 50, top: hr.top + 40, width: 100, height: 100 };
-      ax = ar.left + ar.width / 2 - hr.left; ay = ar.top + ar.height / 2 - hr.top; rPx = ar.width * 1.08;
+      ax = ar.left + ar.width / 2 - hr.left; ay = ar.top + ar.height / 2 - hr.top; rPx = ar.width * 1.15;
     }
     anchor.set((ax - W / 2) / ppu, -(ay - H / 2) / ppu, 0);
-    objScale = rPx / (ORBIT_R * ppu);
+    objScale = rPx / (REACH * ppu);                  // orb radius in world units
     obj.position.copy(anchor);
     wrap.dataset.anchor = Math.round(ax) + ',' + Math.round(ay) + ',' + mode;   // handy for debugging/tests
+
+    // hint sits under the orb on wide screens; hidden in halo mode
+    hint.hidden = mode !== 'side';
+    hint.style.left = ax + 'px';
+    hint.style.top = (ay + rPx * 0.72 + 12) + 'px';
     placeParticleHomes();
   }
 
   function placeParticleHomes() {
     for (let i = 0; i < N; i++) {
       const s = seeds[i], k = i * 3;
-      if (i < nNear) {           // shell around the object
-        const th = s.u * Math.PI * 2, ph = Math.acos(2 * s.v - 1), r = (mode === 'halo' ? 1.5 + s.w * 1.1 : 1.6 + s.w * 1.7) * objScale;
+      if (i < nNear) {           // loose shell around the orb
+        const th = s.u * Math.PI * 2, ph = Math.acos(2 * s.v - 1);
+        const r = (mode === 'halo' ? 1.5 + s.w * 0.9 : 1.5 + s.w * 1.6) * objScale;
         home[k] = anchor.x + r * Math.sin(ph) * Math.cos(th);
         home[k + 1] = anchor.y + r * Math.cos(ph) * 0.8;
         home[k + 2] = r * Math.sin(ph) * Math.sin(th) * 0.6;
@@ -288,26 +325,27 @@ function init() {
     pointerActive = true; lastPointer = performance.now();
     raycaster.setFromCamera(ndc, camera);
     raycaster.ray.intersectPlane(plane, mouseWorld);
-    hovered = raycaster.ray.distanceSqToPoint(obj.position) < (1.25 * objScale) ** 2;
+    hovered = raycaster.ray.distanceSqToPoint(obj.position) < (1.15 * objScale) ** 2;
     const blocked = e.target.closest && e.target.closest('a,button,input,textarea,select,video');
     hero.style.cursor = hovered && !blocked ? 'pointer' : '';
   }
   if (!reduced) {
     addEventListener('pointermove', onPointer, { passive: true });
     addEventListener('pointerdown', onPointer, { passive: true });
-    hero.addEventListener('click', e => {
-      if (e.target.closest('a,button,input,textarea,select,video')) return;
-      onPointer(e);
-      if (hovered) burst();
-    });
   }
+  hero.addEventListener('click', e => {
+    if (e.target.closest('a,button,input,textarea,select,video')) return;
+    onPointer(e);
+    if (hovered) { burst(); setTimeout(openChat, 250); }
+  });
 
-  let energy = 0, kick = 0, kickVel = 0, shockT = 1;
+  let energy = 0, kick = 0, kickVel = 0;
   function burst() {
-    energy = 1; kickVel += 0.09; shockT = 0;
+    energy = 1; kickVel += 0.07;
+    emitRipple(1.4); setTimeout(() => emitRipple(1.1), 140); setTimeout(() => emitRipple(0.8), 280);
     for (let i = 0; i < nNear; i++) {   // push nearby particles outwards
       const k = i * 3, dx = pos[k] - anchor.x, dy = pos[k + 1] - anchor.y, dz = pos[k + 2];
-      const d = Math.hypot(dx, dy, dz) || 1, f = (0.06 + Math.random() * 0.08) * objScale;
+      const d = Math.hypot(dx, dy, dz) || 1, f = (0.05 + Math.random() * 0.07) * objScale;
       vel[k] += dx / d * f; vel[k + 1] += dy / d * f; vel[k + 2] += dz / d * f;
     }
   }
@@ -315,8 +353,8 @@ function init() {
   /* ---------- animation ---------- */
   const clock = new THREE.Clock();
   let t = 0, startT = null, frame = 0, running = false, rafId = 0, ready = false;
+  let speak = 0, rippleClock = 0, hoverAmt = 0;
   const fpsSamples = [];
-  const tmp = new THREE.Vector3();
   const ease = x => 1 - Math.pow(1 - x, 3);
   const easeBack = x => 1 + 2.2 * Math.pow(x - 1, 3) + 1.2 * Math.pow(x - 1, 2);
 
@@ -329,59 +367,42 @@ function init() {
     // camera fly-in, then a light cursor parallax (idle wander on touch devices)
     if (!pointerActive || performance.now() - lastPointer > 4000) ndc.set(Math.sin(t * 0.21) * 0.35, Math.cos(t * 0.17) * 0.25);
     ndcSmooth.lerp(ndc, reduced ? 1 : 0.05);
-    camera.position.set(ndcSmooth.x * 0.35 * e, 3 * (1 - e) + ndcSmooth.y * 0.25 * e, DIST + 8 * (1 - e));
+    camera.position.set(ndcSmooth.x * 0.6 * e, 4 * (1 - e) + ndcSmooth.y * 0.45 * e, DIST + 14 * (1 - e));
     camera.lookAt(0, 0, 0);
 
-    // hover / click energy
-    const hoverAmt = hovered ? 1 : 0;
-    obj.userData.hover = THREE.MathUtils.lerp(obj.userData.hover || 0, hoverAmt, 0.08);
-    const h = obj.userData.hover;
-    energy *= 0.96;
-    kickVel += -kick * 0.12; kickVel *= 0.82; kick += kickVel;     // spring for the click "expand"
-
-    // object: float, rotate, tilt, pulse
-    const sc = objScale * (0.3 + 0.7 * easeBack(intro)) * (1 + kick + h * 0.04);
-    obj.scale.setScalar(sc);
-    obj.position.y = anchor.y + Math.sin(t * 0.9) * 0.12 * objScale;
-    tilt.rotation.x = THREE.MathUtils.lerp(tilt.rotation.x, -ndcSmooth.y * CONFIG.parallax, 0.08);
-    tilt.rotation.y = THREE.MathUtils.lerp(tilt.rotation.y, ndcSmooth.x * CONFIG.parallax * 1.3, 0.08);
-    spin.rotation.y += dt * 0.25 * CONFIG.speed * (1 + energy * 3);
-    spin.rotation.x = Math.sin(t * 0.3) * 0.25;
-    crystal.rotation.y -= dt * 0.35 * CONFIG.speed;
-    cage.rotation.y -= dt * 0.08 * CONFIG.speed; cage.rotation.z += dt * 0.05 * CONFIG.speed;
-    const pulse = 1 + 0.25 * Math.sin(t * 1.6);
-    coreMat.emissiveIntensity = 1.35 * pulse * (1 + h * 0.8 + energy * 2);
-    coreGlow.material.opacity = 0.3 * pulse * (1 + h * 0.8 + energy);
-    coreGlow.scale.setScalar(2.6 * (1 + h * 0.25 + energy * 0.6));
-    crystalEdges.material.opacity = 0.75 + 0.25 * pulse * (1 + h);
-    if (useBloom) bloom.strength = CONFIG.bloom.strength * (1 + h * 0.5 + energy * 1.2);
-
-    // ring packets
-    for (const ring of rings) for (const p of ring.packets) {
-      const a = t * ring.speed * (1 + energy * 2.5) + p.phase;
-      p.mesh.position.set(Math.cos(a) * ring.r, Math.sin(a) * ring.r, 0);
+    // "voice": speak while the hint types, with a syllable-like flutter
+    hoverAmt += ((hovered ? 1 : 0) - hoverAmt) * 0.08;
+    speak += ((talking ? 1 : 0) - speak) * 0.06;
+    energy *= 0.95;
+    const syllable = Math.abs(Math.sin(t * 9.5) * Math.sin(t * 3.7 + 1.3));
+    orbMat.uniforms.uTime.value = t;
+    orbMat.uniforms.uAmp.value = 0.022 + speak * (0.025 + 0.05 * syllable) + hoverAmt * 0.02 + energy * 0.16;
+    orbMat.uniforms.uFreq.value = 1.1 + speak * 0.4 + energy * 0.8;
+    orbMat.uniforms.uGlow.value = 1 + hoverAmt * 0.5 + speak * 0.25 * syllable + energy;
+    if (!reduced && speak > 0.5) {                   // ripple rings while speaking
+      rippleClock -= dt;
+      if (rippleClock <= 0) { emitRipple(0.55 + syllable * 0.4); rippleClock = 0.55; }
     }
 
-    // orbiting labels + link lines + pulses (in tilt space)
-    labels.forEach((L, i) => {
-      const a = L.angle + t * 0.22;
-      L.sprite.position.set(Math.cos(a) * ORBIT_R, L.yOff + Math.sin(t * 0.7 + i) * 0.08, Math.sin(a) * ORBIT_R * 0.75);
-      const depth = (L.sprite.position.z / (ORBIT_R * 0.75) + 1) / 2;   // 0 = back, 1 = front
-      L.sprite.material.opacity = (0.3 + 0.7 * depth) * e;
-      const lp = L.line.geometry.attributes.position;
-      lp.setXYZ(1, L.sprite.position.x, L.sprite.position.y, L.sprite.position.z); lp.needsUpdate = true;
-      L.line.material.opacity = (0.08 + 0.18 * depth) * (1 + h) * e;
-      const f = (t * 0.45 + i / labels.length) % 1;
-      L.pulse.position.copy(L.sprite.position).multiplyScalar(f);
-      L.pulse.material.opacity = Math.sin(f * Math.PI) * 0.9 * e;
-    });
+    // orb: entrance scale, float, click "kick", parallax tilt, slow spin
+    kickVel += -kick * 0.12; kickVel *= 0.82; kick += kickVel;
+    const breath = 1 + Math.sin(t * 1.3) * 0.015 + speak * syllable * 0.03;
+    obj.scale.setScalar(objScale * (0.3 + 0.7 * easeBack(intro)) * (breath + kick + hoverAmt * 0.04));
+    obj.position.y = anchor.y + Math.sin(t * 0.9) * 0.08 * objScale;
+    tilt.rotation.x = THREE.MathUtils.lerp(tilt.rotation.x, -ndcSmooth.y * CONFIG.parallax, 0.08);
+    tilt.rotation.y = THREE.MathUtils.lerp(tilt.rotation.y, ndcSmooth.x * CONFIG.parallax * 1.3, 0.08);
+    orb.rotation.y += dt * 0.12 * CONFIG.speed;
+    aura.material.opacity = (0.36 + 0.1 * Math.sin(t * 1.3) + hoverAmt * 0.15 + speak * 0.12 * syllable + energy * 0.3) * e;
+    aura.scale.setScalar(3.6 * (1 + hoverAmt * 0.12 + energy * 0.35));
+    if (useBloom) bloom.strength = CONFIG.bloom.strength * (1 + hoverAmt * 0.4 + energy);
 
-    // shockwave
-    if (shockT < 1) {
-      shockT = Math.min(1, shockT + dt * 1.1);
-      shock.scale.setScalar(0.6 + ease(shockT) * 3.4);
-      shock.material.opacity = (1 - shockT) * 0.65;
-      shock.quaternion.copy(camera.quaternion);
+    // ripple rings
+    for (const r of ripples) {
+      if (r.t >= 1) { r.mesh.material.opacity = 0; continue; }
+      r.t = Math.min(1, r.t + dt * 0.75);
+      r.mesh.scale.setScalar(1.02 + ease(r.t) * (REACH - 1.02));
+      r.mesh.material.opacity = (1 - r.t) * 0.5 * r.strength;
+      r.mesh.quaternion.copy(camera.quaternion);
     }
 
     // particles: drift around home, repel from cursor, spring back after a burst
@@ -394,7 +415,7 @@ function init() {
       vel[k] += (tx - pos[k]) * 0.012; vel[k + 1] += (ty - pos[k + 1]) * 0.012; vel[k + 2] += (tz - pos[k + 2]) * 0.012;
       const dx = pos[k] - mouseWorld.x, dy = pos[k + 1] - mouseWorld.y, d2 = dx * dx + dy * dy;
       if (pointerActive && d2 < repelR2) {
-        const f = (1 - d2 / repelR2) * 0.012 * (1 + h);
+        const f = (1 - d2 / repelR2) * 0.012 * (1 + hoverAmt);
         vel[k] += dx * f; vel[k + 1] += dy * f;
       }
       vel[k] *= 0.9; vel[k + 1] *= 0.9; vel[k + 2] *= 0.9;
@@ -403,19 +424,18 @@ function init() {
     pGeo.attributes.position.needsUpdate = true;
     pMat.uniforms.uFade.value = e * (1 + energy * 0.6);
 
-    // plexus lines between nearby particles (every other frame is plenty)
+    // faint connecting lines between nearby particles (every other frame is plenty)
     if (frame % 2 === 0 || reduced) {
-      const L = CONFIG.linkDistance * objScale, L2 = L * L;
+      const L = CONFIG.linkDistance * objScale * REACH, L2 = L * L;
       let n = 0;
       for (let i = 0; i < nNear && n < MAX_SEG; i++) {
         const a = i * 3;
         for (let j = i + 1; j < nNear && n < MAX_SEG; j++) {
           const b = j * 3, dx = pos[a] - pos[b], dy = pos[a + 1] - pos[b + 1], dz = pos[a + 2] - pos[b + 2], d2 = dx * dx + dy * dy + dz * dz;
           if (d2 > L2) continue;
-          // brighter when short, and brighter still near the cursor
           const mx = (pos[a] + pos[b]) / 2 - mouseWorld.x, my = (pos[a + 1] + pos[b + 1]) / 2 - mouseWorld.y;
           const near = pointerActive ? Math.max(0, 1 - (mx * mx + my * my) / (repelR2 * 2.2)) : 0;
-          const alpha = (1 - Math.sqrt(d2) / L) * 0.35 * e * (1 + near * 2 + energy);
+          const alpha = (1 - Math.sqrt(d2) / L) * 0.16 * e * (1 + near * 2 + energy + speak * 0.4);
           const o = n * 6;
           segPos[o] = pos[a]; segPos[o + 1] = pos[a + 1]; segPos[o + 2] = pos[a + 2];
           segPos[o + 3] = pos[b]; segPos[o + 4] = pos[b + 1]; segPos[o + 5] = pos[b + 2];
@@ -426,6 +446,8 @@ function init() {
       segGeo.setDrawRange(0, n * 2);
       segGeo.attributes.position.needsUpdate = true; segGeo.attributes.color.needsUpdate = true;
     }
+
+    hint.style.opacity = e;
     frame++;
   }
 
@@ -452,7 +474,7 @@ function init() {
     if (fpsSamples.length >= 90 || t < 1.5) return;
     fpsSamples.push(dt);
     if (fpsSamples.length === 90) {
-      const sorted = [...fpsSamples].sort((a, b) => a - b), median = sorted[45];
+      const median = [...fpsSamples].sort((a, b) => a - b)[45];
       if (1 / median < 40) {
         useBloom = false;
         pixelRatio = 1; renderer.setPixelRatio(1); layout();
@@ -468,6 +490,7 @@ function init() {
 
   /* ---------- start ---------- */
   layout();
+  startTyping();
   if (reduced) {
     update(0.016); render(); markReady();                            // one still frame
   } else {
@@ -499,22 +522,6 @@ function glowTexture() {
   return t;
 }
 
-function labelTexture(text, color) {
-  const c = document.createElement('canvas'); c.width = 256; c.height = 112;
-  const g = c.getContext('2d');
-  const x = 10, y = 16, w = 236, h = 80, r = 40;
-  g.shadowColor = color; g.shadowBlur = 16;
-  g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
-  g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
-  g.fillStyle = 'rgba(10,18,30,0.85)'; g.fill();
-  g.lineWidth = 3; g.strokeStyle = color; g.stroke();
-  g.shadowBlur = 0;
-  g.fillStyle = '#e8f6ff'; g.font = '600 42px "Segoe UI", system-ui, sans-serif';
-  g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, 128, 57);
-  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
-  return t;
-}
-
 function backgroundTexture() {
   // matches the hero's old CSS: radial-gradient(ellipse at top, #0f2a2c 0%, #0a0e14 70%)
   const c = document.createElement('canvas'); c.width = 512; c.height = 256;
@@ -526,4 +533,56 @@ function backgroundTexture() {
   g.fillStyle = gr; g.fillRect(-256, 0, 512, 256); g.restore();
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
   return t;
+}
+
+function injectHintStyles() {
+  if (document.getElementById('hero3d-hint-css')) return;
+  const s = document.createElement('style');
+  s.id = 'hero3d-hint-css';
+  s.textContent = `
+    .hero .hero3d-hint{ position:absolute; z-index:2; transform:translateX(-50%); display:inline-flex; align-items:center; gap:8px;
+      max-width:min(320px, 40vw); padding:9px 16px; border-radius:999px; cursor:pointer; opacity:0;
+      font:500 13px/1.3 'Segoe UI',system-ui,sans-serif; color:#e8f2ff; white-space:nowrap;
+      background:rgba(14,22,38,.62); border:1px solid rgba(139,92,246,.45);
+      box-shadow:0 0 0 1px rgba(34,211,238,.08) inset, 0 8px 30px -10px rgba(99,102,241,.55);
+      backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transition:border-color .25s, box-shadow .25s; }
+    .hero .hero3d-hint:hover, .hero .hero3d-hint:focus-visible{ border-color:rgba(34,211,238,.8); box-shadow:0 0 22px -4px rgba(34,211,238,.55); outline:none; }
+    .hero .hero3d-hint[hidden]{ display:none; }
+    .hero3d-hint-text{ overflow:hidden; text-overflow:ellipsis; }
+    .hero3d-hint-spark{ background:linear-gradient(135deg,#22d3ee,#8b5cf6,#ec4899); -webkit-background-clip:text; background-clip:text; color:transparent; font-size:15px; }
+    .hero3d-hint-caret{ width:2px; height:15px; background:#22d3ee; border-radius:2px; animation:hero3dCaret 1s steps(1) infinite; }
+    @keyframes hero3dCaret{ 50%{ opacity:0; } }
+    @media (prefers-reduced-motion: reduce){ .hero3d-hint-caret{ animation:none; } }`;
+  document.head.appendChild(s);
+}
+
+// 3D simplex noise (Ashima Arts / Stefan Gustavson, MIT)
+const NOISE = `
+vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+  i=mod289(i);
+  vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
+  vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
+  return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}`;
+
+// start last, after every const above (e.g. NOISE) is defined
+if (hero && wrap && canvas && webglAvailable()) {
+  try { init(); } catch (e) { console.warn('hero-3d disabled:', e); } // fallback stays visible
 }
