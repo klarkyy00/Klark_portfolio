@@ -1,0 +1,143 @@
+/* =====================================================================
+   fx/motion.css  -  scroll-motion layer (pairs with fx/motion.js)
+   Every "hidden" state below is scoped to html.fx-motion, a class that
+   motion.js adds only when it runs and the user has not asked for
+   reduced motion. Without the script, nothing here hides anything.
+   ===================================================================== */
+
+:root{
+  --fx-ease: cubic-bezier(.2,.75,.25,1);
+  --fx-dur: .9s;
+}
+
+/* ---------- 1. Section headings: centre-out mask wipe + bar grow ---------- */
+html.fx-motion .fx-h{
+  clip-path: inset(-30% 50% -60% 50%);
+  opacity: .001;
+  transform: translateY(14px);
+  transition:
+    clip-path 1.05s var(--fx-ease),
+    transform 1.05s var(--fx-ease),
+    opacity .5s ease;
+}
+html.fx-motion .fx-h.fx-h-in{
+  clip-path: inset(-30% -12% -60% -12%);
+  opacity: 1;
+  transform: none;
+}
+html.fx-motion .fx-h.fx-h-done{ clip-path: none; transition: none; }
+
+html.fx-motion .fx-h::after{
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+  transition: transform .85s var(--fx-ease) .4s, box-shadow .85s ease .4s;
+}
+html.fx-motion .fx-h.fx-h-in::after{
+  transform: scaleX(1);
+  box-shadow: 0 0 12px rgba(34,211,238,.55);
+}
+
+/* ---------- 2. Staggered cascades ---------- */
+html.fx-motion .fx-item{
+  opacity: 0;
+  transform: perspective(900px) translateY(34px) rotateX(14deg) scale(.97);
+  transform-origin: 50% 100%;
+  transition:
+    opacity calc(var(--fx-dur) * .8) ease var(--fx-d, 0ms),
+    transform var(--fx-dur) var(--fx-ease) var(--fx-d, 0ms);
+}
+/* small text items (stats) only rise and sharpen, no 3D */
+html.fx-motion .fx-item.fx-soft{ transform: translateY(14px); }
+html.fx-motion .fx-item.fx-in{
+  opacity: 1;
+  transform: none;
+}
+html.fx-motion .fx-item.fx-instant{ transition: none !important; }
+
+/* ---------- 3. Process "workflow line" ---------- */
+.fx-wired .process-step::after{ display: none !important; } /* replaced by the SVG wire */
+html.fx-motion .process-steps.fx-wired{ row-gap: 44px; }     /* room for the wire between stacked rows */
+
+.fx-wire{
+  position: absolute; left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.fx-wire path{ fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.fx-wire .fx-wire-track{ stroke: #262a52; stroke-width: 2; stroke-dasharray: 3 7; }
+.fx-wire .fx-wire-glow{ stroke: url(#fxWireGrad); stroke-width: 9; opacity: .35; filter: blur(5px); }
+.fx-wire .fx-wire-line{ stroke: url(#fxWireGrad); stroke-width: 2.5; }
+.fx-wire .fx-packet{ opacity: 0; transition: opacity .3s ease; }
+.fx-wire .fx-packet.on{ opacity: 1; }
+.fx-wire .fx-packet-halo{ fill: #22d3ee; opacity: .35; filter: blur(4px); }
+.fx-wire .fx-packet-core{ fill: #fff; filter: drop-shadow(0 0 6px #22d3ee) drop-shadow(0 0 12px #8b5cf6); }
+
+.fx-wired .process-number{
+  transition: filter .6s ease, transform .6s var(--fx-ease);
+}
+.fx-wired .process-step:not(.fx-lit) .process-number{
+  filter: saturate(.25) brightness(.55);
+  transform: scale(.92);
+}
+.fx-wired .process-number::after{
+  content: ''; position: absolute; inset: -2px; border-radius: 50%;
+  border: 2px solid #22d3ee; opacity: 0; pointer-events: none;
+}
+.fx-wired .process-step.fx-lit .process-number::after{ animation: fx-ping 1s var(--fx-ease) 1; }
+@keyframes fx-ping{
+  0%  { opacity: .9; transform: scale(1); }
+  100%{ opacity: 0;  transform: scale(1.75); }
+}
+
+/* ---------- 4. Depth: decorative orbs behind a few sections ---------- */
+html.fx-motion .fx-depth{ position: relative; isolation: isolate; overflow-x: clip; }
+.fx-orb{
+  position: absolute; z-index: -1; pointer-events: none;
+  width: 420px; height: 420px; border-radius: 50%;
+  filter: blur(70px); opacity: .28;
+  will-change: translate;
+}
+.fx-orb.fx-orb-v{ background: radial-gradient(circle, rgba(139,92,246,.9), transparent 65%); }
+.fx-orb.fx-orb-b{ background: radial-gradient(circle, rgba(59,130,246,.85), transparent 65%); }
+.fx-orb.fx-orb-c{ background: radial-gradient(circle, rgba(34,211,238,.7), transparent 65%); }
+@media (max-width: 640px){ .fx-orb{ width: 260px; height: 260px; filter: blur(50px); } }
+
+/* ---------- 5. Nav: stronger glass + animated gradient underline ---------- */
+html.fx-motion .top-nav{
+  transition: background-color .45s ease, box-shadow .45s ease, -webkit-backdrop-filter .45s ease, backdrop-filter .45s ease;
+}
+html.fx-motion .top-nav.fx-nav-scrolled{
+  background-color: rgba(8,9,20,.72);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+  backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow: 0 12px 32px -20px rgba(0,0,0,.9), 0 6px 24px -18px rgba(139,92,246,.6);
+}
+html.fx-motion .top-nav::after{
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #8b5cf6 20%, #3b82f6 40%, #22d3ee 60%, #8b5cf6 80%, transparent 100%);
+  background-size: 200% 100%;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s ease;
+  animation: fx-navflow 6s linear infinite paused;
+}
+html.fx-motion .top-nav.fx-nav-scrolled::after{ opacity: 1; animation-play-state: running; }
+@keyframes fx-navflow{ to{ background-position: -200% 0; } }
+
+/* ---------- Safety nets ---------- */
+@media (prefers-reduced-motion: reduce){
+  html.fx-motion .fx-item,
+  html.fx-motion .fx-h{
+    opacity: 1 !important; transform: none !important; filter: none !important;
+    clip-path: none !important; transition: none !important;
+  }
+  html.fx-motion .fx-h::after{ transform: none !important; }
+  .fx-orb{ display: none; }
+  .fx-wire .fx-packet{ display: none; }
+}
+@media print{
+  html.fx-motion .fx-item, html.fx-motion .fx-h{
+    opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important;
+  }
+}

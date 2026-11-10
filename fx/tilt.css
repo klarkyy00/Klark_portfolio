@@ -1,0 +1,95 @@
+/* =====================================================================
+   fx/tilt.css  -  3D tilt + cursor spotlight + magnetic buttons
+   Pairs with fx/tilt.js. Every rule is scoped to classes that tilt.js
+   adds (.fx-tilt, .fx-mag, .fx-hot ...), so without the script nothing
+   here changes the page. Load AFTER the main inline <style>.
+   ===================================================================== */
+
+/* animatable custom properties (fade spotlight in/out smoothly) */
+@property --fx-o { syntax:'<number>'; inherits:true; initial-value:0; }
+
+/* ---------- cards: shared state ---------- */
+html .fx-tilt{
+  --fx-rx:0deg; --fx-ry:0deg;          /* rotation, written by JS */
+  --fx-mx:50%;  --fx-my:50%;           /* cursor position inside the card (px) */
+  --fx-lift:-5px; --fx-scale:1.012;    /* hover lift, tuned per card type below */
+  /* soft spotlight painted as a BACKGROUND layer: always under the text,
+     never intercepts clicks. Background-color (the glass) is left alone. */
+  background-image:
+    radial-gradient(160px circle at var(--fx-mx) var(--fx-my),
+      rgba(255,255,255,calc(.055 * var(--fx-o))) 0%, transparent 70%),
+    radial-gradient(460px circle at var(--fx-mx) var(--fx-my),
+      rgba(139,92,246,calc(.22 * var(--fx-o))) 0%,
+      rgba(59,130,246,calc(.09 * var(--fx-o))) 38%,
+      transparent 68%);
+}
+html .site-tile.fx-tilt, html .card.fx-tilt{ position:relative; }
+html .site-tile.fx-tilt{ --fx-lift:-6px; --fx-scale:1.015; }
+html .card.fx-tilt{ --fx-lift:-3px; --fx-scale:1; }
+
+/* hovered: the tilt transform deliberately replaces the old
+   :hover translateY / scale on these cards (and the .reveal translate) */
+html .fx-tilt.fx-hot{
+  transform:perspective(1000px) rotateX(var(--fx-rx)) rotateY(var(--fx-ry))
+            translate3d(0,var(--fx-lift),0) scale(var(--fx-scale));
+  transition:transform .45s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease,
+             border-color .3s ease, opacity .7s ease, --fx-o .35s ease;
+  will-change:transform;
+}
+/* after the first ~250ms the card tracks the cursor tightly */
+html .fx-tilt.fx-hot.fx-track{
+  transition:transform .14s ease-out, box-shadow .3s ease,
+             border-color .3s ease, opacity .7s ease, --fx-o .35s ease;
+}
+/* leaving: spring back with a small overshoot */
+html .fx-tilt.fx-settle{
+  transition:transform .7s cubic-bezier(.34,1.45,.5,1), box-shadow .3s ease,
+             border-color .3s ease, opacity .7s ease, --fx-o .45s ease;
+}
+html .fx-tilt.fx-hot{ --fx-o:1; border-color:rgba(139,92,246,.38); }  /* calmer base border so the moving ring reads */
+
+/* open project accordion cards never tilt or lift (tall = nauseating) */
+html .card.fx-tilt.open.fx-hot{ transform:none; }
+
+/* ---------- border spotlight ring (thin, inside the border) ---------- */
+.fx-ring{
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  padding:1px;                                   /* ring thickness */
+  background:radial-gradient(260px circle at var(--fx-mx) var(--fx-my),
+      rgba(196,181,253,.95) 0%, rgba(96,165,250,.55) 30%, rgba(34,211,238,.18) 55%, transparent 72%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity:var(--fx-o);
+}
+
+/* ---------- glare on website screenshots (image only, no text there) ---------- */
+.fx-sheen{
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(380px circle at var(--fx-mx) var(--fx-my), rgba(255,255,255,.16), transparent 55%),
+    linear-gradient(115deg, transparent 30%, rgba(255,255,255,.05) 48%, transparent 62%);
+  mix-blend-mode:screen;
+  opacity:var(--fx-o);
+}
+
+/* ---------- magnetic buttons ---------- */
+html .fx-mag{ --fx-bx:0px; --fx-by:0px; --fx-blift:-1px; }
+html .hero-cta.fx-mag, html .social-btn.fx-mag{ --fx-blift:-2px; }
+html .fx-mag.fx-hot{
+  transform:translate3d(var(--fx-bx), calc(var(--fx-by) + var(--fx-blift)), 0);
+  transition:transform .18s ease-out, box-shadow .2s, border-color .2s, color .2s, background .2s, opacity .2s;
+  will-change:transform;
+}
+html .fx-mag.fx-settle{
+  transition:transform .55s cubic-bezier(.34,1.6,.5,1), box-shadow .2s, border-color .2s, color .2s, background .2s, opacity .2s;
+}
+
+/* safety nets: touch devices and reduced motion get no transforms */
+@media (hover:none), (pointer:coarse){
+  html .fx-tilt.fx-hot, html .fx-mag.fx-hot{ transform:none; }
+  .fx-ring, .fx-sheen{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  html .fx-tilt.fx-hot, html .fx-mag.fx-hot{ transform:none; }
+}
