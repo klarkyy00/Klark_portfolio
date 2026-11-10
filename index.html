@@ -318,6 +318,7 @@
   .faq-item:hover{ border-color:var(--accent); }
   .faq-item.open{ border-color:var(--accent2); box-shadow:0 0 24px -6px rgba(34,211,238,0.35); }
   .faq-q{
+    cursor:pointer;
     padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:14px;
   }
   .faq-q h3{ font-size:0.95rem; font-weight:700; color:var(--text); }
@@ -331,6 +332,7 @@
     max-height:0; overflow:hidden;
     transition:max-height .35s ease;
   }
+  .faq-q:focus-visible{ outline:2px solid var(--accent2); outline-offset:-2px; border-radius:12px; }
   .faq-item.open .faq-a-wrap{ max-height:400px; }
   .faq-a-inner{ overflow:hidden; }
   .faq-a{
@@ -971,6 +973,7 @@
   }
   .nav-links a.nav-cta:hover{ color:#0b0a1f; transform:translateY(-1px); }
   .filter-nav{ top:58px; }
+  .section-anchor{ height:0; scroll-margin-top:64px; }
   .about-section, .services-section, .cert-section, .booking-section, .contact-section{ scroll-margin-top:72px; }
 
   /* Hero call-to-action buttons */
@@ -1110,7 +1113,7 @@
   }
 </style>
 </head>
-<body>
+<body id="top">
 
 <div id="scrollProgress"></div>
 
@@ -1140,7 +1143,7 @@
       <a href="#certs" data-target="certs">Certifications</a>
       <a href="#websites" data-target="websites">Websites</a>
       <a href="#dashboards" data-target="dashboards">Dashboard</a>
-      <a href="#filterNav" data-target="filterNav">Projects</a>
+      <a href="#projects" data-target="projects">Projects</a>
       <a href="#contact" data-target="contact">Contact</a>
       <a class="nav-cta" href="#book">Book a Call</a>
     </div>
@@ -1215,7 +1218,7 @@
   </div>
 
   <div class="hero-cta-row">
-    <a class="hero-cta primary" href="#filterNav">View My Work</a>
+    <a class="hero-cta primary" href="#projects">View My Work</a>
     <a class="hero-cta ghost" href="#book">Book a Free Call</a>
   </div>
 
@@ -1561,6 +1564,7 @@
   </div>
 </div>
 
+<div id="projects" class="section-anchor" aria-hidden="true"></div>
 <div class="filter-nav" id="filterNav">
   <button class="filter-btn active" data-filter="all">All <span class="filter-count">(19)</span></button>
   <button class="filter-btn" data-filter="web">Websites <span class="filter-count">(6)</span></button>
@@ -2242,7 +2246,6 @@
             <img src="ig%20lead%20calendly%20sync.png" alt="IG lead pipeline - Calendly sync workflow" loading="lazy">
             <img src="new%20convo%20logger.png" alt="IG lead pipeline - new conversation logger" loading="lazy">
             <img src="many%20chat%20tag.png" alt="IG lead pipeline - ManyChat tag capture" loading="lazy">
-            <img src="daily%20update.png" alt="IG lead pipeline - daily update workflow" loading="lazy">
             <img src="follow%20up.png" alt="IG lead pipeline - follow-up workflow" loading="lazy">
             <img src="ig%20dashboard.png" alt="IG lead pipeline - dashboard" loading="lazy">
             <img src="leads.png" alt="IG lead pipeline - leads view" loading="lazy">
@@ -2668,6 +2671,18 @@
     head.addEventListener('click', () => {
       card.classList.toggle('open');
     });
+  });
+
+  // ===== FAQ accordion (click, Enter or Space opens/closes an answer) =====
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    if(!q) return;
+    q.setAttribute('role', 'button');
+    q.setAttribute('tabindex', '0');
+    q.setAttribute('aria-expanded', 'false');
+    const toggle = () => q.setAttribute('aria-expanded', String(item.classList.toggle('open')));
+    q.addEventListener('click', toggle);
+    q.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
   });
 
   // ===== Filter nav =====
