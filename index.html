@@ -2842,7 +2842,11 @@
       });
       row.appendChild(btn); grid.after(row);
     }
-    makeMore(document.querySelector('.services-grid'), 6, 'Show all {n} services');
+    // keep the service with a live demo in view (2nd, after Lead Response)
+    const sg = document.querySelector('.services-grid');
+    const demoCard = sg && sg.querySelector('.service-demo') && sg.querySelector('.service-demo').closest('.service-card');
+    if(demoCard && sg.children[1] && demoCard !== sg.children[1]) sg.children[1].before(demoCard);
+    makeMore(sg, 6, 'Show all {n} services');
     makeMore(document.querySelector('#websites .websites-grid'), 3, 'Show all {n} websites');
     makeMore(document.querySelector('#dashboards .websites-grid'), 3, 'Show all {n} dashboards');
     // projects: delivered client work first, then the strongest demos
