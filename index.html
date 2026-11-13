@@ -1057,6 +1057,19 @@
   .title-col{ max-width:680px; }
   .hero h1{ font-size:clamp(1.6rem, 1rem + 2vw, 2.4rem); line-height:1.15; text-wrap:balance; }
   .hero p.hero-lede{ max-width:680px; margin:14px auto 0; line-height:1.6; }
+  /* case-study strip on featured project cards (visible while collapsed) */
+  .case-strip{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 0 2px; }
+  .case-strip > div{ background:rgba(139,92,246,.07); border:1px solid rgba(139,92,246,.22); border-radius:10px; padding:10px 12px;
+    font-size:.86rem; line-height:1.5; color:var(--muted); font-weight:400; }
+  .case-strip b{ display:block; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:#a78bfa; margin-bottom:4px; }
+  .case-strip > .case-result{ background:rgba(34,211,238,.08); border-color:rgba(34,211,238,.32); color:var(--text); }
+  .case-strip > .case-result b{ color:#22d3ee; }
+  @media (max-width:760px){ .case-strip{ grid-template-columns:1fr; gap:8px; } .case-strip > div{ font-size:.84rem; }
+    /* phone: chevron pinned top-right so the strip gets the full card width */
+    .card-head:has(.case-strip){ position:relative; }
+    .card-head:has(.case-strip) .chevron{ position:absolute; top:16px; right:14px; }
+    .card-head:has(.case-strip) .head-left{ padding-right:44px; }
+    .card-head:has(.case-strip) .case-strip{ margin-right:-44px; } }
   /* "show all" lists: best items first, the rest one click away */
   .has-more:not(.more-open):not(.filtered) > .is-more{ display:none !important; }
   .show-more-row{ text-align:center; margin:22px 0 0; }
@@ -1606,6 +1619,7 @@
       <div class="head-left">
         <span class="card-tag">n8n · Scheduling · AI Extraction</span>
         <h2 class="card-title">Advanced Appointment Setter</h2>
+        <div class="case-strip"><div><b>Problem</b>Booking requests meant back-and-forth emails to find a free slot, plus a risk of double-booking.</div><div><b>What I built</b>Jotform feeds Gemini, which reads the request; n8n checks Google Calendar, then books the slot or offers 3 alternative times, logging everything to Airtable and Sheets.</div><div class="case-result"><b>Result</b>Customers are booked or offered alternatives instantly, 24/7, with no double-booking. Any failure emails the admin instead of losing the request.</div></div>
       </div>
       <div class="chevron">⌄</div>
     </div>
@@ -1790,6 +1804,7 @@
       <div class="head-left">
         <span class="card-tag">n8n · Sales · AI Qualification</span>
         <h2 class="card-title">Lead Generation & Sales Automation Pipeline</h2>
+        <div class="case-strip"><div><b>Problem</b>Every inbound sales email had to be read and sorted by hand before anyone followed up.</div><div><b>What I built</b>Gmail feeds a local Llama 3.2 model that scores each lead 1-10 on budget, authority, need and timing, then routes it to HubSpot, Slack and a tiered auto-reply.</div><div class="case-result"><b>Result</b>Every lead is scored, logged and answered with no manual triage, and the AI runs on local hardware at zero cloud cost.</div></div>
       </div>
       <div class="chevron">⌄</div>
     </div>
@@ -2090,6 +2105,7 @@
         <span class="card-tag">n8n · Sales Analytics · Dashboard</span>
         <span class="card-tag" style="background:rgba(34,211,238,0.22); color:var(--accent2); margin-left:6px;">✓ Real Client Project</span>
         <h2 class="card-title">Automated Sales Call Tracker & Dashboard</h2>
+        <div class="case-strip"><div><b>Problem</b>Sales calls were logged by hand, so show rates and close rates were always out of date.</div><div><b>What I built</b>About 10 small n8n workflows: Calendly booking, Google Meet recording, Gemini transcript and call outcome, a notes doc and a live dashboard.</div><div class="case-result"><b>Result</b>Every sales call is logged, summarised and counted with zero manual entry. Calls with no transcript after 24 hours get flagged instead of forgotten.</div></div>
       </div>
       <div class="chevron">⌄</div>
     </div>
@@ -2204,6 +2220,7 @@
         <span class="card-tag">n8n · Recruiting · AI Interview Scoring</span>
         <span class="card-tag" style="background:rgba(34,211,238,0.22); color:var(--accent2); margin-left:6px;">✓ Real Client Project</span>
         <h2 class="card-title">Automated Recruiting Tracker & Interview Scoring</h2>
+        <div class="case-strip"><div><b>Problem</b>Candidates were tracked in a spreadsheet by hand, and someone re-listened to every interview to write a summary.</div><div><b>What I built</b>Jotform applications feed a live sheet; Fireflies transcripts are scored by Claude (1-10, a recommendation, strengths and concerns); a two-tab dashboard.</div><div class="case-result"><b>Result</b>Applicants appear within seconds, every interview is scored the same way, and a person still makes the hiring call.</div></div>
       </div>
       <div class="chevron">⌄</div>
     </div>
@@ -2257,6 +2274,7 @@
         <span class="card-tag">n8n · Lead Tracking · In Progress</span>
         <span class="card-tag" style="background:rgba(34,211,238,0.22); color:var(--accent2); margin-left:6px;">✓ Real Client Project</span>
         <h2 class="card-title">Instagram DM Lead Tracking & Booking Matching</h2>
+        <div class="case-strip"><div><b>Problem</b>Instagram DM leads and Calendly bookings lived in two separate places, so nobody could see which DMs turned into calls.</div><div><b>What I built</b>ManyChat tag capture, a DM conversation logger, Calendly matching by Instagram handle, follow-up and daily update workflows, and a dashboard.</div><div class="case-result"><b>Result</b>One view from first DM to booked call. The core workflows are built; the ManyChat side is being finished now.</div></div>
       </div>
       <div class="chevron">⌄</div>
     </div>
@@ -2305,6 +2323,7 @@
       <div class="head-left">
         <span class="card-tag">n8n · Customer Support · AI Triage</span>
         <h2 class="card-title">Support Inbox → AI Triage</h2>
+        <div class="case-strip"><div><b>Problem</b>Every support email had to be read, sorted and answered from scratch.</div><div><b>What I built</b>Three n8n workflows: Gemini sorts each email into 1 of 6 categories and drafts a reply; a person approves it in Airtable; flagged emails go to Slack.</div><div class="case-result"><b>Result</b>A ready draft waits for every email, and the AI never sends anything without a person approving it.</div></div>
       </div>
       <div class="chevron">⌄</div>
     </div>
