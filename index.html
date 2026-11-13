@@ -1053,6 +1053,15 @@
   .hero{ background:radial-gradient(60% 80% at 50% 0%, rgba(139,92,246,.20), transparent 70%), radial-gradient(40% 60% at 85% 30%, rgba(59,130,246,.12), transparent 70%); }
   .hero h1{ background:linear-gradient(90deg,#a78bfa,#60a5fa,#22d3ee,#a78bfa); background-size:300% 100%;
     -webkit-background-clip:text; background-clip:text; filter:drop-shadow(0 0 22px rgba(139,92,246,.35)); }
+  /* hero headline (2026-11-13): longer outcome headline next to the avatar */
+  .title-col{ max-width:680px; }
+  .hero h1{ font-size:clamp(1.6rem, 1rem + 2vw, 2.4rem); line-height:1.15; text-wrap:balance; }
+  .hero p.hero-lede{ max-width:680px; margin:14px auto 0; line-height:1.6; }
+  /* "show all" lists: best items first, the rest one click away */
+  .has-more:not(.more-open):not(.filtered) > .is-more{ display:none !important; }
+  .show-more-row{ text-align:center; margin:22px 0 0; }
+  .show-more-btn{ font:inherit; font-weight:700; cursor:pointer; }
+  #cardWrap.filtered + .show-more-row{ display:none; }
   .ai-badge{ display:inline-flex; align-items:center; gap:8px; margin:0 auto 18px; padding:6px 14px; border-radius:999px;
     font-size:.78rem; font-weight:700; letter-spacing:.02em; color:#d9d6ff;
     background:rgba(139,92,246,.12); border:1px solid rgba(139,92,246,.35); }
@@ -1157,15 +1166,15 @@
   <div class="title-row">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar">
-        <img src="profile-photo.png" alt="Klark John Cabungcal">
+        <img src="profile-photo.webp" alt="Klark John Cabungcal">
       </div>
     </div>
     <div class="title-col">
       <p class="name-tag">Klark John Cabungcal</p>
-      <h1>Automation Engineering Portfolio</h1>
+      <h1>AI automations that answer leads, book calls and cut admin hours</h1>
     </div>
   </div>
-  <p>End-to-end n8n, Make.com, and Zapier workflows that replace manual, repetitive business processes — from lead qualification to AI video publishing — with reliable, self-healing automation.</p>
+  <p class="hero-lede">I build n8n, Make.com and Zapier workflows with AI built in. New leads get an instant reply, appointments book themselves, invoices get chased and support emails get sorted, so your team can spend its time on clients instead of copy-paste.</p>
   <div class="ai-ask-wrap">
     <form class="ai-ask" id="aiAsk" autocomplete="off">
       <span class="ai-ask-spark" aria-hidden="true">✦</span>
@@ -1478,39 +1487,39 @@
   <p class="websites-sub">Multi-page sites I've designed and built, all live. Click any site to open it.</p>
   <div class="websites-grid">
     <a class="site-tile" href="https://honda-city-2018.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/honda-city-2018.jpg" alt="City 2018 cinematic car website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/honda-city-2018.webp" alt="City 2018 cinematic car website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Cinematic car showcase</span><h3>City 2018</h3><p>3D car, scroll-driven camera, film look</p><span class="site-url">honda-city-2018.pages.dev</span></div>
     </a>
     <a class="site-tile" href="https://klarkyy00.github.io/Klark_portfolio/klarkyytech/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/klarkyytech.jpg" alt="KlarkyyTech website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/klarkyytech.webp" alt="KlarkyyTech website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">My AI automation business</span><h3>KlarkyyTech</h3><p>AI assistant, light/dark theme, scroll motion</p><span class="site-url">klarkyy00.github.io/Klark_portfolio/klarkyytech</span></div>
     </a>
     <a class="site-tile" href="https://flamebite.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/flamebite.jpg" alt="FlameBite website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/flamebite.webp" alt="FlameBite website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Premium burger restaurant</span><h3>FlameBite</h3><p>3D scroll film, live smoke, burger builder</p><span class="site-url">flamebite.pages.dev</span></div>
     </a>
     <a class="site-tile" href="https://coretech-1n9.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/coretech.jpg" alt="CoreTech website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/coretech.webp" alt="CoreTech website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Laptops &amp; PC store</span><h3>CoreTech</h3><p>3D hero, PC builder, compare tool</p><span class="site-url">coretech-1n9.pages.dev</span></div>
     </a>
     <a class="site-tile" href="https://apex-motors-2zr.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/apex-motors.jpg" alt="Apex Motors website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/apex-motors.webp" alt="Apex Motors website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Car dealership</span><h3>Apex Motors</h3><p>Inventory filters, finance calculator, test-drive booking</p><span class="site-url">apex-motors-2zr.pages.dev</span></div>
     </a>
     <a class="site-tile" href="https://apex-athletics.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/apex-athletics.jpg" alt="Apex Athletics website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/apex-athletics.webp" alt="Apex Athletics website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Sports gear store</span><h3>Apex Athletics</h3><p>Checkout and contact form wired to n8n</p><span class="site-url">apex-athletics.pages.dev</span></div>
     </a>
     <a class="site-tile" href="https://peakcap.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/peakcap.jpg" alt="PeakCap Co. website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/peakcap.webp" alt="PeakCap Co. website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Headwear store</span><h3>PeakCap Co.</h3><p>Live cap customizer, fit guide, promo codes</p><span class="site-url">peakcap.pages.dev</span></div>
     </a>
     <a class="site-tile" href="https://thread-and-form.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/thread-and-form.jpg" alt="Thread &amp; Form website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/thread-and-form.webp" alt="Thread &amp; Form website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Multi-brand clothing store</span><h3>Thread &amp; Form</h3><p>Shop by brand, outfit lookbook, promo codes</p><span class="site-url">thread-and-form.pages.dev</span></div>
     </a>
     <a class="site-tile" href="https://soleforge.pages.dev/" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="websites/soleforge.jpg" alt="SoleForge website" loading="lazy"><span class="site-live">Live ↗</span></div>
+      <div class="site-shot"><img src="websites/soleforge.webp" alt="SoleForge website" loading="lazy"><span class="site-live">Live ↗</span></div>
       <div class="site-info"><span class="site-type">Footwear store</span><h3>SoleForge</h3><p>Shop by category and size, saved cart</p><span class="site-url">soleforge.pages.dev</span></div>
     </a>
   </div>
@@ -1522,42 +1531,43 @@
   <p class="websites-sub">Live dashboards I've built on top of n8n automations. These are demo copies with sample data, so client information stays private.</p>
   <div class="websites-grid">
     <a class="site-tile" href="demo.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-klarkyytech.jpg" alt="Lead Intelligence dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-klarkyytech.webp" alt="Lead Intelligence dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">Lead generation &amp; outreach</span><h3>Lead Intelligence</h3><p>Finds local businesses with weak websites, scores them with AI and runs the email outreach.</p></div>
     </a>
     <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/sales-tracker.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-sales-tracker.jpg" alt="Sales Call Tracker dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-sales-tracker.webp" alt="Sales Call Tracker dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">Sales calls · coaching business</span><h3>Sales Call Tracker</h3><p>Tracks every booked sales call: who showed up, who bought, and how the month compares.</p></div>
     </a>
     <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/support-triage.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-support-triage.jpg" alt="Support Triage Desk dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-support-triage.webp" alt="Support Triage Desk dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">AI customer support</span><h3>Support Triage Desk</h3><p>Sorts incoming support emails with AI and drafts a reply for a person to check and send.</p></div>
     </a>
     <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/marketing-ledger.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-marketing-ledger.jpg" alt="Marketing Ledger dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-marketing-ledger.webp" alt="Marketing Ledger dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">Social marketing · insurance agency</span><h3>Marketing Ledger</h3><p>One screen for an agency’s organic social marketing: posts, DMs, leads and booked consultations.</p></div>
     </a>
     <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/lead-signal.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-lead-signal.jpg" alt="Lead Signal dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-lead-signal.webp" alt="Lead Signal dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">Prospect CRM · ad agency</span><h3>Lead Signal</h3><p>Ranks prospects for a Meta ads agency by how much they would gain from running ads.</p></div>
     </a>
     <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/command-center.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-command-center.jpg" alt="Sales Command Center dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-command-center.webp" alt="Sales Command Center dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">Sales calls + Instagram leads</span><h3>Sales Command Center</h3><p>Instagram DM leads and booked sales calls side by side, from first DM to closed deal.</p></div>
     </a>
     <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/recruiting-tracker.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-recruiting-tracker.jpg" alt="Automated Recruiting Tracker &amp; Interview Scoring dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-recruiting-tracker.webp" alt="Automated Recruiting Tracker &amp; Interview Scoring dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">Recruiting · AI interview scoring</span><h3>Automated Recruiting Tracker &amp; Interview Scoring</h3><p>Logs every application automatically and scores every interview from its transcript.</p></div>
     </a>
     <a class="site-tile" href="https://web-projects-af0.pages.dev/dashboards/ig-lead-pipeline.html" target="_blank" rel="noopener">
-      <div class="site-shot"><img src="dashboards/dash-ig-lead-pipeline.jpg" alt="IG Lead Pipeline dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
+      <div class="site-shot"><img src="dashboards/dash-ig-lead-pipeline.webp" alt="IG Lead Pipeline dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
       <div class="site-info"><span class="site-type">Instagram DM setting · ManyChat</span><h3>IG Lead Pipeline</h3><p>Tracks every Instagram DM lead a setter team works in ManyChat, from first message to booked call.</p></div>
     </a>
   </div>
   <p class="websites-more"><a class="hero-cta ghost" href="https://web-projects-af0.pages.dev/#dashboards" target="_blank" rel="noopener">See the full showcase ↗</a></p>
 </div>
 
-<div class="testimonials-section reveal">
+<!-- Hidden until a real client quote is added: remove style="display:none" below when ready -->
+<div class="testimonials-section reveal" style="display:none">
   <h2>What Clients Say</h2>
   <p class="testimonials-sub">Real feedback from businesses I've built automations for.</p>
   <div class="testimonial-grid">
@@ -1605,26 +1615,26 @@
           <p class="card-desc">An AI-powered appointment booking assistant that takes a form submission (from Jotform) and fully automates checking availability, booking the calendar, logging records, and emailing the customer — with no human touching it unless something goes wrong.</p>
 
           <div class="screenshot-gallery">
-            <img src="Available%20date%20appoinment.png" alt="Advanced Appointment Setter - slot available flow" loading="lazy">
-            <img src="Unavailable%20date%20appointment.png" alt="Advanced Appointment Setter - slot unavailable flow" loading="lazy">
-            <img src="Error.png" alt="Advanced Appointment Setter - error handling flow" loading="lazy">
+            <img src="Available%20date%20appoinment.webp" alt="Advanced Appointment Setter - slot available flow" loading="lazy">
+            <img src="Unavailable%20date%20appointment.webp" alt="Advanced Appointment Setter - slot unavailable flow" loading="lazy">
+            <img src="Error.webp" alt="Advanced Appointment Setter - error handling flow" loading="lazy">
           </div>
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="Available%20date%20appoinment.png">
+              <video controls preload="none" poster="Available%20date%20appoinment.webp">
                 <source src="Advance%20appointment%20setter%20Confirm.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Confirmed Booking Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Unavailable%20date%20appointment.png">
+              <video controls preload="none" poster="Unavailable%20date%20appointment.webp">
                 <source src="Advance%20appointment%20setter%20Re%20schedule.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Reschedule Flow Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Error.png">
+              <video controls preload="none" poster="Error.webp">
                 <source src="Advance%20appointment%20setter%20Error.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Error Handling Demo</div>
@@ -1675,12 +1685,12 @@
           <p class="card-desc">Triggered by a webhook, then fans out to three parallel actions — notifying the customer, the fulfillment team, and inventory tracking simultaneously instead of one after another.</p>
 
           <div class="screenshot-gallery">
-            <img src="E-commerce%20order%20Processing.png" alt="E-Commerce Order Processing workflow" loading="lazy">
+            <img src="E-commerce%20order%20Processing.webp" alt="E-Commerce Order Processing workflow" loading="lazy">
           </div>
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="E-commerce%20order%20Processing.png">
+              <video controls preload="none" poster="E-commerce%20order%20Processing.webp">
                 <source src="E-Commerce%20Order%20Processing.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Workflow Demo</div>
@@ -1728,12 +1738,12 @@
           <p class="card-desc">Manual invoice intake and collections follow-up is a classic small-business time sink. This workflow replaces that entire chain end to end.</p>
 
           <div class="screenshot-gallery">
-            <img src="Invoice%20and%20Payment%20Automation.png" alt="Invoice and Payment Automation workflow" loading="lazy">
+            <img src="Invoice%20and%20Payment%20Automation.webp" alt="Invoice and Payment Automation workflow" loading="lazy">
           </div>
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="Invoice%20and%20Payment%20Automation.png">
+              <video controls preload="none" poster="Invoice%20and%20Payment%20Automation.webp">
                 <source src="Invoice%20%26%20Payment%20Automation.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Workflow Demo</div>
@@ -1789,26 +1799,26 @@
           <p class="card-desc">Built a fully automated inbound lead scoring system using n8n that processes every new email, qualifies it with a local AI model, and triggers the right sales actions — all without manual review.</p>
 
           <div class="screenshot-gallery">
-            <img src="hot%20lead.png" alt="Lead Generation - hot lead branch" loading="lazy">
-            <img src="Warm%20Lead.png" alt="Lead Generation - warm lead branch" loading="lazy">
-            <img src="Warm%20Lead%202.png" alt="Lead Generation - warm lead branch zoomed" loading="lazy">
+            <img src="hot%20lead.webp" alt="Lead Generation - hot lead branch" loading="lazy">
+            <img src="Warm%20Lead.webp" alt="Lead Generation - warm lead branch" loading="lazy">
+            <img src="Warm%20Lead%202.webp" alt="Lead Generation - warm lead branch zoomed" loading="lazy">
           </div>
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="hot%20lead.png">
+              <video controls preload="none" poster="hot%20lead.webp">
                 <source src="Lead%20Generation%20%26%20Sales%20Automation%20Pipeline_Hot.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Hot Lead Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Warm%20Lead.png">
+              <video controls preload="none" poster="Warm%20Lead.webp">
                 <source src="Lead%20Generation%20%26%20Sales%20Automation_Warm.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Warm Lead Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Warm%20Lead%202.png">
+              <video controls preload="none" poster="Warm%20Lead%202.webp">
                 <source src="Lead%20Generation%20%26%20Sales%20Automation_Cold.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Cold Lead Demo</div>
@@ -1869,7 +1879,7 @@
           <p class="card-desc"><strong>One click. Two AI videos. Posted everywhere. Automatically.</strong> This fully automated system uses Google Veo 3.1 AI to create short videos from scratch — then instantly publishes them to YouTube and Facebook at the same time.</p>
 
           <div class="screenshot-gallery">
-            <img src="Veo%20Video%20Generator%20-%20YouTube%20and%20Facebook.png" alt="Veo AI Video Generator workflow" loading="lazy">
+            <img src="Veo%20Video%20Generator%20-%20YouTube%20and%20Facebook.webp" alt="Veo AI Video Generator workflow" loading="lazy">
           </div>
 
           <div class="section-label">The magic behind it</div>
@@ -1947,7 +1957,7 @@
           <p class="card-desc">Inbound leads arrive by email — contact-form notifications, quote requests, general enquiries. This automation captures every qualifying email, de-duplicates it, uses AI to score and enrich it, logs it to structured sheets, escalates the hottest leads, and auto-replies — with zero manual triage.</p>
 
           <div class="screenshot-gallery">
-            <img src="lead-capture.png" alt="Lead Capture and AI Qualification Make.com workflow" loading="lazy">
+            <img src="lead-capture.webp" alt="Lead Capture and AI Qualification Make.com workflow" loading="lazy">
           </div>
 
           <div class="section-label">How it works</div>
@@ -1987,7 +1997,7 @@
           <p class="card-desc">An automated Make.com worker that watches a customer support inbox and handles incoming emails without manual effort — reading, replying, and logging every message, while the same reply also does light, on-brand selling.</p>
 
           <div class="screenshot-gallery">
-            <img src="fearless-support.png" alt="Fearless Customer Support and Growth Automation workflow" loading="lazy">
+            <img src="fearless-support.webp" alt="Fearless Customer Support and Growth Automation workflow" loading="lazy">
           </div>
 
           <div class="section-label">How it works</div>
@@ -2041,7 +2051,7 @@
           <p class="card-desc">A lightweight CRM plus a sales-and-delivery assistant, built entirely around a single spreadsheet. Updating a single Status dropdown triggers the entire next step automatically — no Gmail, no Drive, no copy-pasting emails.</p>
 
           <div class="screenshot-gallery">
-            <img src="client-pipeline.png" alt="Client Pipeline Automation Zapier workflow" loading="lazy">
+            <img src="client-pipeline.webp" alt="Client Pipeline Automation Zapier workflow" loading="lazy">
           </div>
 
           <div class="section-label">How it works</div>
@@ -2089,20 +2099,20 @@
           <p class="card-desc">A production automation built for a real client (Willers Coaching) — an automated pipeline that turns every sales call into structured data with zero manual entry, and shows it on a live dashboard. Built entirely in n8n, wired to Calendly, Google Sheets/Drive/Meet, and Gemini AI. It solves a simple but common problem: coaches book discovery calls, run them, and rarely log consistently afterward — did they show up, did they buy, what's next — so there's no reliable view of booking volume, show rate, or close rate. This system logs all of that automatically from the call itself.</p>
 
           <div class="screenshot-gallery">
-            <img src="Calendly%20Booking%20Sync.png" alt="Sales Tracker - Calendly booking sync" loading="lazy">
-            <img src="Calendly%20No-Show%20Sync.png" alt="Sales Tracker - Calendly no-show sync" loading="lazy">
-            <img src="Google%20Meet%20Interview%20Pipeline.png" alt="Sales Tracker - Google Meet interview pipeline" loading="lazy">
-            <img src="Google%20Meet%20Transcript%20%E2%86%92%20Sales%20Tracker.png" alt="Sales Tracker - Google Meet transcript linking" loading="lazy">
-            <img src="Grace%20Period%20Check.png" alt="Sales Tracker - grace period check logic" loading="lazy">
-            <img src="Manual%20Override%20API.png" alt="Sales Tracker - manual override API" loading="lazy">
-            <img src="Mark%20Attended%20API.png" alt="Sales Tracker - mark attended API" loading="lazy">
-            <img src="Rebuild%20Dashboard.png" alt="Sales Tracker - rebuild dashboard logic" loading="lazy">
-            <img src="Sales%20Dashboard%20Data%20API.png" alt="Sales Tracker - dashboard data API" loading="lazy">
-            <img src="Sales%20Dashboard%20Data%20API%202.png" alt="Sales Tracker - dashboard data API 2" loading="lazy">
-            <img src="Sales%20Tracker%20Setup.png" alt="Sales Tracker - setup overview" loading="lazy">
-            <img src="dashboard%20bookings.png" alt="Sales Tracker - dashboard bookings detail" loading="lazy">
-            <img src="dashboard%20sean.png" alt="Sales Tracker - live client dashboard" loading="lazy">
-            <img src="dashboard%20week%20month.png" alt="Sales Tracker - weekly and monthly dashboard view" loading="lazy">
+            <img src="Calendly%20Booking%20Sync.webp" alt="Sales Tracker - Calendly booking sync" loading="lazy">
+            <img src="Calendly%20No-Show%20Sync.webp" alt="Sales Tracker - Calendly no-show sync" loading="lazy">
+            <img src="Google%20Meet%20Interview%20Pipeline.webp" alt="Sales Tracker - Google Meet interview pipeline" loading="lazy">
+            <img src="Google%20Meet%20Transcript%20%E2%86%92%20Sales%20Tracker.webp" alt="Sales Tracker - Google Meet transcript linking" loading="lazy">
+            <img src="Grace%20Period%20Check.webp" alt="Sales Tracker - grace period check logic" loading="lazy">
+            <img src="Manual%20Override%20API.webp" alt="Sales Tracker - manual override API" loading="lazy">
+            <img src="Mark%20Attended%20API.webp" alt="Sales Tracker - mark attended API" loading="lazy">
+            <img src="Rebuild%20Dashboard.webp" alt="Sales Tracker - rebuild dashboard logic" loading="lazy">
+            <img src="Sales%20Dashboard%20Data%20API.webp" alt="Sales Tracker - dashboard data API" loading="lazy">
+            <img src="Sales%20Dashboard%20Data%20API%202.webp" alt="Sales Tracker - dashboard data API 2" loading="lazy">
+            <img src="Sales%20Tracker%20Setup.webp" alt="Sales Tracker - setup overview" loading="lazy">
+            <img src="dashboard%20bookings.webp" alt="Sales Tracker - dashboard bookings detail" loading="lazy">
+            <img src="dashboard%20sean.webp" alt="Sales Tracker - live client dashboard" loading="lazy">
+            <img src="dashboard%20week%20month.webp" alt="Sales Tracker - weekly and monthly dashboard view" loading="lazy">
           </div>
 
           <div class="section-label">How it works, end to end</div>
@@ -2152,7 +2162,7 @@
           <p class="card-desc">An autonomous AI agent that reads a portfolio site, searches three job boards in parallel, scores every listing against real skills and experience, and delivers only genuine matches — logged, Slacked, and emailed with no human in the loop.</p>
 
           <div class="screenshot-gallery">
-            <img src="Job%20Optimizer%20Agent.png" alt="Job Optimizer Agent workflow" loading="lazy">
+            <img src="Job%20Optimizer%20Agent.webp" alt="Job Optimizer Agent workflow" loading="lazy">
           </div>
 
           <div class="section-label">How it works, step by step</div>
@@ -2203,9 +2213,9 @@
           <p class="card-desc">An automated hiring pipeline that replaces manual candidate spreadsheet-tracking and first-pass interview screening. It captures every application the moment someone applies, scores every interview against its transcript consistently, and gives a single live dashboard showing the whole pipeline at a glance.</p>
 
           <div class="screenshot-gallery">
-            <img src="Recruiting%20Tracker%20-%20Interview%20Scoring.png" alt="Recruiting Tracker - interview scoring output" loading="lazy">
-            <img src="Recruting%20bookings.png" alt="Recruiting Tracker - bookings view" loading="lazy">
-            <img src="Recruting%20dashboard.png" alt="Recruiting Tracker - dashboard view" loading="lazy">
+            <img src="Recruiting%20Tracker%20-%20Interview%20Scoring.webp" alt="Recruiting Tracker - interview scoring output" loading="lazy">
+            <img src="Recruting%20bookings.webp" alt="Recruiting Tracker - bookings view" loading="lazy">
+            <img src="Recruting%20dashboard.webp" alt="Recruiting Tracker - dashboard view" loading="lazy">
           </div>
 
           <div class="section-label">How it works, step by step</div>
@@ -2256,10 +2266,10 @@
           <p class="card-desc">A real client project currently in progress — connecting Instagram DM conversations (via ManyChat) to a lead-tracking sheet, and matching those DM leads back to actual Calendly bookings, so a business can see the full path from "commented/DM'd" to "booked a call" in one place instead of two disconnected systems.</p>
 
           <div class="screenshot-gallery">
-            <img src="ig%20lead%20dashboard%20workflow.png" alt="IG lead pipeline - dashboard workflow" loading="lazy">
-            <img src="ig%20lead%20calendly%20sync.png" alt="IG lead pipeline - Calendly sync workflow" loading="lazy">
-            <img src="new%20convo%20logger.png" alt="IG lead pipeline - new conversation logger" loading="lazy">
-            <img src="many%20chat%20tag.png" alt="IG lead pipeline - ManyChat tag capture" loading="lazy">
+            <img src="ig%20lead%20dashboard%20workflow.webp" alt="IG lead pipeline - dashboard workflow" loading="lazy">
+            <img src="ig%20lead%20calendly%20sync.webp" alt="IG lead pipeline - Calendly sync workflow" loading="lazy">
+            <img src="new%20convo%20logger.webp" alt="IG lead pipeline - new conversation logger" loading="lazy">
+            <img src="many%20chat%20tag.webp" alt="IG lead pipeline - ManyChat tag capture" loading="lazy">
             <img src="klarkyytech/proof/ig-lead-pipeline/dashboard.webp" alt="IG lead pipeline - dashboard" loading="lazy">
           </div>
 
@@ -2304,13 +2314,13 @@
           <p class="card-desc">A three-workflow n8n system that reads incoming support email, classifies and drafts a reply with Gemini, and only ever sends after a human approves. Built and validated end-to-end — 3 workflows, 31 total nodes, Gemini 2.5 Flash, 0 errors / 0 warnings on validation, ~2 hours build time. Currently inactive pending go-live.</p>
 
           <div class="screenshot-gallery">
-            <img src="CS1.png" alt="Customer Support Triage - screenshot 1" loading="lazy">
-            <img src="CS2.png" alt="Customer Support Triage - screenshot 2" loading="lazy">
-            <img src="CS3.png" alt="Customer Support Triage - screenshot 3" loading="lazy">
-            <img src="CS4.png" alt="Customer Support Triage - screenshot 4" loading="lazy">
-            <img src="Customer%20Suport%20Triage.png" alt="Customer Support Triage workflow overview" loading="lazy">
-            <img src="Customer%20Support%20Dashboard.png" alt="Customer Support Dashboard" loading="lazy">
-            <img src="Customer%20Support%20Error%20handling.png" alt="Customer Support Error handling flow" loading="lazy">
+            <img src="CS1.webp" alt="Customer Support Triage - screenshot 1" loading="lazy">
+            <img src="CS2.webp" alt="Customer Support Triage - screenshot 2" loading="lazy">
+            <img src="CS3.webp" alt="Customer Support Triage - screenshot 3" loading="lazy">
+            <img src="CS4.webp" alt="Customer Support Triage - screenshot 4" loading="lazy">
+            <img src="Customer%20Suport%20Triage.webp" alt="Customer Support Triage workflow overview" loading="lazy">
+            <img src="Customer%20Support%20Dashboard.webp" alt="Customer Support Dashboard" loading="lazy">
+            <img src="Customer%20Support%20Error%20handling.webp" alt="Customer Support Error handling flow" loading="lazy">
           </div>
 
           <div class="section-label">What I built — three focused workflows</div>
@@ -2407,7 +2417,7 @@
           <p class="card-desc">A scroll-driven 3D film about the 2018 Honda City sedan. Scrolling moves one camera through nine chapters, from the headlights switching on to a fade to black. Unofficial fan demo, not affiliated with Honda.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/honda-city-2018.jpg" alt="City 2018 website hero" loading="lazy">
+            <img src="websites/honda-city-2018.webp" alt="City 2018 website hero" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2446,7 +2456,7 @@
           <p class="card-desc">The website for my own AI automation business, KlarkyyTech: a calm, professional site that explains what I automate, shows sample projects and turns visitors into conversations.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/klarkyytech.jpg" alt="KlarkyyTech website hero" loading="lazy">
+            <img src="websites/klarkyytech.webp" alt="KlarkyyTech website hero" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2485,7 +2495,7 @@
           <p class="card-desc">A cinematic one-page site for an upscale craft-burger restaurant, built around a scroll-driven 3D film. Demo website with sample content.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/flamebite.jpg" alt="FlameBite website hero with the 3D burger" loading="lazy">
+            <img src="websites/flamebite.webp" alt="FlameBite website hero with the 3D burger" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2524,7 +2534,7 @@
           <p class="card-desc">A premium tech store for gaming laptops, desktop PCs, components and accessories, built across 6 pages. Demo website with sample content.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/coretech.jpg" alt="CoreTech website home page" loading="lazy">
+            <img src="websites/coretech.webp" alt="CoreTech website home page" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2563,7 +2573,7 @@
           <p class="card-desc">A motorsport-styled dealership website for luxury, performance and electric cars, built across 7 pages. Demo website with sample content.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/apex-motors.jpg" alt="Apex Motors website home page" loading="lazy">
+            <img src="websites/apex-motors.webp" alt="Apex Motors website home page" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2602,7 +2612,7 @@
           <p class="card-desc">A bold, mobile-first online store for training gear and footwear, with its forms wired into an n8n automation backend. Demo website with sample content.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/apex-athletics.jpg" alt="Apex Athletics website home page" loading="lazy">
+            <img src="websites/apex-athletics.webp" alt="Apex Athletics website home page" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2640,7 +2650,7 @@
           <p class="card-desc">A streetwear store for snapbacks, dad hats and truckers, with a live cap customizer. Demo website with sample content.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/peakcap.jpg" alt="PeakCap Co. website home page" loading="lazy">
+            <img src="websites/peakcap.webp" alt="PeakCap Co. website home page" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2678,7 +2688,7 @@
           <p class="card-desc">A workwear store with jackets, shirts and pants from eleven labels. Demo website with sample content.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/thread-and-form.jpg" alt="Thread &amp; Form website home page" loading="lazy">
+            <img src="websites/thread-and-form.webp" alt="Thread &amp; Form website home page" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2716,7 +2726,7 @@
           <p class="card-desc">An online shoe store for everyday, athletic and street footwear. Demo website with sample content.</p>
 
           <div class="screenshot-gallery">
-            <img src="websites/soleforge.jpg" alt="SoleForge website home page" loading="lazy">
+            <img src="websites/soleforge.webp" alt="SoleForge website home page" loading="lazy">
           </div>
 
           <div class="section-label">Features</div>
@@ -2813,12 +2823,41 @@
     q.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
   });
 
+  // ===== Shorter page: best items first, the rest behind a "Show all" button =====
+  (function(){
+    function makeMore(grid, limit, label){
+      if(!grid) return;
+      const items = [...grid.children].filter(e => !e.classList.contains('hidden'));
+      if(items.length <= limit) return;
+      items.slice(limit).forEach(e => e.classList.add('is-more'));
+      grid.classList.add('has-more');
+      const row = document.createElement('p'); row.className = 'show-more-row';
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'hero-cta ghost show-more-btn';
+      btn.textContent = label.replace('{n}', items.length);
+      btn.addEventListener('click', () => {
+        grid.classList.add('more-open'); row.remove();
+        const first = items[limit]; const f = first.matches('a,button') ? first : first.querySelector('a,button,[tabindex]');
+        if(f) f.focus({ preventScroll:true });
+        if(window.FXTilt && window.FXTilt.refresh) window.FXTilt.refresh();
+      });
+      row.appendChild(btn); grid.after(row);
+    }
+    makeMore(document.querySelector('.services-grid'), 6, 'Show all {n} services');
+    makeMore(document.querySelector('#websites .websites-grid'), 3, 'Show all {n} websites');
+    makeMore(document.querySelector('#dashboards .websites-grid'), 3, 'Show all {n} dashboards');
+    // projects: delivered client work first, then the strongest demos
+    const wrap = document.getElementById('cardWrap');
+    ['c13','c1','c4','c12','c11','c9'].forEach(id => { const c = wrap.querySelector('.card[data-id="' + id + '"]'); if(c) wrap.prepend(c); });
+    makeMore(wrap, 6, 'Show all {n} projects');
+  })();
+
   // ===== Filter nav =====
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const filter = btn.dataset.filter;
+      document.getElementById('cardWrap').classList.toggle('filtered', filter !== 'all');
       document.querySelectorAll('.card').forEach(card => {
         const matches = filter === 'all' || card.dataset.platform === filter || card.dataset.client === filter;
         if(matches){
