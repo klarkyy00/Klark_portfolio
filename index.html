@@ -1092,6 +1092,10 @@
   @media (hover:none), (max-width:760px){
     .ai-ask-wrap::before{ animation:none; }
     .hero h1{ filter:none; }
+    /* gradient shimmers repaint text every frame; on phones keep the colours, drop the motion
+       (measured with 4x CPU throttle: idle ~51 -> ~74fps, scroll stutter ~23% -> ~9%) */
+    h1, h2, .name-tag, .contact-submit, .cert-card::before, .process-step::after, .side-lightning path, .ai-badge .ai-dot{ animation:none !important; }
+    .avatar{ animation:float 4s ease-in-out infinite; }
   }
   /* "show all" lists: best items first, the rest one click away */
   .has-more:not(.more-open):not(.filtered) > .is-more{ display:none !important; }
