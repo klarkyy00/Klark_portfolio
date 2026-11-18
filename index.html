@@ -1078,6 +1078,21 @@
   .inline-link{ color:#22d3ee; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(34,211,238,.45); }
   .inline-link:hover{ color:#fff; text-decoration-color:#fff; }
   .footer .footer-links{ display:inline-block; margin-top:8px; }
+  /* ===== PERF LAYER (2026-11-18): same look, far fewer repaints =====
+     Measured: always-running glow/shimmer animations cut scrolling to ~60fps on desktop and ~33fps on phones. */
+  /* 1. any section that is off-screen freezes its decorative animations (class set by JS below) */
+  .fx-off, .fx-off *, .fx-off *::before, .fx-off *::after{ animation-play-state:paused !important; }
+  /* 2. box-shadow pulses repaint the whole card every frame: keep the glow, drop the pulse */
+  .card{ animation:none; box-shadow:0 0 22px -5px rgba(139,92,246,.3), 0 0 45px -18px rgba(56,189,248,.18); }
+  .cert-card{ animation:none; box-shadow:0 0 21px -7px rgba(34,211,238,.28); }
+  .process-number{ animation:none; box-shadow:0 0 0 5px var(--bg), 0 4px 22px 0 rgba(139,92,246,.6); }
+  /* 3. 48 separately pulsing badge dots -> steady glow */
+  .badge::before{ animation:none; opacity:.95; }
+  /* 4. phones: no rotating blurred glow, no blur under the animated headline */
+  @media (hover:none), (max-width:760px){
+    .ai-ask-wrap::before{ animation:none; }
+    .hero h1{ filter:none; }
+  }
   /* "show all" lists: best items first, the rest one click away */
   .has-more:not(.more-open):not(.filtered) > .is-more{ display:none !important; }
   .show-more-row{ text-align:center; margin:22px 0 0; }
@@ -1279,8 +1294,10 @@
       <span class="badge">JSON / Data Parsing</span>
       <span class="badge">Google Workspace</span>
       <span class="badge">Slack / Gmail API</span>
-      <span class="badge">Airtable · HubSpot</span>
+      <span class="badge">HubSpot CRM</span>
       <span class="badge">HighLevel CRM</span>
+      <span class="badge">CRM Automation</span>
+      <span class="badge">Airtable</span>
       <span class="badge">SCADA Monitoring</span>
       <span class="badge">JavaScript</span>
       <span class="badge">n8n</span>
@@ -1293,8 +1310,10 @@
       <span class="badge">JSON / Data Parsing</span>
       <span class="badge">Google Workspace</span>
       <span class="badge">Slack / Gmail API</span>
-      <span class="badge">Airtable · HubSpot</span>
+      <span class="badge">HubSpot CRM</span>
       <span class="badge">HighLevel CRM</span>
+      <span class="badge">CRM Automation</span>
+      <span class="badge">Airtable</span>
       <span class="badge">SCADA Monitoring</span>
       <span class="badge">JavaScript</span>
       <span class="badge">n8n</span>
@@ -1307,8 +1326,10 @@
       <span class="badge">JSON / Data Parsing</span>
       <span class="badge">Google Workspace</span>
       <span class="badge">Slack / Gmail API</span>
-      <span class="badge">Airtable · HubSpot</span>
+      <span class="badge">HubSpot CRM</span>
       <span class="badge">HighLevel CRM</span>
+      <span class="badge">CRM Automation</span>
+      <span class="badge">Airtable</span>
       <span class="badge">SCADA Monitoring</span>
       <span class="badge">JavaScript</span>
     </div>
@@ -2893,6 +2914,18 @@
     q.addEventListener('click', toggle);
     q.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
   });
+
+  // ===== Perf: freeze decorative animations in sections that are off-screen =====
+  (function(){
+    if(!('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('fx-off', !e.isIntersecting)), { rootMargin:'200px 0px' });
+    [...document.body.children].forEach(el => {
+      if(/^(SCRIPT|STYLE|NAV|LINK)$/.test(el.tagName)) return;
+      const pos = getComputedStyle(el).position;
+      if(pos === 'fixed' || pos === 'sticky') return;
+      io.observe(el);
+    });
+  })();
 
   // ===== Shorter page: best items first, the rest behind a "Show all" button =====
   (function(){
