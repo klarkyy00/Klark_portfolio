@@ -907,9 +907,10 @@
 
   /* ===== SCROLL PROGRESS BAR ===== */
   #scrollProgress{
-    position:fixed; top:0; left:0; height:3px; width:0%;
+    position:fixed; top:0; left:0; height:3px; width:100%;
+    transform:scaleX(0); transform-origin:0 50%; will-change:transform;
     background:linear-gradient(90deg, var(--accent), var(--sea), var(--accent2));
-    z-index:999; transition:width .1s ease-out;
+    z-index:999; transition:transform .1s ease-out;
     box-shadow:0 0 8px rgba(34,211,238,0.6);
   }
 
@@ -3323,22 +3324,33 @@
     const progressBar = document.getElementById('scrollProgress');
     const hero = document.querySelector('.hero');
 
-    function onScroll(){
+    // perf: sizes are cached (re-measured only on resize / content changes) and the work runs
+    // once per frame. The old handler wrote a style then read offsetHeight on every scroll
+    // event, forcing a full-page layout each time (the main source of scroll lag on phones).
+    let docHeight = 0, heroHeight = 0, ticking = false, lastHeroY = -1;
+    function measure(){
+      docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      heroHeight = hero ? hero.offsetHeight : 0;
+    }
+    function update(){
+      ticking = false;
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = pct + '%';
-
-      if(hero){
-        const heroHeight = hero.offsetHeight;
-        if(scrollTop < heroHeight * 1.3){
-          hero.style.backgroundPositionY = (scrollTop * 0.3) + 'px';
-        }
+      window.__frameScrollY = scrollTop;   // read once, before any style write; reused by the nav highlight
+      const p = docHeight > 0 ? Math.min(1, scrollTop / docHeight) : 0;
+      progressBar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+      if(hero && scrollTop < heroHeight * 1.3){
+        const y = Math.round(scrollTop * 0.3);
+        if(y !== lastHeroY){ lastHeroY = y; hero.style.backgroundPositionY = y + 'px'; }
       }
     }
+    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
 
+    measure();
+    window.addEventListener('resize', () => { measure(); onScroll(); }, { passive: true });
+    window.addEventListener('load', () => { measure(); onScroll(); });
+    if('ResizeObserver' in window) new ResizeObserver(() => { measure(); onScroll(); }).observe(document.body);
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    update();
   })();
 
   // ===== Nav anchors, active-section highlight, stat count-up =====
@@ -3351,12 +3363,23 @@
 
     const links = document.querySelectorAll('.nav-links a[data-target]');
     const secs = Array.from(links).map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+    // perf: section tops are cached and only re-measured when the page size changes
+    let spyQueued = false, lastCurrent, tops = [];
+    function measureTops(){ const y = window.scrollY; tops = secs.map(s => s.getBoundingClientRect().top + y); }
+    measureTops();
+    window.addEventListener('load', measureTops);
+    if('ResizeObserver' in window) new ResizeObserver(() => { measureTops(); setActive(); }).observe(document.body);
     function setActive(){
+      spyQueued = false;
       let current = null;
-      secs.forEach(s => { if(s.getBoundingClientRect().top <= 140) current = s.id; });
+      const fy = window.__frameScrollY; window.__frameScrollY = undefined;
+      const y = (fy !== undefined ? fy : window.scrollY) + 140;
+      secs.forEach((s, i) => { if(tops[i] <= y) current = s.id; });
+      if(current === lastCurrent) return;
+      lastCurrent = current;
       links.forEach(a => a.classList.toggle('active', a.dataset.target === current));
     }
-    window.addEventListener('scroll', setActive, { passive:true });
+    window.addEventListener('scroll', () => { if(!spyQueued){ spyQueued = true; requestAnimationFrame(setActive); } }, { passive:true });
     setActive();
 
     const nums = document.querySelectorAll('.stat-num');
