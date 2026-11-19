@@ -1187,6 +1187,39 @@
   .faq-cta button.hero-cta{ font:inherit; font-weight:700; cursor:pointer; }
   .contact-section .contact-line{ margin:14px auto 6px; }
   .contact-section .edu-line{ margin:6px 0 22px; text-align:center; }
+  /* ===== UI POLISH LAYER (2026-11-19, from the impeccable critique: measured + reviewed) ===== */
+  .booking-fallback{ margin:14px 0 0; text-align:center; color:var(--muted); font-size:.92rem; }
+  /* readable line length in project cards (was ~130 characters per line) */
+  .card-desc, .card-body .highlights{ max-width:78ch; }
+  /* small-text floor: tags, labels and badges were 10.9-11.5px */
+  .service-tags span{ font-size:.78rem; }
+  .stat-label, .badge, .section-label, .site-live{ font-size:.8rem; }
+  .site-type, .video-caption{ font-size:.78rem; }
+  .filter-count{ font-size:.85em; }
+  @media (max-width:760px){ .filter-btn{ font-size:.85rem; } }
+  /* visible keyboard focus on the dark background (browser default ring was near-black) */
+  :focus-visible{ outline:2px solid #22d3ee; outline-offset:3px; border-radius:6px; }
+  .ai-ask:focus-within{ box-shadow:0 0 0 2px #22d3ee, 0 0 24px rgba(34,211,238,.25); }
+  /* contrast: separators were 1.7:1 */
+  .contact-line .sep{ color:rgba(203,213,225,.55); }
+  /* process steps not reached yet read as "disabled" - keep them clearly alive */
+  .fx-wired .process-step:not(.fx-lit) .process-number{ filter:saturate(.75) brightness(.9); transform:scale(.96); }
+  /* chevrons: the ⌄ glyph rendered like a letter v; draw a real chevron */
+  .chevron, .faq-chevron{ font-size:0; }
+  .chevron::before, .faq-chevron::before{ content:""; width:7px; height:7px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:translateY(-2px) rotate(45deg); }
+  /* phones: thumb-size targets, one-row swipeable filter bar, no decoration over the text */
+  @media (pointer:coarse), (max-width:760px){
+    .filter-btn, .ai-chips button, .ai-chips a, .nav-cta, .social-btn, .hero-cta, .show-more-btn{ min-height:44px; display:inline-flex; align-items:center; justify-content:center; }
+    .nav-brand{ min-width:44px; min-height:44px; display:inline-flex; align-items:center; }
+    .inline-link{ display:inline-block; padding:6px 0; }
+  }
+  @media (max-width:760px){
+    .filter-nav{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .filter-nav::-webkit-scrollbar{ display:none; }
+    .filter-btn{ flex:0 0 auto; }
+    .side-lightning{ display:none !important; }
+    .footer{ padding-bottom:96px; }
+  }
   /* "show all" lists: best items first, the rest one click away */
   .has-more:not(.more-open):not(.filtered) > .is-more{ display:none !important; }
   .show-more-row{ text-align:center; margin:22px 0 0; }
@@ -1730,6 +1763,7 @@
 </div>
 
 <div id="projects" class="section-anchor" aria-hidden="true"></div>
+<div class="projects-zone">
 <div class="filter-nav" id="filterNav">
   <button class="filter-btn active" data-filter="all">All <span class="filter-count">(23)</span></button>
   <button class="filter-btn" data-filter="web">Websites <span class="filter-count">(10)</span></button>
@@ -2939,13 +2973,15 @@
 
 
 </div>
+</div><!-- /projects-zone -->
 
 <div class="booking-section reveal">
   <h2>Book a Free 30-Min Call</h2>
   <p>Let's talk through what you need automated — no pressure, just a quick conversation about your process and whether I'm a good fit to help.</p>
   <div class="booking-frame-wrap">
-    <iframe src="https://calendly.com/pungzuwangdu11/30min" title="Book a call"></iframe>
+    <iframe src="https://calendly.com/pungzuwangdu11" title="Book a call"></iframe>
   </div>
+  <p class="booking-fallback">Calendar not loading? <a class="inline-link" href="https://calendly.com/pungzuwangdu11" target="_blank" rel="noopener">Open my booking page ↗</a> or email <a class="inline-link" href="mailto:kj_klark@yahoo.com">kj_klark@yahoo.com</a></p>
 </div>
 
 <div class="contact-section reveal">
