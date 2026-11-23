@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#080914">
 <title>AI Automation Engineer (n8n, Make, Zapier) | Klark Cabungcal</title>
 <meta name="description" content="AI automations that answer leads, book calls and cut admin hours. n8n, Make and Zapier workflows with live demos. Book a free 30-min call.">
 
@@ -1236,6 +1238,33 @@
   .cert-section h2, .websites-section h2, .booking-section h2, .contact-section h2, .projects-head h2{
     background:none; color:#f1f5f9; -webkit-text-fill-color:#f1f5f9; animation:none; }
   @media (max-width:760px){ .projects-head{ padding:16px 16px 4px; } }
+  /* ===== AUDIT FIX LAYER (2026-11-23: impeccable audit + web-interface-guidelines) ===== */
+  html{ color-scheme:dark; }
+  .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .skip-link{ position:fixed; top:8px; left:8px; z-index:2000; padding:10px 16px; border-radius:10px; background:#22d3ee; color:#080914; font-weight:700; text-decoration:none; transform:translateY(-200%); transition:transform .15s; }
+  .skip-link:focus{ transform:none; }
+  #main:focus{ outline:none; }
+  .card-head[role=button]:focus-visible{ outline:2px solid #22d3ee; outline-offset:-2px; border-radius:14px; }
+  .filter-btn{ transition-property:color, background-color, border-color, box-shadow, transform; }
+  h1, h2, .card-title{ text-wrap:balance; }
+  .about-section p{ text-wrap:pretty; text-align:left; max-width:68ch; margin-left:auto; margin-right:auto; }
+  .about-video{ margin:22px auto !important; }
+  .about-video .hero-cta{ display:inline-flex; align-items:center; gap:8px; }
+  /* phone menu */
+  .nav-toggle{ display:none; font:inherit; font-size:.85rem; font-weight:700; color:var(--text); background:rgba(255,255,255,.04);
+    border:1px solid rgba(148,163,184,.35); border-radius:10px; padding:0 14px; min-height:44px; cursor:pointer; }
+  .nav-toggle[aria-expanded=true]{ border-color:#22d3ee; color:#22d3ee; }
+  .nav-panel{ display:none; }
+  @media (max-width:760px){
+    .nav-toggle{ display:inline-flex; align-items:center; margin-left:6px; }
+    .nav-links{ gap:8px; }
+    .nav-panel:not([hidden]){ display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:10px 16px 16px;
+      background:rgba(8,9,20,.97); border-bottom:1px solid var(--border); }
+    .nav-panel a{ display:flex; align-items:center; min-height:44px; padding:0 14px; border-radius:10px; color:var(--text);
+      text-decoration:none; font-weight:600; background:rgba(255,255,255,.03); border:1px solid rgba(148,163,184,.14); }
+    .nav-panel a:active{ background:rgba(34,211,238,.12); }
+  }
+  @media (max-width:760px) and (min-width:400px){ .nav-brand span:last-child{ display:inline; } }
   /* "show all" lists: best items first, the rest one click away */
   .has-more:not(.more-open):not(.filtered) > .is-more{ display:none !important; }
   .show-more-row{ text-align:center; margin:22px 0 0; }
@@ -1324,6 +1353,7 @@
   <path d="M35,0 L20,90 L45,95 L15,200 L40,205 L10,320 L38,326 L12,440 L42,446 L18,560 L44,566 L14,680 L36,686 L22,800"/>
 </svg>
 
+<a class="skip-link" href="#main">Skip to content</a>
 <nav class="top-nav">
   <div class="top-nav-inner">
     <a class="nav-brand" href="#top"><span class="nav-logo">K</span><span>Klark Cabungcal</span></a>
@@ -1333,19 +1363,24 @@
       <a href="#services" data-target="services">Services</a>
       <a href="#certs" data-target="certs">Certifications</a>
       <a href="#websites" data-target="websites">Websites</a>
-      <a href="#dashboards" data-target="dashboards">Dashboard</a>
+      <a href="#dashboards" data-target="dashboards">Dashboards</a>
       <a href="#contact" data-target="contact">Contact</a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navPanel">Menu</button>
       <a class="nav-cta" href="#book">Book a Call</a>
     </div>
   </div>
+  <div class="nav-panel" id="navPanel" hidden>
+    <a href="#projects">Projects</a><a href="#about">About</a><a href="#services">Services</a><a href="#certs">Certifications</a>
+    <a href="#websites">Websites</a><a href="#dashboards">Dashboards</a><a href="#contact">Contact</a>
+  </div>
 </nav>
 
-<div class="hero">
+<div class="hero" id="main" tabindex="-1">
   <div class="ai-badge"><span class="ai-dot"></span>AI Automation Engineer · n8n · Make · Zapier</div>
   <div class="title-row">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar">
-        <img src="profile-photo.webp" alt="Klark John Cabungcal">
+        <img src="profile-photo.webp" alt="Klark John Cabungcal" width="160" height="160" fetchpriority="high">
       </div>
     </div>
     <div class="title-col">
@@ -1498,12 +1533,12 @@
           <div class="section-label">How it works, step by step</div>
           <ul class="highlights">
             <li><strong>1. Trigger — Webhook:</strong> Jotform posts form submissions to this webhook, using Jotform's auto-generated plain-English summary of all form answers.</li>
-            <li><strong>2. Extract Appointment Details (Gemini AI):</strong> An AI "Information Extractor" reads that raw text and pulls out structured fields — name, email, address, phone, date, and time — auto-converting natural language like "2pm" into 24-hour format.</li>
+            <li><strong>2. Extract Appointment Details (Gemini AI):</strong> An AI “Information Extractor” reads that raw text and pulls out structured fields — name, email, address, phone, date, and time — auto-converting natural language like “2pm” into 24-hour format.</li>
             <li><strong>3. Validate Required Fields:</strong> Checks that name, a valid email, and a date were actually extracted. If not, the customer gets an immediate error asking them to resubmit — no bad data enters the system.</li>
-            <li><strong>4. Prepare Appointment Data:</strong> Builds a clean record with a 1-hour time slot and marks status as "Pending."</li>
+            <li><strong>4. Prepare Appointment Data:</strong> Builds a clean record with a 1-hour time slot and marks status as “Pending.”</li>
             <li><strong>5. Create Airtable Record (Pending):</strong> Logs the request immediately, so there's a record even before availability is confirmed.</li>
             <li><strong>6. Check Google Calendar availability:</strong> Pulls all events for that business day (9am–5pm) and checks for overlaps with the requested slot.</li>
-            <li><strong>7. Branch — Is the slot available?</strong> Yes → creates the calendar event, logs to Sheets, emails a confirmation, returns 200. No → marks "Needs Reschedule," emails up to 3 alternative times, returns 200 needs_reschedule.</li>
+            <li><strong>7. Branch — Is the slot available?</strong> Yes → creates the calendar event, logs to Sheets, emails a confirmation, returns 200. No → marks “Needs Reschedule,” emails up to 3 alternative times, returns 200 needs_reschedule.</li>
             <li><strong>8. Error handling:</strong> Every external step has a fallback — failures email the admin directly and return a 500, so nothing fails silently.</li>
           </ul>
 
@@ -1554,7 +1589,7 @@
           <div class="section-label">How it works</div>
           <ul class="highlights">
             <li><strong>Trigger — Order Received (Webhook):</strong> Listens for POST requests at /order-received — where a Jotform submission gets sent via Jotform's webhook integration.</li>
-            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy — field names vary depending on how the form was built, and Jotform also sends a "pretty string" fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
+            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy — field names vary depending on how the form was built, and Jotform also sends a “pretty string” fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
             <li><strong>Fan-out to three parallel branches:</strong></li>
             <li><strong>→ Send Confirmation Email (Gmail):</strong> Sends an HTML order-confirmation email with order ID, items, and total.</li>
             <li><strong>→ Send Packing Instructions (Slack → #inventory):</strong> Posts order details plus a packing checklist for the fulfillment team.</li>
@@ -1563,7 +1598,7 @@
 
           <div class="section-label">Why it matters</div>
           <ul class="highlights">
-            <li>Handles inconsistent Jotform field naming with a resilient lookup + "pretty string" fallback</li>
+            <li>Handles inconsistent Jotform field naming with a resilient lookup + “pretty string” fallback</li>
             <li>Three actions fire in parallel instead of a slow sequential chain</li>
             <li>Retries 3x on every external call before escalating to a Slack failure alert</li>
           </ul>
@@ -1612,7 +1647,7 @@
           <table class="info-table">
             <tr><th>Manual task</th><th>Automated by</th></tr>
             <tr><td>Opening the invoice, reading it, typing details into a spreadsheet</td><td>JotForm intake + OCR cross-check + auto-logging</td></tr>
-            <tr><td>Emailing the client "we got it"</td><td>Confirmation email node</td></tr>
+            <tr><td>Emailing the client “we got it”</td><td>Confirmation email node</td></tr>
             <tr><td>Telling the team a new invoice came in</td><td>Slack notification</td></tr>
             <tr><td>Remembering to check back in a week</td><td>Wait node + scheduled re-check</td></tr>
             <tr><td>Writing (and remembering to send) a reminder</td><td>Auto-generated reminder email</td></tr>
@@ -1820,11 +1855,11 @@
             <li><strong>1. Watch emails (Gmail trigger):</strong> Polls the inbox on a 15-minute schedule, marking fetched messages as read so they're never processed twice.</li>
             <li><strong>2. AI qualification (Claude via Make AI):</strong> Each email is passed to Claude Haiku 4.5, returning a JSON object — company, phone, category, urgency, a 0–100 lead score, and a summary.</li>
             <li><strong>3. Parse JSON:</strong> The AI's response is parsed into individual fields.</li>
-            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a "Known Leads" data store — if seen before, the flow stops.</li>
+            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a “Known Leads” data store — if seen before, the flow stops.</li>
             <li><strong>5. Record in Data Store:</strong> New senders are recorded for future recognition.</li>
             <li><strong>6. Router:</strong> Fans the flow into three independent branches.</li>
-            <li><strong>7. Log all leads (Google Sheets):</strong> Every new lead is appended to the main "Leads" sheet.</li>
-            <li><strong>8. Escalate hot leads (Google Sheets):</strong> Score ≥ 70 also goes to a "Hot Leads" priority sheet.</li>
+            <li><strong>7. Log all leads (Google Sheets):</strong> Every new lead is appended to the main “Leads” sheet.</li>
+            <li><strong>8. Escalate hot leads (Google Sheets):</strong> Score ≥ 70 also goes to a “Hot Leads” priority sheet.</li>
             <li><strong>9. Smart auto-reply (Gmail):</strong> Hot leads receive an immediate, prioritized acknowledgement.</li>
           </ul>
 
@@ -1879,7 +1914,7 @@
             <li><strong>Speed and coverage:</strong> friendly, on-brand answers within minutes, day or night</li>
             <li><strong>Growth, not just maintenance:</strong> every email becomes a small revenue lever</li>
             <li><strong>A compounding asset:</strong> Leads sheet builds an outreach list, Support Log surfaces recurring issues</li>
-            <li><strong>Built-in safeguard:</strong> complaints are flagged "needs human," AI never invents refunds or firm promises</li>
+            <li><strong>Built-in safeguard:</strong> complaints are flagged “needs human,” AI never invents refunds or firm promises</li>
           </ul>
 
           <div class="stack">
@@ -1973,7 +2008,7 @@
 
           <div class="section-label">How it works, end to end</div>
           <ul class="highlights">
-            <li><strong>Booking:</strong> A prospect books a call in Calendly. Calendly fires a signed webhook to n8n, which creates a row in the "Bookings" Google Sheet — name, email, event type, scheduled time, status Booked.</li>
+            <li><strong>Booking:</strong> A prospect books a call in Calendly. Calendly fires a signed webhook to n8n, which creates a row in the “Bookings” Google Sheet — name, email, event type, scheduled time, status Booked.</li>
             <li><strong>The call:</strong> Runs on Google Meet, which saves the recording to a Drive folder automatically.</li>
             <li><strong>Transcription:</strong> Every 10 minutes, n8n checks that folder. When it finds a new recording, it sends the video to Gemini, which transcribes the full conversation.</li>
             <li><strong>Analysis:</strong> The transcript is matched back to the right booking row (by name + time), then Gemini classifies two things — attendance (Yes / No / Unverified, where Unverified means the transcript was too thin to tell rather than being guessed as a no-show), and outcome (Closed / Not Closed / Follow-up Required / Manual Review).</li>
@@ -2015,7 +2050,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">My own job-hunt system. An AI agent reads this portfolio, searches six job boards for remote roles open to the Philippines, scores every listing against my real skills, and drafts a tailored application for each strong match. I approve each one on a live dashboard before anything is sent.</p>
+          <p class="card-desc">My own job-hunt system. An AI agent reads this portfolio, searches five job boards for remote roles open to the Philippines, scores every listing against my real skills, and drafts a tailored application for each strong match. I approve each one on a live dashboard before anything is sent.</p>
 
           <div class="screenshot-gallery">
             <img src="dashboards/dash-job-optimizer.webp" alt="Job Optimizer Board live dashboard" loading="lazy">
@@ -2025,9 +2060,9 @@
           <div class="section-label">How it works</div>
           <ul class="highlights">
             <li><strong>Reads the portfolio:</strong> The agent pulls this page's text (with a cached copy as a fallback) and works out which roles genuinely fit my skills and experience.</li>
-            <li><strong>Searches six boards:</strong> Himalayas, JobStreet, Kalibrr, OnlineJobs.ph, Jobicy and Arbeitnow, limited to remote roles that candidates in the Philippines can apply for. Boards that charge job seekers to apply are left out.</li>
+            <li><strong>Searches five boards:</strong> JobStreet, Kalibrr, OnlineJobs.ph, Jobicy and Arbeitnow, limited to remote roles that candidates in the Philippines can apply for. Boards that charge job seekers to apply are left out.</li>
             <li><strong>Scores every role:</strong> Each listing gets a 1-10 match score, a one-line reason and its job type; only roles scoring 6+ are kept.</li>
-            <li><strong>Drafts the application:</strong> For roles scoring 8+, an hourly workflow writes a tailored cover letter, a "why me" summary and availability, with my resume and a short video intro.</li>
+            <li><strong>Drafts the application:</strong> For roles scoring 8+, an hourly workflow writes a tailored cover letter, a “why me” summary and availability, with my resume and a short video intro.</li>
             <li><strong>I approve, then it sends:</strong> On the live board I review, edit and approve each draft. Approved applications go out from Gmail with the resume PDF attached; nothing is sent without my click.</li>
             <li><strong>Watches itself:</strong> A health monitor checks the feed, AI models, Gmail, the resume file and the draft builder three times a day and alerts Slack only when something breaks.</li>
           </ul>
@@ -2046,7 +2081,7 @@
 
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">AI Agent</span><span class="chip">Gemini + fallback model</span><span class="chip">Sub-workflows</span>
-            <span class="chip">Himalayas</span><span class="chip">JobStreet</span><span class="chip">Kalibrr</span><span class="chip">OnlineJobs.ph</span>
+            <span class="chip">JobStreet</span><span class="chip">Kalibrr</span><span class="chip">OnlineJobs.ph</span>
             <span class="chip">Google Sheets</span><span class="chip">n8n Data Tables</span><span class="chip">Gmail</span><span class="chip">Slack</span><span class="chip">Cloudflare Pages</span>
           </div>
         </div>
@@ -2078,9 +2113,9 @@
 
           <div class="section-label">How it works, step by step</div>
           <ul class="highlights">
-            <li><strong>1. Application capture:</strong> A candidate applies via a Jotform application (name, email, role, source, resume). Within seconds they appear in the Candidates sheet and dashboard as "Applied" (or "Interview Scheduled" if a date was included) — fully automatic, zero manual entry.</li>
+            <li><strong>1. Application capture:</strong> A candidate applies via a Jotform application (name, email, role, source, resume). Within seconds they appear in the Candidates sheet and dashboard as “Applied” (or “Interview Scheduled” if a date was included) — fully automatic, zero manual entry.</li>
             <li><strong>2. Interview conducted normally</strong> (Zoom/Meet with a Fireflies bot recording). Once Fireflies finishes transcribing, it reaches the same tracking workflow used for sales calls, which checks whether the transcript is an interview or a sales call and routes accordingly by matching the candidate's email — no manual step.</li>
-            <li><strong>3. AI interview scoring:</strong> Claude scores the interview against the transcript — a 1–10 score, a recommendation (Strong Yes / Yes / Maybe / No), strengths, concerns, and a summary — written back to the candidate's row automatically, flipping their stage to "Interviewed."</li>
+            <li><strong>3. AI interview scoring:</strong> Claude scores the interview against the transcript — a 1–10 score, a recommendation (Strong Yes / Yes / Maybe / No), strengths, concerns, and a summary — written back to the candidate's row automatically, flipping their stage to “Interviewed.”</li>
             <li><strong>4. Live dashboard:</strong> A two-tab dashboard (Pipeline overview + searchable Candidates table) rebuilds itself automatically on every change — filterable by stage or recommendation, searchable by name/email/role, with click-through to resumes and transcripts.</li>
             <li><strong>5. Unattended safety net:</strong> Every 30 minutes, the system checks for any candidate whose interview happened over 24 hours ago with no matched transcript, flags them for Manual Review, and emails an alert — so a missed match never just quietly disappears.</li>
           </ul>
@@ -2096,7 +2131,7 @@
           <div class="section-label">Where the human stays in the loop</div>
           <ul class="highlights">
             <li>The AI produces a screening aid, not a hiring decision — a person still reads the score/summary and decides who advances</li>
-            <li>Scope boundary is deliberate: there's no automated offer/rejection flow past the "Interviewed" stage</li>
+            <li>Scope boundary is deliberate: there's no automated offer/rejection flow past the “Interviewed” stage</li>
           </ul>
 
           <div class="stack">
@@ -2122,7 +2157,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A real client project currently in progress — connecting Instagram DM conversations (via ManyChat) to a lead-tracking sheet, and matching those DM leads back to actual Calendly bookings, so a business can see the full path from "commented/DM'd" to "booked a call" in one place instead of two disconnected systems.</p>
+          <p class="card-desc">A real client project currently in progress — connecting Instagram DM conversations (via ManyChat) to a lead-tracking sheet, and matching those DM leads back to actual Calendly bookings, so a business can see the full path from “commented/DM'd” to “booked a call” in one place instead of two disconnected systems.</p>
 
           <div class="screenshot-gallery">
             <img src="ig%20lead%20dashboard%20workflow.webp" alt="IG lead pipeline - dashboard workflow" loading="lazy">
@@ -2144,9 +2179,9 @@
 
           <div class="section-label">What's planned next</div>
           <ul class="highlights">
-            <li><strong>ManyChat automation build:</strong> Tags, a "setter" field, and the DM-side automations inside ManyChat itself.</li>
+            <li><strong>ManyChat automation build:</strong> Tags, a “setter” field, and the DM-side automations inside ManyChat itself.</li>
             <li><strong>Instagram Business connection:</strong> Linking the client's Instagram account to ManyChat so DM conversations flow into the system.</li>
-            <li><strong>Booking-to-DM matching:</strong> Adding an "Instagram handle" field to the client's existing Calendly form (non-disruptive to the current form) so a booked call can be matched back to the original DM lead that generated it — closing the loop from first contact to booked appointment.</li>
+            <li><strong>Booking-to-DM matching:</strong> Adding an “Instagram handle” field to the client's existing Calendly form (non-disruptive to the current form) so a booked call can be matched back to the original DM lead that generated it — closing the loop from first contact to booked appointment.</li>
           </ul>
 
           <div class="stack">
@@ -2193,7 +2228,7 @@
           </div>
           <div class="flow">
             <span class="step">⏱ Every 1 min</span><span class="arrow">→</span>
-            <span class="step">Find "Approved" rows</span><span class="arrow">→</span>
+            <span class="step">Find “Approved” rows</span><span class="arrow">→</span>
             <span class="step">Create Gmail draft</span><span class="arrow">→</span>
             <span class="step">Mark sent / failed</span>
           </div>
@@ -2215,7 +2250,7 @@
             <li><strong>9. Evaluate Flags</strong> computes why (if at all) this needs a human: confidence below threshold, category is Refund Request, or the model's own needs_human_review.</li>
             <li><strong>10. Save Triage Result</strong> writes category, confidence, summary, draft, and status back onto the same Airtable row.</li>
             <li><strong>11. Branch on Needs Human Review?</strong> — flagged rows post to #support-triage in Slack with a deep link straight to the Airtable record; clean rows just loop to the next email.</li>
-            <li><strong>12. Separately</strong>, once a person sets a row's status to Approved in Airtable, a scheduled workflow (polling every minute) creates a real Gmail draft — never sends — and flips the row to "Draft in Gmail" so it can't be drafted twice.</li>
+            <li><strong>12. Separately</strong>, once a person sets a row's status to Approved in Airtable, a scheduled workflow (polling every minute) creates a real Gmail draft — never sends — and flips the row to “Draft in Gmail” so it can't be drafted twice.</li>
             <li><strong>13. Independent of all of the above</strong>, a dedicated error-alert workflow sits on an Error Trigger and pings Slack with the workflow name, failed node, error, and execution link if the main workflow ever crashes outright.</li>
           </ul>
 
@@ -2236,10 +2271,10 @@
             <li><strong>Refund requests:</strong> always routed to Needs Review, even at high confidence, because money leaving the business gets a standing human check.</li>
             <li><strong>Angry, legal, security, or churn-risk emails:</strong> the classifier prompt itself lists these as explicit needs_human_review triggers.</li>
             <li><strong>Long emails / quoted thread history:</strong> body is stripped of quoted replies and capped at 8,000 characters before it reaches the model.</li>
-            <li><strong>Missing sender name:</strong> falls back to "unknown" rather than breaking the prompt template.</li>
+            <li><strong>Missing sender name:</strong> falls back to “unknown” rather than breaking the prompt template.</li>
             <li><strong>A single email fails AI or Airtable:</strong> retried 3× with backoff, then isolated — that one row is marked Error with the real error text and Slacked, while the batch-of-1 loop keeps going.</li>
             <li><strong>The whole workflow crashes</strong> (bad credential, n8n restart mid-run): the separate Error Trigger workflow still fires and pings Slack, catching what the per-item handling above can't.</li>
-            <li><strong>Double-drafting an approved reply:</strong> the draft-sender flips status to "Draft in Gmail" the moment it succeeds, so the next minute's poll skips it.</li>
+            <li><strong>Double-drafting an approved reply:</strong> the draft-sender flips status to “Draft in Gmail” the moment it succeeds, so the next minute's poll skips it.</li>
           </ul>
 
           <div class="section-label">What I'd improve before production</div>
@@ -2324,7 +2359,7 @@
           <ul class="highlights">
             <li>Opening camera flight through the inside of the keyboard while the keycaps drop into place</li>
             <li>Scroll splits the keyboard into its 7 layers, with labels that follow each part</li>
-            <li>The four copper "vibe" keys light up in turn, then the accept key comes apart into cap, switch, spring and light</li>
+            <li>The four copper “vibe” keys light up in turn, then the accept key comes apart into cap, switch, spring and light</li>
             <li>Luxury tech stage in a complementary cobalt and copper palette: blue anodised keyboard, a light ring with radar pulses on a gridded reflective floor, and a spiral galaxy of stars orbiting the board</li>
             <li>Slow 10-second cinematic loop with camera orbit and push-in; keys rise under the cursor; works on phones</li>
           </ul>
@@ -2403,7 +2438,7 @@
           <ul class="highlights">
             <li>AI website assistant that answers visitors' questions about the business live, with suggested questions</li>
             <li>Light and dark theme switch, plus scroll slide-in motion and a reading progress bar</li>
-            <li>Services, tools, sample projects, connected services and a step-by-step "how it works"</li>
+            <li>Services, tools, sample projects, connected services and a step-by-step “how it works”</li>
             <li>Contact by email or WhatsApp, and a link to the live lead dashboard</li>
           </ul>
 
@@ -2698,6 +2733,7 @@
   <p>I'm Klark John Cabungcal, an automation engineer and technical operations specialist. For over 6 years, I've operated and maintained the SCADA-controlled Baggage Handling System at NAIA Terminal 3 — across four employers on the same critical infrastructure (BEUMER Group, MSV Construction, Xplore Phil. Inc., and currently Levlar) — monitoring sorter status, diagnosing conveyor and check-in faults, and keeping a real, high-stakes system running.</p>
   <p>In parallel, I taught myself n8n, Make.com, and Zapier, got certified in all three, and started building AI-integrated automations that connect CRMs, forms, and messaging platforms into workflows that run unattended. I got into it because I kept noticing the same pattern in both worlds — industrial and digital — repetitive processes that break down when a human has to remember every step, and reliable systems when the process is built right the first time.</p>
   <p>I also run <a class="inline-link" href="klarkyytech/" target="_blank" rel="noopener">KlarkyyTech</a>, my AI automation business, where small businesses can see what I build for them and get in touch.</p>
+  <p class="about-video"><a class="hero-cta ghost" href="https://klark-intro.pages.dev/" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Watch my 2-minute intro</a></p>
   <p>I'm currently open to freelance automation projects and full-time opportunities. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
 </div>
 
@@ -2776,12 +2812,12 @@
     <div class="process-step">
       <div class="process-number">1</div>
       <h3>Discovery Call</h3>
-      <p>A short call (or async chat) to understand the manual process, where it breaks down, and what "done" actually looks like.</p>
+      <p>A short call (or async chat) to understand the manual process, where it breaks down, and what “done” actually looks like.</p>
     </div>
     <div class="process-step">
       <div class="process-number">2</div>
       <h3>Proposal</h3>
-      <p>A clear scope, timeline, and cost — no surprises, no vague "let's see how it goes." You know exactly what you're getting.</p>
+      <p>A clear scope, timeline, and cost — no surprises, no vague “let's see how it goes.” You know exactly what you're getting.</p>
     </div>
     <div class="process-step">
       <div class="process-number">3</div>
@@ -2958,7 +2994,7 @@
   <div class="websites-grid">
     <a class="site-tile" href="https://job-optimizer.pages.dev/" target="_blank" rel="noopener">
       <div class="site-shot"><img src="dashboards/dash-job-optimizer.webp" alt="Job Optimizer Board dashboard" loading="lazy"><span class="site-live">Live ↗</span></div>
-      <div class="site-info"><span class="site-type">AI job search · my own job hunt</span><h3>Job Optimizer Board</h3><p>An AI agent searches six job boards, scores every role against my portfolio and drafts the applications for me to approve.</p></div>
+      <div class="site-info"><span class="site-type">AI job search · my own job hunt</span><h3>Job Optimizer Board</h3><p>An AI agent searches five job boards, scores every role against my portfolio and drafts the applications for me to approve.</p></div>
     </a>
     <a class="site-tile" href="demo.html" target="_blank" rel="noopener">
       <div class="site-shot"><img src="dashboards/dash-klarkyytech.webp" alt="Lead Intelligence dashboard" loading="lazy"><span class="site-live">Demo ↗</span></div>
@@ -3002,7 +3038,7 @@
   <p class="testimonials-sub">Real feedback from businesses I've built automations for.</p>
   <div class="testimonial-grid">
     <div class="testimonial-card">
-      <div class="testimonial-quote-mark">"</div>
+      <div class="testimonial-quote-mark">“</div>
       <div class="testimonial-text">[Placeholder — add a real quote here once you have one, e.g. what problem the automation solved for them and how it's helped since]</div>
       <div class="testimonial-author">
         <div class="testimonial-avatar">S</div>
@@ -3056,15 +3092,18 @@
   <div class="edu-line"><strong>Bachelor of Science in Information Technology</strong></div>
 
   <form class="contact-form" id="contactForm">
-    <input type="text" id="cf-name" placeholder="Your Name" required>
-    <input type="email" id="cf-email" placeholder="Your Email" required>
-    <textarea id="cf-message" placeholder="Tell me about your project..." required></textarea>
+    <label class="sr-only" for="cf-name">Your name</label>
+    <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="Your name" required>
+    <label class="sr-only" for="cf-email">Your email</label>
+    <input type="email" id="cf-email" name="email" autocomplete="email" spellcheck="false" placeholder="you@company.com" required>
+    <label class="sr-only" for="cf-message">Your project</label>
+    <textarea id="cf-message" name="message" placeholder="What would you like automated? e.g. replying to new leads…" required></textarea>
     <button type="submit" class="contact-submit" id="cf-submit">Send Message</button>
-    <div class="contact-status" id="cf-status"></div>
+    <div class="contact-status" id="cf-status" role="status" aria-live="polite"></div>
   </form>
 </div>
 
-<div class="footer">
+<footer class="footer">
   <div class="social-row footer-social">
     <a class="social-btn outline" href="https://www.linkedin.com/in/klark-john-cabungcal-205723249/" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3V9zm7 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06C21.9 8.58 23 10.9 23 14.1V21h-4v-6.14c0-1.46-.03-3.35-2.04-3.35-2.05 0-2.36 1.6-2.36 3.24V21h-4V9z"/></svg>
@@ -3080,7 +3119,7 @@
     </a>
   </div>
   <p class="footer-text">Automation workflows built in n8n, Make.com, and Zapier — connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.<br><span class="footer-links">My AI automation business: <a class="inline-link" href="klarkyytech/" target="_blank" rel="noopener">KlarkyyTech ↗</a> · <a class="inline-link" href="#book">Book a free call</a></span></p>
-</div>
+</footer>
 
 <div id="lightbox">
   <div id="lightbox-close">
@@ -3098,7 +3137,7 @@
     const status = document.getElementById('cf-status');
 
     if(!name || !email || !message){
-      status.textContent = 'Please fill out all fields.';
+      status.textContent = 'Please fill in your name, email and project.';
       status.style.color = '#e07a7a';
       return;
     }
@@ -3108,16 +3147,36 @@
     const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
     window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
 
-    status.textContent = 'Opening your email client...';
+    status.textContent = 'Opening your email app…';
     status.style.color = 'var(--accent2)';
   });
 
   document.querySelectorAll('.card').forEach(card => {
     const head = card.querySelector('.card-head');
-    head.addEventListener('click', () => {
-      card.classList.toggle('open');
-    });
+    if(!head) return;
+    if(head.classList.contains('has-body')){
+      head.setAttribute('role', 'button');
+      head.setAttribute('tabindex', '0');
+      head.setAttribute('aria-expanded', 'false');
+      const t = card.querySelector('.card-title');
+      if(t) head.setAttribute('aria-label', t.textContent.trim() + ' - show details');
+    }
+    const toggle = () => head.setAttribute('aria-expanded', String(card.classList.toggle('open')));
+    head.addEventListener('click', toggle);
+    head.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
   });
+
+  // ===== Phone menu =====
+  (function(){
+    const btn = document.getElementById('navToggle'), panel = document.getElementById('navPanel');
+    if(!btn || !panel) return;
+    const set = open => { btn.setAttribute('aria-expanded', String(open)); panel.hidden = !open; btn.textContent = open ? 'Close' : 'Menu'; };
+    btn.addEventListener('click', e => { e.stopPropagation(); set(panel.hidden); });
+    panel.addEventListener('click', e => { if(e.target.closest('a')) set(false); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && !panel.hidden){ set(false); btn.focus(); } });
+    document.addEventListener('click', e => { if(!panel.hidden && !panel.contains(e.target)) set(false); });
+    window.addEventListener('resize', () => { if(innerWidth > 760 && !panel.hidden) set(false); }, { passive:true });
+  })();
 
   // ===== FAQ accordion (click, Enter or Space opens/closes an answer) =====
   document.querySelectorAll('.faq-item').forEach(item => {
