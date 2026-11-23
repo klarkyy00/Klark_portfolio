@@ -1265,6 +1265,21 @@
     .nav-panel a:active{ background:rgba(34,211,238,.12); }
   }
   @media (max-width:760px) and (min-width:400px){ .nav-brand span:last-child{ display:inline; } }
+  /* ===== RECS 1-3 (2026-11-23) ===== */
+  /* 2: certificate rows centre, so 7 cards don't leave a hole in the second row */
+  .cert-grid{ display:flex; flex-wrap:wrap; justify-content:center; }
+  .cert-grid .cert-card{ flex:0 1 calc((100% - 3 * 18px) / 4); min-width:220px; }
+  @media (max-width:640px){ .cert-grid .cert-card{ flex-basis:100%; } }
+  /* 3: hero intro link */
+  .hero-intro{ display:inline-flex; align-items:center; gap:10px; margin:16px auto 0; color:var(--muted); font-size:.92rem; font-weight:600; text-decoration:none; min-height:44px; }
+  .hero-intro:hover{ color:var(--text); }
+  .hero-intro-play{ width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#22d3ee;
+    border:1px solid rgba(34,211,238,.5); background:rgba(34,211,238,.08); transition:background-color .2s, transform .2s; }
+  .hero-intro:hover .hero-intro-play{ background:rgba(34,211,238,.18); transform:scale(1.06); }
+  .hero-intro svg{ margin-left:2px; }
+  /* 1: name always visible in the phone header; CTA shortens on narrow phones */
+  @media (max-width:760px){ .nav-brand span:last-child{ display:inline; } }
+  @media (max-width:430px){ .cta-long{ display:none; } .nav-brand{ font-size:.9rem; } }
   /* "show all" lists: best items first, the rest one click away */
   .has-more:not(.more-open):not(.filtered) > .is-more{ display:none !important; }
   .show-more-row{ text-align:center; margin:22px 0 0; }
@@ -1366,7 +1381,7 @@
       <a href="#dashboards" data-target="dashboards">Dashboards</a>
       <a href="#contact" data-target="contact">Contact</a>
       <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navPanel">Menu</button>
-      <a class="nav-cta" href="#book">Book a Call</a>
+      <a class="nav-cta" href="#book">Book<span class="cta-long"> a Call</span></a>
     </div>
   </div>
   <div class="nav-panel" id="navPanel" hidden>
@@ -1394,6 +1409,7 @@
     <a class="hero-cta primary" href="#book">Book a free 30-min call</a>
     <a class="hero-cta ghost" href="#projects">See my work</a>
   </div>
+  <a class="hero-intro" href="https://klark-intro.pages.dev/" target="_blank" rel="noopener"><span class="hero-intro-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>Watch my 2-minute intro</a>
 
   <div class="ai-ask-wrap">
     <form class="ai-ask" id="aiAsk" autocomplete="off">
