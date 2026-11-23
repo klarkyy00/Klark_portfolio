@@ -25,11 +25,12 @@
     // [container selector, child selector, soft?]  soft = rise only, no 3D tilt
     cascades: [
       ['.stats-grid', '.stat > *', true],
-      ['.services-grid', '.service-card'],
+      ['#cardWrap', '.card', false, 'flip-x'],
+      ['.services-grid', '.service-card', false, 'flip-y'],
       ['.process-steps', '.process-step'],
       ['.faq-section', '.faq-item'],
-      ['.cert-grid', '.cert-card'],
-      ['.websites-grid', '.site-tile'],
+      ['.cert-grid', '.cert-card', false, 'flip-y'],
+      ['.websites-grid', '.site-tile', false, 'flip-y'],
       ['.testimonial-grid', ':scope > *']
     ],
     headingSections: '.about-section, .services-section, .process-section, .faq-section, .cert-section, ' +
@@ -100,9 +101,9 @@
     }
     // hand the element back to its own CSS (hover transitions etc.)
     setTimeout(function () {
-      el.classList.remove('fx-item', 'fx-in', 'fx-instant', 'fx-soft');
+      el.classList.remove('fx-item', 'fx-in', 'fx-instant', 'fx-soft', 'fx-flip-x', 'fx-flip-y');
       el.style.removeProperty('--fx-d');
-    }, instant ? 30 : delay + CONFIG.itemDuration + 80);
+    }, instant ? 30 : delay + (el.classList.contains('fx-flip-x') || el.classList.contains('fx-flip-y') ? 1150 : CONFIG.itemDuration) + 80);
   }
 
   function onIntersect(entries) {
@@ -146,6 +147,7 @@
           el.classList.remove('reveal');          // take over from the page's per-card reveal
           el.classList.add('fx-item');
           if (c[2]) el.classList.add('fx-soft');
+          if (c[3]) el.classList.add('fx-' + c[3]);
           items.push({ el: el, kind: 'item', done: false });
         });
       });
@@ -412,6 +414,28 @@
     if (wire && updateWire(now || performance.now(), sy)) needMore = true;
     if (needMore) kick();
   }
+  /* ======================= replay flips after filtering ======================= */
+  var FLIP_X = [{ opacity: 0, transform: 'perspective(1400px) translateY(28px) rotateX(-62deg)' }, { opacity: 1, transform: 'none' }];
+  function replayFlips(scope) {
+    var n = 0, H = window.innerHeight;
+    $all('.card', scope).forEach(function (el) {
+      if (el.__fx && !el.__fx.done) return;            // not revealed yet: the scroll reveal will flip it
+      if (!el.offsetParent || !el.animate) return;     // hidden by the filter
+      var r = el.getBoundingClientRect();
+      if (r.top > H || r.bottom < 0) return;
+      el.style.transformOrigin = '50% 0%';
+      el.animate(FLIP_X, { duration: 760, delay: Math.min(n++, 6) * 70, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' })
+        .onfinish = function () { el.style.transformOrigin = ''; };
+    });
+  }
+  function setupReplay() {
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.filter-btn');
+      if (!b) return;
+      setTimeout(function () { replayFlips(document.getElementById('cardWrap')); }, 30);
+    });
+  }
+
   function kick() { if (!rafId) rafId = requestAnimationFrame(frame); }
 
   /* ======================= init ======================= */
@@ -422,6 +446,7 @@
         setupReveals();
         setupNav();
         setupParallax();
+        setupReplay();
       }
       setupWire();
 

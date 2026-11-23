@@ -54,6 +54,31 @@ html.fx-motion .fx-item.fx-in{
 }
 html.fx-motion .fx-item.fx-instant{ transition: none !important; }
 
+/* ---------- 2b. Flips (2026-11-24): the page's signature motion ----------
+   project cards swing down from a top hinge; tiles turn on their vertical axis like dealt cards */
+html.fx-motion .fx-item.fx-flip-x{
+  transform: perspective(1400px) translateY(28px) rotateX(-62deg);
+  transform-origin: 50% 0%;
+}
+html.fx-motion .fx-item.fx-flip-y{
+  transform: perspective(1200px) rotateY(72deg) scale(.96);
+  transform-origin: 50% 50%;
+}
+html.fx-motion .fx-item.fx-flip-x,
+html.fx-motion .fx-item.fx-flip-y{
+  transition:
+    opacity .5s ease var(--fx-d, 0ms),
+    transform 1.1s cubic-bezier(.25,.75,.3,1) var(--fx-d, 0ms);
+}
+html.fx-motion .fx-item.fx-flip-x.fx-in,
+html.fx-motion .fx-item.fx-flip-y.fx-in{ opacity: 1; transform: none; }
+/* phones: tiles stack full-width, so they hinge down like the project cards (cheaper, reads better) */
+@media (max-width: 760px){
+  html.fx-motion .fx-item.fx-flip-y{ transform: perspective(1200px) translateY(22px) rotateX(-48deg); transform-origin: 50% 0%; }
+  html.fx-motion .fx-item.fx-flip-x{ transform: perspective(1200px) translateY(22px) rotateX(-48deg); }
+  html.fx-motion .fx-item.fx-flip-x.fx-in, html.fx-motion .fx-item.fx-flip-y.fx-in{ transform: none; }
+}
+
 /* ---------- 3. Process "workflow line" ---------- */
 .fx-wired .process-step::after{ display: none !important; } /* replaced by the SVG wire */
 html.fx-motion .process-steps.fx-wired{ row-gap: 44px; }     /* room for the wire between stacked rows */
