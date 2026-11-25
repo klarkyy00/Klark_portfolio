@@ -34,6 +34,17 @@
 
     var STEP = 360 / N, ZP = 120, ZS = 0.16, R = 0, stepPx = 0, trackTop = 0, travel = 1;
     var cur = 0, target = 0, started = false, raf = 0, front = -1, inView = false, intro = 0, introDone = false;
+    // pointer parallax + idle sway (fine pointers only, so phones keep the lean scroll path)
+    var fine = matchMedia('(hover: hover) and (pointer: fine)').matches, mx = 0, my = 0, ax = 0, ay = 0;
+    if (fine) {
+      window.addEventListener('pointermove', function (e) {
+        if (!inView) return;
+        var r = stage.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        if (x < 0 || x > 1 || y < 0 || y > 1) { ax = ay = 0; } else { ax = x - 0.5; ay = y - 0.5; }
+        kick();
+      }, { passive: true });
+      document.addEventListener('pointerleave', function () { ax = ay = 0; kick(); });
+    }
 
     function layout() {
       var phone = innerWidth <= 760; ZP = phone ? 60 : 120; ZS = phone ? 0.08 : 0.16;
@@ -66,7 +77,9 @@
       var v = cur - prev;                                            // angular speed: drives the lean + floor glow
       if (intro > 0.002) intro *= 0.93; else intro = 0;
       var lean = Math.max(-5, Math.min(5, v * 1.4));                 // ring leans into the turn, settles when it stops
-      grid.style.transform = 'translateZ(' + (-R - intro * 420) + 'px) rotateX(' + lean.toFixed(2) + 'deg) rotateY(' + (-(cur - intro * 70)).toFixed(3) + 'deg)';
+      var sway = 0;
+      if (fine) { mx += (ax - mx) * 0.07; my += (ay - my) * 0.07; sway = Math.sin(performance.now() / 2200) * 0.7; }   // the ring follows the pointer and breathes at rest
+      grid.style.transform = 'translateZ(' + (-R - intro * 420) + 'px) rotateX(' + (lean - my * 5).toFixed(2) + 'deg) rotateY(' + (-(cur - intro * 70) + mx * 7 + sway).toFixed(3) + 'deg)';
       rail.style.transform = 'scaleX(' + (N > 1 ? Math.max(0, Math.min(1, cur / ((N - 1) * STEP))) : 1).toFixed(4) + ')';
       floor.style.opacity = (0.75 + Math.min(0.25, Math.abs(v) * 0.08)).toFixed(2);
       for (var i = 0; i < N; i++) {
@@ -84,7 +97,7 @@
       }
       var f = Math.max(0, Math.min(N - 1, Math.round(cur / STEP)));
       if (f !== front) setFront(f);
-      if (cur !== target || intro > 0) kick();
+      if (cur !== target || intro > 0 || (fine && inView && !document.hidden)) kick();
     }
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
 

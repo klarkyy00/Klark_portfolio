@@ -1350,7 +1350,25 @@
 </style>
 <link rel="stylesheet" href="fx/motion.css?v=20261125">
 <link rel="stylesheet" href="fx/tilt.css">
-<link rel="stylesheet" href="fx/ring.css?v=20261125e">
+<style id="polish">
+/* awwwards polish (2026-11-25): one motion verb, "draw and settle" - lines draw, fills sweep, presses settle */
+.nav-links a:not(.nav-cta){ background-image:linear-gradient(var(--accent2),var(--accent2)); background-repeat:no-repeat; background-position:50% calc(100% - 4px); background-size:0% 1.5px; transition:color .25s, background-size .45s cubic-bezier(.165,.84,.44,1), background-color .25s; }
+@media (hover:hover){ .nav-links a:not(.nav-cta):hover{ background-color:transparent; background-size:calc(100% - 26px) 1.5px; } }
+.nav-links a:not(.nav-cta):focus-visible, .nav-links a.active:not(.nav-cta){ background-size:calc(100% - 26px) 1.5px; }
+.hero-cta.primary, .nav-links a.nav-cta{ background-size:200% 100% !important; transition:background-position .6s cubic-bezier(.4,0,.2,1), box-shadow .35s, transform .3s cubic-bezier(.16,1,.3,1) !important; }
+@media (hover:hover){ .hero-cta.primary:hover, .nav-links a.nav-cta:hover{ background-position:100% 50% !important; } }
+.hero-cta:active, .nav-links a.nav-cta:active{ transform:scale(.97) !important; }
+.hero-cta.ghost{ transition:color .35s, border-color .35s, box-shadow .45s cubic-bezier(.165,.84,.44,1), transform .3s cubic-bezier(.16,1,.3,1); }
+@media (hover:hover){ .hero-cta.ghost:hover{ box-shadow:inset 0 0 0 1px var(--accent2), 0 10px 30px -14px rgba(34,211,238,.6); } }
+.hero-cta .arr, .hero-cta [aria-hidden="true"]{ display:inline-block; transition:transform .35s cubic-bezier(.16,1,.3,1); }
+@media (hover:hover){ .hero-cta:hover .arr, .hero-cta:hover [aria-hidden="true"]{ transform:translate(3px,-3px); } }
+::selection{ background:rgba(139,92,246,.45); color:#fff; }
+@media (prefers-reduced-motion: reduce){
+  .nav-links a, .hero-cta, .hero-cta *{ transition:none !important; }
+  .hero-cta:active{ transform:none !important; }
+}
+</style>
+<link rel="stylesheet" href="fx/ring.css?v=20261125f">
 </head>
 <body id="top">
 
@@ -1523,7 +1541,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">An AI-powered appointment booking assistant that takes a form submission (from Jotform) and fully automates checking availability, booking the calendar, logging records, and emailing the customer — with no human touching it unless something goes wrong.</p>
+          <p class="card-desc">An AI-powered appointment booking assistant that takes a form submission (from Jotform) and fully automates checking availability, booking the calendar, logging records, and emailing the customer, with no human touching it unless something goes wrong.</p>
 
           <div class="screenshot-gallery">
             <img src="Available%20date%20appoinment.webp" alt="Advanced Appointment Setter - slot available flow" loading="lazy">
@@ -1554,22 +1572,22 @@
 
           <div class="section-label">How it works, step by step</div>
           <ul class="highlights">
-            <li><strong>1. Trigger — Webhook:</strong> Jotform posts form submissions to this webhook, using Jotform's auto-generated plain-English summary of all form answers.</li>
-            <li><strong>2. Extract Appointment Details (Gemini AI):</strong> An AI “Information Extractor” reads that raw text and pulls out structured fields — name, email, address, phone, date, and time — auto-converting natural language like “2pm” into 24-hour format.</li>
-            <li><strong>3. Validate Required Fields:</strong> Checks that name, a valid email, and a date were actually extracted. If not, the customer gets an immediate error asking them to resubmit — no bad data enters the system.</li>
+            <li><strong>1. Trigger (Webhook):</strong> Jotform posts form submissions to this webhook, using Jotform's auto-generated plain-English summary of all form answers.</li>
+            <li><strong>2. Extract Appointment Details (Gemini AI):</strong> An AI “Information Extractor” reads that raw text and pulls out structured fields (name, email, address, phone, date and time), auto-converting natural language like “2pm” into 24-hour format.</li>
+            <li><strong>3. Validate Required Fields:</strong> Checks that name, a valid email, and a date were actually extracted. If not, the customer gets an immediate error asking them to resubmit: no bad data enters the system.</li>
             <li><strong>4. Prepare Appointment Data:</strong> Builds a clean record with a 1-hour time slot and marks status as “Pending.”</li>
             <li><strong>5. Create Airtable Record (Pending):</strong> Logs the request immediately, so there's a record even before availability is confirmed.</li>
-            <li><strong>6. Check Google Calendar availability:</strong> Pulls all events for that business day (9am–5pm) and checks for overlaps with the requested slot.</li>
-            <li><strong>7. Branch — Is the slot available?</strong> Yes → creates the calendar event, logs to Sheets, emails a confirmation, returns 200. No → marks “Needs Reschedule,” emails up to 3 alternative times, returns 200 needs_reschedule.</li>
-            <li><strong>8. Error handling:</strong> Every external step has a fallback — failures email the admin directly and return a 500, so nothing fails silently.</li>
+            <li><strong>6. Check Google Calendar availability:</strong> Pulls all events for that business day (9am-5pm) and checks for overlaps with the requested slot.</li>
+            <li><strong>7. Branch: Is the slot available?</strong> Yes → creates the calendar event, logs to Sheets, emails a confirmation, returns 200. No → marks “Needs Reschedule,” emails up to 3 alternative times, returns 200 needs_reschedule.</li>
+            <li><strong>8. Error handling:</strong> Every external step has a fallback: failures email the admin directly and return a 500, so nothing fails silently.</li>
           </ul>
 
           <div class="section-label">Business value</div>
           <ul class="highlights">
-            <li>Zero manual scheduling work — a lead fills out a form and either gets booked or gets alternatives, instantly, 24/7</li>
-            <li>No double-booking — actively checks the calendar before confirming</li>
-            <li>Full audit trail — every request lands in Airtable, successful bookings also land in a Google Sheet</li>
-            <li>Graceful degradation — bad input is rejected politely; system failures alert the admin directly instead of losing the customer's request</li>
+            <li>Zero manual scheduling work: a lead fills out a form and either gets booked or gets alternatives, instantly, 24/7</li>
+            <li>No double-booking: actively checks the calendar before confirming</li>
+            <li>Full audit trail: every request lands in Airtable, successful bookings also land in a Google Sheet</li>
+            <li>Graceful degradation: bad input is rejected politely; system failures alert the admin directly instead of losing the customer's request</li>
           </ul>
 
           <div class="stack">
@@ -1593,7 +1611,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">Triggered by a webhook, then fans out to three parallel actions — notifying the customer, the fulfillment team, and inventory tracking simultaneously instead of one after another.</p>
+          <p class="card-desc">Triggered by a webhook, then fans out to three parallel actions: notifying the customer, the fulfillment team, and inventory tracking simultaneously instead of one after another.</p>
 
           <div class="screenshot-gallery">
             <img src="E-commerce%20order%20Processing.webp" alt="E-Commerce Order Processing workflow" loading="lazy">
@@ -1610,8 +1628,8 @@
 
           <div class="section-label">How it works</div>
           <ul class="highlights">
-            <li><strong>Trigger — Order Received (Webhook):</strong> Listens for POST requests at /order-received — where a Jotform submission gets sent via Jotform's webhook integration.</li>
-            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy — field names vary depending on how the form was built, and Jotform also sends a “pretty string” fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
+            <li><strong>Trigger: Order Received (Webhook):</strong> Listens for POST requests at /order-received, where a Jotform submission gets sent via Jotform's webhook integration.</li>
+            <li><strong>Map Jotform Fields (Code node):</strong> Jotform's payloads are messy: field names vary depending on how the form was built, and Jotform also sends a “pretty string” fallback. This node normalizes everything into a clean object: customer name, email, order ID, items, total, and shipping address.</li>
             <li><strong>Fan-out to three parallel branches:</strong></li>
             <li><strong>→ Send Confirmation Email (Gmail):</strong> Sends an HTML order-confirmation email with order ID, items, and total.</li>
             <li><strong>→ Send Packing Instructions (Slack → #inventory):</strong> Posts order details plus a packing checklist for the fulfillment team.</li>
@@ -1662,7 +1680,7 @@
           </div>
 
           <div class="section-label">Who it's for</div>
-          <p class="card-desc" style="margin-bottom:16px;">Freelancers, small agencies, or an accounts-payable/receivable function at a small company — anyone processing a steady trickle of invoices without a full accounting department behind them.</p>
+          <p class="card-desc" style="margin-bottom:16px;">Freelancers, small agencies, or an accounts-payable/receivable function at a small company, anyone processing a steady trickle of invoices without a full accounting department behind them.</p>
 
           <div class="section-label">What it replaces</div>
           <div class="table-scroll">
@@ -1680,7 +1698,7 @@
 
           <div class="section-label">Business value</div>
           <ul class="highlights">
-            <li><strong>Time saved per invoice:</strong> even a conservative 5–10 minutes of manual entry plus follow-up overhead adds up fast — this turns that into a one-time setup cost</li>
+            <li><strong>Time saved per invoice:</strong> even a conservative 5-10 minutes of manual entry plus follow-up overhead adds up fast: this turns that into a one-time setup cost</li>
             <li><strong>Faster cash collection:</strong> reminders go out exactly on schedule, every time</li>
             <li><strong>Fewer errors:</strong> OCR cross-checking catches mismatches, and a payment re-check before escalation avoids dunning someone who already paid</li>
             <li><strong>Scales without added headcount:</strong> processing invoice #50 costs the same as invoice #1</li>
@@ -1708,7 +1726,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">Built a fully automated inbound lead scoring system using n8n that processes every new email, qualifies it with a local AI model, and triggers the right sales actions — all without manual review.</p>
+          <p class="card-desc">Built a fully automated inbound lead scoring system using n8n that processes every new email, qualifies it with a local AI model, and triggers the right sales actions, all without manual review.</p>
 
           <div class="screenshot-gallery">
             <img src="hot%20lead.webp" alt="Lead Generation - hot lead branch" loading="lazy">
@@ -1738,7 +1756,7 @@
           </div>
 
           <div class="section-label">What it does</div>
-          <p class="card-desc" style="margin-bottom:16px;">Monitors a Gmail inbox, extracts lead intelligence, runs it through a locally-hosted Llama 3.2 model via Ollama using BANT qualification criteria, assigns a score (1–10) and tier (hot/warm/cold), then automatically creates contacts in HubSpot, sends Slack alerts to the sales team, and dispatches personalized email replies — all within seconds.</p>
+          <p class="card-desc" style="margin-bottom:16px;">Monitors a Gmail inbox, extracts lead intelligence, runs it through a locally-hosted Llama 3.2 model via Ollama using BANT qualification criteria, assigns a score (1-10) and tier (hot/warm/cold), then automatically creates contacts in HubSpot, sends Slack alerts to the sales team, and dispatches personalized email replies, all within seconds.</p>
 
           <div class="flow">
             <span class="step">📧 Gmail Trigger</span><span class="arrow">→</span>
@@ -1747,21 +1765,21 @@
             <span class="step">📊 Score & Tier</span>
           </div>
           <div class="flow">
-            <span class="split">🔥 Hot (8–10)</span>
+            <span class="split">🔥 Hot (8-10)</span>
             <span class="step">HubSpot: SQL</span><span class="step">Slack #sales-urgent</span><span class="step">Book-a-call reply</span>
           </div>
           <div class="flow">
-            <span class="split neg">☀️ Warm (5–7)</span>
+            <span class="split neg">☀️ Warm (5-7)</span>
             <span class="step">HubSpot: MQL</span><span class="step">Slack #sales-leads</span><span class="step">24h follow-up reply</span>
           </div>
           <div class="flow">
-            <span class="split neg">❄️ Cold (1–4)</span>
-            <span class="step">No CRM entry — polite nurture reply only</span>
+            <span class="split neg">❄️ Cold (1-4)</span>
+            <span class="step">No CRM entry: polite nurture reply only</span>
           </div>
 
           <div class="section-label">Key highlights</div>
           <ul class="highlights">
-            <li>Zero cloud AI cost — runs entirely on local hardware via Ollama</li>
+            <li>Zero cloud AI cost: runs entirely on local hardware via Ollama</li>
             <li>BANT-based scoring prompt evaluates budget signals, decision-maker indicators, urgency, and domain type</li>
             <li>Three-tier routing eliminates manual triage for the sales team</li>
             <li>Auto-replies personalized per tier with appropriate CTAs</li>
@@ -1781,14 +1799,14 @@
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Media · AI Video</span>
-        <h2 class="card-title">Veo AI Video Generator — Auto-Post to YouTube & Facebook</h2>
+        <h2 class="card-title">Veo AI Video Generator: Auto-Post to YouTube & Facebook</h2>
       </div>
       <div class="chevron">⌄</div>
     </div>
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc"><strong>One click. Two AI videos. Posted everywhere. Automatically.</strong> This fully automated system uses Google Veo 3.1 AI to create short videos from scratch — then instantly publishes them to YouTube and Facebook at the same time.</p>
+          <p class="card-desc"><strong>One click. Two AI videos. Posted everywhere. Automatically.</strong> This fully automated system uses Google Veo 3.1 AI to create short videos from scratch, then instantly publishes them to YouTube and Facebook at the same time.</p>
 
           <div class="screenshot-gallery">
             <img src="Veo%20Video%20Generator%20-%20YouTube%20and%20Facebook.webp" alt="Veo AI Video Generator workflow" loading="lazy">
@@ -1820,7 +1838,7 @@
             <tr><th>Feature</th><th>Details</th></tr>
             <tr><td>🧠 AI Script Writer</td><td>Gemini 2.5 Flash writes optimized prompts & titles</td></tr>
             <tr><td>🎬 Dual Clip Generation</td><td>2 unique 8-second vertical clips (9:16 reels format)</td></tr>
-            <tr><td>🔊 AI Audio Included</td><td>Videos come with generated audio — no editing needed</td></tr>
+            <tr><td>🔊 AI Audio Included</td><td>Videos come with generated audio: no editing needed</td></tr>
             <tr><td>🔄 Smart Retry System</td><td>Auto-retries if AI filters or rejects content</td></tr>
             <tr><td>📱 Reels-Ready Format</td><td>Vertical 1080×1920</td></tr>
             <tr><td>🚀 Dual Publishing</td><td>Posts to YouTube + Facebook in the same moment</td></tr>
@@ -1829,14 +1847,14 @@
 
           <div class="section-label">Timeline of one run</div>
           <ul class="highlights">
-            <li><strong>0:00</strong> — Workflow starts</li>
-            <li><strong>0:05</strong> — Gemini writes scripts & titles</li>
-            <li><strong>0:30–2:00</strong> — Veo generates Clip 1</li>
-            <li><strong>2:30–4:00</strong> — Veo generates Clip 2</li>
-            <li><strong>4:05</strong> — Clips merged into final video</li>
-            <li><strong>4:10</strong> — Published to YouTube + Facebook</li>
+            <li><strong>0:00</strong> · Workflow starts</li>
+            <li><strong>0:05</strong> · Gemini writes scripts & titles</li>
+            <li><strong>0:30-2:00</strong> · Veo generates Clip 1</li>
+            <li><strong>2:30-4:00</strong> · Veo generates Clip 2</li>
+            <li><strong>4:05</strong> · Clips merged into final video</li>
+            <li><strong>4:10</strong> · Published to YouTube + Facebook</li>
           </ul>
-          <p class="card-desc" style="margin-bottom:16px;"><strong>Total time: ~4–5 minutes from click to live post.</strong></p>
+          <p class="card-desc" style="margin-bottom:16px;"><strong>Total time: ~4-5 minutes from click to live post.</strong></p>
 
           <div class="section-label">Built-in safety features</div>
           <ul class="highlights">
@@ -1859,14 +1877,14 @@
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">Make.com · Sales · AI Qualification</span>
-        <h2 class="card-title">Lead Capture & AI Qualification — Gmail → Google Sheets</h2>
+        <h2 class="card-title">Lead Capture & AI Qualification: Gmail → Google Sheets</h2>
       </div>
       <div class="chevron">⌄</div>
     </div>
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">Inbound leads arrive by email — contact-form notifications, quote requests, general enquiries. This automation captures every qualifying email, de-duplicates it, uses AI to score and enrich it, logs it to structured sheets, escalates the hottest leads, and auto-replies — with zero manual triage.</p>
+          <p class="card-desc">Inbound leads arrive by email: contact-form notifications, quote requests, general enquiries. This automation captures every qualifying email, de-duplicates it, uses AI to score and enrich it, logs it to structured sheets, escalates the hottest leads, and auto-replies, with zero manual triage.</p>
 
           <div class="screenshot-gallery">
             <img src="lead-capture.webp" alt="Lead Capture and AI Qualification Make.com workflow" loading="lazy">
@@ -1875,9 +1893,9 @@
           <div class="section-label">How it works</div>
           <ul class="highlights">
             <li><strong>1. Watch emails (Gmail trigger):</strong> Polls the inbox on a 15-minute schedule, marking fetched messages as read so they're never processed twice.</li>
-            <li><strong>2. AI qualification (Claude via Make AI):</strong> Each email is passed to Claude Haiku 4.5, returning a JSON object — company, phone, category, urgency, a 0–100 lead score, and a summary.</li>
+            <li><strong>2. AI qualification (Claude via Make AI):</strong> Each email is passed to Claude Haiku 4.5, returning a JSON object: company, phone, category, urgency, a 0-100 lead score, and a summary.</li>
             <li><strong>3. Parse JSON:</strong> The AI's response is parsed into individual fields.</li>
-            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a “Known Leads” data store — if seen before, the flow stops.</li>
+            <li><strong>4. Check Data Store (de-duplication):</strong> The sender's email is looked up in a “Known Leads” data store: if seen before, the flow stops.</li>
             <li><strong>5. Record in Data Store:</strong> New senders are recorded for future recognition.</li>
             <li><strong>6. Router:</strong> Fans the flow into three independent branches.</li>
             <li><strong>7. Log all leads (Google Sheets):</strong> Every new lead is appended to the main “Leads” sheet.</li>
@@ -1899,14 +1917,14 @@
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">Make.com · Customer Support · Growth</span>
-        <h2 class="card-title">Fearless — Customer Support & Growth Automation</h2>
+        <h2 class="card-title">Fearless: Customer Support & Growth Automation</h2>
       </div>
       <div class="chevron">⌄</div>
     </div>
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">An automated Make.com worker that watches a customer support inbox and handles incoming emails without manual effort — reading, replying, and logging every message, while the same reply also does light, on-brand selling.</p>
+          <p class="card-desc">An automated Make.com worker that watches a customer support inbox and handles incoming emails without manual effort: reading, replying, and logging every message, while the same reply also does light, on-brand selling.</p>
 
           <div class="screenshot-gallery">
             <img src="fearless-support.webp" alt="Fearless Customer Support and Growth Automation workflow" loading="lazy">
@@ -1918,7 +1936,7 @@
             <tr><th>Step</th><th>What happens</th></tr>
             <tr><td>1. Watch inbox</td><td>Scans the Primary inbox for customer-type emails. Picks up to two new messages per cycle.</td></tr>
             <tr><td>2. AI reads & writes</td><td>Claude classifies the email, reads sentiment, writes a warm on-brand reply, and decides which offer to attach.</td></tr>
-            <tr><td>3. Auto-reply</td><td>The reply is emailed straight back automatically — usually within minutes.</td></tr>
+            <tr><td>3. Auto-reply</td><td>The reply is emailed straight back automatically, usually within minutes.</td></tr>
             <tr><td>4. Log everything</td><td>Customer, request, sentiment, and reply are recorded to a Support Log spreadsheet.</td></tr>
             <tr><td>5. Capture leads</td><td>Potential buyers are added to a Leads & Prospects sheet for follow-up.</td></tr>
           </table>
@@ -1960,7 +1978,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A lightweight CRM plus a sales-and-delivery assistant, built entirely around a single spreadsheet. Updating a single Status dropdown triggers the entire next step automatically — no Gmail, no Drive, no copy-pasting emails.</p>
+          <p class="card-desc">A lightweight CRM plus a sales-and-delivery assistant, built entirely around a single spreadsheet. Updating a single Status dropdown triggers the entire next step automatically: no Gmail, no Drive, no copy-pasting emails.</p>
 
           <div class="screenshot-gallery">
             <img src="client-pipeline.webp" alt="Client Pipeline Automation Zapier workflow" loading="lazy">
@@ -1968,7 +1986,7 @@
 
           <div class="section-label">How it works</div>
           <ul class="highlights">
-            <li><strong>1. Trigger — New or Updated Spreadsheet Row (Google Sheets):</strong> Fires whenever a client row is added or its Status is changed.</li>
+            <li><strong>1. Trigger: New or Updated Spreadsheet Row (Google Sheets):</strong> Fires whenever a client row is added or its Status is changed.</li>
             <li><strong>2. Create Folder (Google Drive):</strong> A folder named after the client and project is created automatically on each run.</li>
             <li><strong>3. Split into Paths (Zapier Paths):</strong> The Status value routes the row down one of five branches.</li>
             <li><strong>→ Ready to Start:</strong> Sends a kickoff email.</li>
@@ -1980,10 +1998,10 @@
 
           <div class="section-label">Why it matters for a business</div>
           <ul class="highlights">
-            <li>No lead goes cold — most quotes die simply because nobody followed up</li>
+            <li>No lead goes cold: most quotes die simply because nobody followed up</li>
             <li>Every client gets a fast, consistent, professional response at each stage</li>
             <li>Quoting, onboarding, and closing become one-click actions on a spreadsheet</li>
-            <li>Scales cheaply — the workload of writing status emails stays at zero</li>
+            <li>Scales cheaply: the workload of writing status emails stays at zero</li>
           </ul>
 
           <div class="stack">
@@ -2009,7 +2027,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A production automation built for a real client (Willers Coaching) — an automated pipeline that turns every sales call into structured data with zero manual entry, and shows it on a live dashboard. Built entirely in n8n, wired to Calendly, Google Sheets/Drive/Meet, and Gemini AI. It solves a simple but common problem: coaches book discovery calls, run them, and rarely log consistently afterward — did they show up, did they buy, what's next — so there's no reliable view of booking volume, show rate, or close rate. This system logs all of that automatically from the call itself.</p>
+          <p class="card-desc">A production automation built for a real client (Willers Coaching): an automated pipeline that turns every sales call into structured data with zero manual entry, and shows it on a live dashboard. Built entirely in n8n, wired to Calendly, Google Sheets/Drive/Meet, and Gemini AI. It solves a simple but common problem: coaches book discovery calls, run them, and rarely log consistently afterward (did they show up, did they buy, what's next?), so there's no reliable view of booking volume, show rate, or close rate. This system logs all of that automatically from the call itself.</p>
 
           <div class="screenshot-gallery">
             <img src="Calendly%20Booking%20Sync.webp" alt="Sales Tracker - Calendly booking sync" loading="lazy">
@@ -2030,11 +2048,11 @@
 
           <div class="section-label">How it works, end to end</div>
           <ul class="highlights">
-            <li><strong>Booking:</strong> A prospect books a call in Calendly. Calendly fires a signed webhook to n8n, which creates a row in the “Bookings” Google Sheet — name, email, event type, scheduled time, status Booked.</li>
+            <li><strong>Booking:</strong> A prospect books a call in Calendly. Calendly fires a signed webhook to n8n, which creates a row in the “Bookings” Google Sheet: name, email, event type, scheduled time, status Booked.</li>
             <li><strong>The call:</strong> Runs on Google Meet, which saves the recording to a Drive folder automatically.</li>
             <li><strong>Transcription:</strong> Every 10 minutes, n8n checks that folder. When it finds a new recording, it sends the video to Gemini, which transcribes the full conversation.</li>
-            <li><strong>Analysis:</strong> The transcript is matched back to the right booking row (by name + time), then Gemini classifies two things — attendance (Yes / No / Unverified, where Unverified means the transcript was too thin to tell rather than being guessed as a no-show), and outcome (Closed / Not Closed / Follow-up Required / Manual Review).</li>
-            <li><strong>Notes document:</strong> A formatted Google Doc is generated — summary, next steps, key details, and the full transcript — with a link added to the sheet row.</li>
+            <li><strong>Analysis:</strong> The transcript is matched back to the right booking row (by name + time), then Gemini classifies two things: attendance (Yes / No / Unverified, where Unverified means the transcript was too thin to tell rather than being guessed as a no-show), and outcome (Closed / Not Closed / Follow-up Required / Manual Review).</li>
+            <li><strong>Notes document:</strong> A formatted Google Doc is generated (summary, next steps, key details and the full transcript), with a link added to the sheet row.</li>
             <li><strong>Dashboard:</strong> The row updates and the dashboard rebuilds automatically, so booked/attended/closed counts, show rate, close rate, and weekly/monthly breakdowns are always current.</li>
           </ul>
 
@@ -2042,14 +2060,14 @@
           <ul class="highlights">
             <li><strong>No-show sync:</strong> If Calendly marks a no-show, that flows to the row automatically.</li>
             <li><strong>Reschedule handling:</strong> A moved call keeps both rows (original marked Rescheduled, new one linked to it) so history stays visible, but it's only counted once.</li>
-            <li><strong>Grace Period Check:</strong> A safety net — any call that came and went with no transcript after 24 hours gets flagged Manual Review instead of sitting forgotten.</li>
+            <li><strong>Grace Period Check:</strong> A safety net: any call that came and went with no transcript after 24 hours gets flagged Manual Review instead of sitting forgotten.</li>
             <li><strong>Manual controls:</strong> Two small endpoints (or direct sheet editing) let a human override attendance or outcome for anything the AI couldn't resolve.</li>
             <li><strong>Error handler:</strong> Any workflow failure logs to a sheet and emails the client directly.</li>
             <li><strong>Dashboard access:</strong> A single key-gated URL that opens in any browser and reads live from the sheet.</li>
           </ul>
 
           <div class="section-label">Architecture note</div>
-          <p class="card-desc" style="margin-bottom:16px;">This isn't one large workflow — it's roughly 10 small, single-purpose workflows (Calendly Booking Sync, Interview Pipeline, Grace Period Check, Rebuild Dashboard, the two APIs, and others), all reading and writing the same Google Sheet as the single source of truth.</p>
+          <p class="card-desc" style="margin-bottom:16px;">This isn't one large workflow: it's roughly 10 small, single-purpose workflows (Calendly Booking Sync, Interview Pipeline, Grace Period Check, Rebuild Dashboard, the two APIs, and others), all reading and writing the same Google Sheet as the single source of truth.</p>
 
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Calendly API</span><span class="chip">Google Meet / Drive</span>
@@ -2135,11 +2153,11 @@
 
           <div class="section-label">How it works, step by step</div>
           <ul class="highlights">
-            <li><strong>1. Application capture:</strong> A candidate applies via a Jotform application (name, email, role, source, resume). Within seconds they appear in the Candidates sheet and dashboard as “Applied” (or “Interview Scheduled” if a date was included) — fully automatic, zero manual entry.</li>
-            <li><strong>2. Interview conducted normally</strong> (Zoom/Meet with a Fireflies bot recording). Once Fireflies finishes transcribing, it reaches the same tracking workflow used for sales calls, which checks whether the transcript is an interview or a sales call and routes accordingly by matching the candidate's email — no manual step.</li>
-            <li><strong>3. AI interview scoring:</strong> Claude scores the interview against the transcript — a 1–10 score, a recommendation (Strong Yes / Yes / Maybe / No), strengths, concerns, and a summary — written back to the candidate's row automatically, flipping their stage to “Interviewed.”</li>
-            <li><strong>4. Live dashboard:</strong> A two-tab dashboard (Pipeline overview + searchable Candidates table) rebuilds itself automatically on every change — filterable by stage or recommendation, searchable by name/email/role, with click-through to resumes and transcripts.</li>
-            <li><strong>5. Unattended safety net:</strong> Every 30 minutes, the system checks for any candidate whose interview happened over 24 hours ago with no matched transcript, flags them for Manual Review, and emails an alert — so a missed match never just quietly disappears.</li>
+            <li><strong>1. Application capture:</strong> A candidate applies via a Jotform application (name, email, role, source, resume). Within seconds they appear in the Candidates sheet and dashboard as “Applied” (or “Interview Scheduled” if a date was included), fully automatic, zero manual entry.</li>
+            <li><strong>2. Interview conducted normally</strong> (Zoom/Meet with a Fireflies bot recording). Once Fireflies finishes transcribing, it reaches the same tracking workflow used for sales calls, which checks whether the transcript is an interview or a sales call and routes accordingly by matching the candidate's email: no manual step.</li>
+            <li><strong>3. AI interview scoring:</strong> Claude scores the interview against the transcript (a 1-10 score, a recommendation of Strong Yes / Yes / Maybe / No, strengths, concerns and a summary), written back to the candidate's row automatically, flipping their stage to “Interviewed.”</li>
+            <li><strong>4. Live dashboard:</strong> A two-tab dashboard (Pipeline overview + searchable Candidates table) rebuilds itself automatically on every change, filterable by stage or recommendation, searchable by name/email/role, with click-through to resumes and transcripts.</li>
+            <li><strong>5. Unattended safety net:</strong> Every 30 minutes, the system checks for any candidate whose interview happened over 24 hours ago with no matched transcript, flags them for Manual Review, and emails an alert, so a missed match never just quietly disappears.</li>
           </ul>
 
           <div class="section-label">What it removes from a recruiter's plate</div>
@@ -2152,7 +2170,7 @@
 
           <div class="section-label">Where the human stays in the loop</div>
           <ul class="highlights">
-            <li>The AI produces a screening aid, not a hiring decision — a person still reads the score/summary and decides who advances</li>
+            <li>The AI produces a screening aid, not a hiring decision: a person still reads the score/summary and decides who advances</li>
             <li>Scope boundary is deliberate: there's no automated offer/rejection flow past the “Interviewed” stage</li>
           </ul>
 
@@ -2179,7 +2197,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A real client project currently in progress — connecting Instagram DM conversations (via ManyChat) to a lead-tracking sheet, and matching those DM leads back to actual Calendly bookings, so a business can see the full path from “commented/DM'd” to “booked a call” in one place instead of two disconnected systems.</p>
+          <p class="card-desc">A real client project currently in progress, connecting Instagram DM conversations (via ManyChat) to a lead-tracking sheet, and matching those DM leads back to actual Calendly bookings, so a business can see the full path from “commented/DM'd” to “booked a call” in one place instead of two disconnected systems.</p>
 
           <div class="screenshot-gallery">
             <img src="ig%20lead%20dashboard%20workflow.webp" alt="IG lead pipeline - dashboard workflow" loading="lazy">
@@ -2203,7 +2221,7 @@
           <ul class="highlights">
             <li><strong>ManyChat automation build:</strong> Tags, a “setter” field, and the DM-side automations inside ManyChat itself.</li>
             <li><strong>Instagram Business connection:</strong> Linking the client's Instagram account to ManyChat so DM conversations flow into the system.</li>
-            <li><strong>Booking-to-DM matching:</strong> Adding an “Instagram handle” field to the client's existing Calendly form (non-disruptive to the current form) so a booked call can be matched back to the original DM lead that generated it — closing the loop from first contact to booked appointment.</li>
+            <li><strong>Booking-to-DM matching:</strong> Adding an “Instagram handle” field to the client's existing Calendly form (non-disruptive to the current form) so a booked call can be matched back to the original DM lead that generated it, closing the loop from first contact to booked appointment.</li>
           </ul>
 
           <div class="stack">
@@ -2228,7 +2246,7 @@
     <div class="card-body-wrap">
       <div class="card-body-inner">
         <div class="card-body">
-          <p class="card-desc">A three-workflow n8n system that reads incoming support email, classifies and drafts a reply with Gemini, and only ever sends after a human approves. Built and validated end-to-end — 3 workflows, 31 total nodes, Gemini 2.5 Flash, 0 errors / 0 warnings on validation, ~2 hours build time. Currently inactive pending go-live.</p>
+          <p class="card-desc">A three-workflow n8n system that reads incoming support email, classifies and drafts a reply with Gemini, and only ever sends after a human approves. Built and validated end-to-end: 3 workflows, 31 total nodes, Gemini 2.5 Flash, 0 errors / 0 warnings on validation, ~2 hours build time. Currently inactive pending go-live.</p>
 
           <div class="screenshot-gallery">
             <img src="CS1.webp" alt="Customer Support Triage - screenshot 1" loading="lazy">
@@ -2240,7 +2258,7 @@
             <img src="Customer%20Support%20Error%20handling.webp" alt="Customer Support Error handling flow" loading="lazy">
           </div>
 
-          <div class="section-label">What I built — three focused workflows</div>
+          <div class="section-label">What I built: three focused workflows</div>
           <div class="flow">
             <span class="step">📧 Gmail Trigger</span><span class="arrow">→</span>
             <span class="step">🧠 Classify (Gemini)</span><span class="arrow">→</span>
@@ -2261,29 +2279,29 @@
 
           <div class="section-label">How it works, start to finish</div>
           <ul class="highlights">
-            <li><strong>1. Gmail Trigger</strong> fires on new inbox mail — a standard polling trigger, no webhook to expose or maintain.</li>
-            <li><strong>2. Prompt Config</strong> stamps every editable setting onto the item: which two Gemini models to use, the 0.8 confidence threshold, the company name/signature, and both full system prompts. Nothing below this node has a hard-coded prompt — everything reads from here.</li>
-            <li><strong>3. Normalize Message</strong> strips quoted reply chains, collapses whitespace, and caps the body at 8,000 characters before it reaches a model — also extracts a clean message ID, thread ID, sender info, and subject.</li>
-            <li><strong>4. Skip Already-Processed Emails</strong> de-duplicates on message ID against the last 10,000 items seen — across executions, not just within one run.</li>
+            <li><strong>1. Gmail Trigger</strong> fires on new inbox mail: a standard polling trigger, no webhook to expose or maintain.</li>
+            <li><strong>2. Prompt Config</strong> stamps every editable setting onto the item: which two Gemini models to use, the 0.8 confidence threshold, the company name/signature, and both full system prompts. Nothing below this node has a hard-coded prompt: everything reads from here.</li>
+            <li><strong>3. Normalize Message</strong> strips quoted reply chains, collapses whitespace, and caps the body at 8,000 characters before it reaches a model, also extracts a clean message ID, thread ID, sender info, and subject.</li>
+            <li><strong>4. Skip Already-Processed Emails</strong> de-duplicates on message ID against the last 10,000 items seen, across executions, not just within one run.</li>
             <li><strong>5. Process One at a Time</strong> (batch size 1) isolates each email so one bad message can't take the rest of the batch down, and keeps Gemini calls well under rate limits.</li>
-            <li><strong>6. Create Log Record</strong> upserts an Airtable row at Status = Processing before any AI call runs — this is what makes crash-recovery work.</li>
-            <li><strong>7. Classify Request</strong> — Gemini 2.5 Flash at temperature 0, constrained by a structured-output schema (with auto-fix) to exactly one of 6 categories, a 0–1 confidence score, a boolean needs_human_review, a reason, and a one-line summary.</li>
-            <li><strong>8. Draft Reply</strong> — Gemini 2.5 Flash at temperature 0.4, writes the reply using the classification, the original email, and the editable signature.</li>
+            <li><strong>6. Create Log Record</strong> upserts an Airtable row at Status = Processing before any AI call runs: this is what makes crash-recovery work.</li>
+            <li><strong>7. Classify Request:</strong> Gemini 2.5 Flash at temperature 0, constrained by a structured-output schema (with auto-fix) to exactly one of 6 categories, a 0-1 confidence score, a boolean needs_human_review, a reason, and a one-line summary.</li>
+            <li><strong>8. Draft Reply:</strong> Gemini 2.5 Flash at temperature 0.4, writes the reply using the classification, the original email, and the editable signature.</li>
             <li><strong>9. Evaluate Flags</strong> computes why (if at all) this needs a human: confidence below threshold, category is Refund Request, or the model's own needs_human_review.</li>
             <li><strong>10. Save Triage Result</strong> writes category, confidence, summary, draft, and status back onto the same Airtable row.</li>
-            <li><strong>11. Branch on Needs Human Review?</strong> — flagged rows post to #support-triage in Slack with a deep link straight to the Airtable record; clean rows just loop to the next email.</li>
-            <li><strong>12. Separately</strong>, once a person sets a row's status to Approved in Airtable, a scheduled workflow (polling every minute) creates a real Gmail draft — never sends — and flips the row to “Draft in Gmail” so it can't be drafted twice.</li>
+            <li><strong>11. Branch on Needs Human Review?:</strong> flagged rows post to #support-triage in Slack with a deep link straight to the Airtable record; clean rows just loop to the next email.</li>
+            <li><strong>12. Separately</strong>, once a person sets a row's status to Approved in Airtable, a scheduled workflow (polling every minute) creates a real Gmail draft (it never sends) and flips the row to “Draft in Gmail” so it can't be drafted twice.</li>
             <li><strong>13. Independent of all of the above</strong>, a dedicated error-alert workflow sits on an Error Trigger and pings Slack with the workflow name, failed node, error, and execution link if the main workflow ever crashes outright.</li>
           </ul>
 
           <div class="section-label">Why I structured it this way</div>
           <ul class="highlights">
-            <li><strong>Human-in-the-loop, not human-on-the-loop:</strong> the AI never sends anything. It proposes a category and a draft; a person approves in Airtable; only then does a real Gmail draft get created — and even that still needs a human to hit send.</li>
+            <li><strong>Human-in-the-loop, not human-on-the-loop:</strong> the AI never sends anything. It proposes a category and a draft; a person approves in Airtable; only then does a real Gmail draft get created, and even that still needs a human to hit send.</li>
             <li><strong>Three workflows, three triggers:</strong> triage (event), drafting (schedule), and crash-alerting (failure) are different concerns on different clocks. Each can be tested, paused, or changed without touching the others.</li>
-            <li><strong>One place to edit the AI:</strong> every model name, threshold, and prompt lives in a single Prompt Config node — a non-engineer can retune tone or swap models without opening an expression.</li>
+            <li><strong>One place to edit the AI:</strong> every model name, threshold, and prompt lives in a single Prompt Config node: a non-engineer can retune tone or swap models without opening an expression.</li>
             <li><strong>Structured output over free text:</strong> the classifier is contractually forced into 6 known categories with a numeric confidence, so routing logic reads real fields instead of parsing prose.</li>
-            <li><strong>Two temperatures, two jobs:</strong> 0 for classification — repeatable, boring, correct. 0.4 for drafting — natural-sounding without wandering off the brand voice.</li>
-            <li><strong>Airtable as the shared spine:</strong> one Status field that all three workflows read and write is the entire coordination mechanism — no queue, no extra database, easy for a human to audit by eye.</li>
+            <li><strong>Two temperatures, two jobs:</strong> 0 for classification: repeatable, boring, correct. 0.4 for drafting: natural-sounding without wandering off the brand voice.</li>
+            <li><strong>Airtable as the shared spine:</strong> one Status field that all three workflows read and write is the entire coordination mechanism: no queue, no extra database, easy for a human to audit by eye.</li>
           </ul>
 
           <div class="section-label">Edge cases & error handling</div>
@@ -2294,17 +2312,17 @@
             <li><strong>Angry, legal, security, or churn-risk emails:</strong> the classifier prompt itself lists these as explicit needs_human_review triggers.</li>
             <li><strong>Long emails / quoted thread history:</strong> body is stripped of quoted replies and capped at 8,000 characters before it reaches the model.</li>
             <li><strong>Missing sender name:</strong> falls back to “unknown” rather than breaking the prompt template.</li>
-            <li><strong>A single email fails AI or Airtable:</strong> retried 3× with backoff, then isolated — that one row is marked Error with the real error text and Slacked, while the batch-of-1 loop keeps going.</li>
+            <li><strong>A single email fails AI or Airtable:</strong> retried 3× with backoff, then isolated: that one row is marked Error with the real error text and Slacked, while the batch-of-1 loop keeps going.</li>
             <li><strong>The whole workflow crashes</strong> (bad credential, n8n restart mid-run): the separate Error Trigger workflow still fires and pings Slack, catching what the per-item handling above can't.</li>
             <li><strong>Double-drafting an approved reply:</strong> the draft-sender flips status to “Draft in Gmail” the moment it succeeds, so the next minute's poll skips it.</li>
           </ul>
 
           <div class="section-label">What I'd improve before production</div>
           <ul class="highlights">
-            <li>Swap the placeholder identity for the real client's name and signature — a one-field change in Prompt Config.</li>
+            <li>Swap the placeholder identity for the real client's name and signature: a one-field change in Prompt Config.</li>
             <li>Calibrate the 0.8 confidence threshold and the 6-category taxonomy against a batch of real historical tickets instead of intuition.</li>
             <li>Build a small labeled eval set for the classifier so future prompt or model changes are regression-tested, not eyeballed.</li>
-            <li>Make replies thread-aware — a reply on an existing thread currently opens a brand-new logged request instead of linking back via thread ID.</li>
+            <li>Make replies thread-aware: a reply on an existing thread currently opens a brand-new logged request instead of linking back via thread ID.</li>
             <li>Move the draft-sender off a 1-minute poll onto an Airtable-automation webhook, so approved replies go out the moment they're approved.</li>
             <li>Add a fallback model or provider for the two Gemini calls so a provider outage doesn't stall the inbox.</li>
             <li>At real ticket volume, weigh Airtable-as-system-of-record against a dedicated helpdesk tool for SLAs and multi-agent assignment.</li>
@@ -2752,8 +2770,8 @@
 
 <div class="about-section reveal">
   <h2>About Me</h2>
-  <p>I'm Klark John Cabungcal, an automation engineer and technical operations specialist. For over 6 years, I've operated and maintained the SCADA-controlled Baggage Handling System at NAIA Terminal 3 — across four employers on the same critical infrastructure (BEUMER Group, MSV Construction, Xplore Phil. Inc., and currently Levlar) — monitoring sorter status, diagnosing conveyor and check-in faults, and keeping a real, high-stakes system running.</p>
-  <p>In parallel, I taught myself n8n, Make.com, and Zapier, got certified in all three, and started building AI-integrated automations that connect CRMs, forms, and messaging platforms into workflows that run unattended. I got into it because I kept noticing the same pattern in both worlds — industrial and digital — repetitive processes that break down when a human has to remember every step, and reliable systems when the process is built right the first time.</p>
+  <p>I'm Klark John Cabungcal, an automation engineer and technical operations specialist. For over 6 years, I've operated and maintained the SCADA-controlled Baggage Handling System at NAIA Terminal 3, across four employers on the same critical infrastructure (BEUMER Group, MSV Construction, Xplore Phil. Inc., and currently Levlar), monitoring sorter status, diagnosing conveyor and check-in faults, and keeping a real, high-stakes system running.</p>
+  <p>In parallel, I taught myself n8n, Make.com, and Zapier, got certified in all three, and started building AI-integrated automations that connect CRMs, forms, and messaging platforms into workflows that run unattended. I got into it because I kept noticing the same pattern in both worlds, industrial and digital: repetitive processes that break down when a human has to remember every step, and reliable systems when the process is built right the first time.</p>
   <p>I also run <a class="inline-link" href="klarkyytech/" target="_blank" rel="noopener">KlarkyyTech</a>, my AI automation business, where small businesses can see what I build for them and get in touch.</p>
   <p class="about-video"><a class="hero-cta ghost" href="https://klark-intro.pages.dev/" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Watch my 2-minute intro</a></p>
   <p>I'm currently open to freelance automation projects and full-time opportunities. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
@@ -2761,7 +2779,7 @@
 
 <div class="services-section reveal">
   <h2>How I Can Help</h2>
-  <p class="services-sub">Common automations businesses need most — each adaptable to your specific process and tools.</p>
+  <p class="services-sub">Common automations businesses need most, each adaptable to your specific process and tools.</p>
   <div class="services-grid">
     <div class="service-card">
       <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"/></svg></div>
@@ -2790,7 +2808,7 @@
     <div class="service-card">
       <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg></div>
       <h3>Client Pipeline / Lightweight CRM</h3>
-      <p>One spreadsheet becomes your control panel — update a status, and quoting, onboarding, and follow-up emails all fire automatically.</p>
+      <p>One spreadsheet becomes your control panel: update a status, and quoting, onboarding, and follow-up emails all fire automatically.</p>
       <div class="service-tags"><span>Zapier</span><span>Sheets</span><span>Follow-ups</span></div>
     </div>
     <div class="service-card">
@@ -2839,7 +2857,7 @@
     <div class="process-step">
       <div class="process-number">2</div>
       <h3>Proposal</h3>
-      <p>A clear scope, timeline, and cost — no surprises, no vague “let's see how it goes.” You know exactly what you're getting.</p>
+      <p>A clear scope, timeline, and cost: no surprises, no vague “let's see how it goes.” You know exactly what you're getting.</p>
     </div>
     <div class="process-step">
       <div class="process-number">3</div>
@@ -2863,7 +2881,7 @@
       <h3>What if I don't know exactly what I need automated?</h3>
       <div class="faq-chevron">⌄</div>
     </div>
-    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">That's completely normal, and it's actually where most projects start. On our first call, I'll ask about your day-to-day workflow and point out the repetitive parts that are good automation candidates — you don't need to arrive with a technical spec.</div></div></div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">That's completely normal, and it's actually where most projects start. On our first call, I'll ask about your day-to-day workflow and point out the repetitive parts that are good automation candidates: you don't need to arrive with a technical spec.</div></div></div>
   </div>
 
   <div class="faq-item" data-faq="2">
@@ -2887,7 +2905,7 @@
       <h3>Do you work with businesses outside the Philippines?</h3>
       <div class="faq-chevron">⌄</div>
     </div>
-    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Yes — all of my work is remote and platform-based (n8n, Make.com, Zapier all run in the cloud), so location isn't a barrier. I'm happy to adjust working hours to overlap with your team's timezone.</div></div></div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">Yes, all of my work is remote and platform-based (n8n, Make.com, Zapier all run in the cloud), so location isn't a barrier. I'm happy to adjust working hours to overlap with your team's timezone.</div></div></div>
   </div>
 
   <div class="faq-item" data-faq="5">
@@ -2895,7 +2913,7 @@
       <h3>What if I already have an automation that's not working well?</h3>
       <div class="faq-chevron">⌄</div>
     </div>
-    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">I can review an existing workflow, find where it's breaking down or missing error handling, and either fix it or rebuild the parts that need it — you don't need to start from zero.</div></div></div>
+    <div class="faq-a-wrap"><div class="faq-a-inner"><div class="faq-a">I can review an existing workflow, find where it's breaking down or missing error handling, and either fix it or rebuild the parts that need it: you don't need to start from zero.</div></div></div>
   </div>
   <div class="faq-item" data-faq="6">
     <div class="faq-q">
@@ -2948,12 +2966,12 @@
     <div class="cert-card">
       <h3>Technical Drafting NCII</h3>
       <div class="cert-org">All Business Computer Center Phils. Inc.</div>
-      <div class="cert-date">Sep 11 – Oct 7, 2019</div>
+      <div class="cert-date">Sep 11 to Oct 7, 2019</div>
     </div>
     <div class="cert-card">
       <h3>Electrical Installation and Maintenance NCII</h3>
       <div class="cert-org">Concept Institute for Career Enhancement, Inc.</div>
-      <div class="cert-date">Jun 4 – Jul 10, 2019</div>
+      <div class="cert-date">Jun 4 to Jul 10, 2019</div>
     </div>
   </div>
 </div>
@@ -3061,12 +3079,12 @@
   <div class="testimonial-grid">
     <div class="testimonial-card">
       <div class="testimonial-quote-mark">“</div>
-      <div class="testimonial-text">[Placeholder — add a real quote here once you have one, e.g. what problem the automation solved for them and how it's helped since]</div>
+      <div class="testimonial-text">[Placeholder: add a real quote here once you have one, e.g. what problem the automation solved for them and how it's helped since]</div>
       <div class="testimonial-author">
         <div class="testimonial-avatar">S</div>
         <div>
           <div class="testimonial-name">Sean</div>
-          <div class="testimonial-role">Willers Coaching — Sales Call Tracker Client</div>
+          <div class="testimonial-role">Willers Coaching, Sales Call Tracker client</div>
         </div>
       </div>
     </div>
@@ -3080,7 +3098,7 @@
 
 <div class="booking-section reveal">
   <h2>Book a Free 30-Min Call</h2>
-  <p>Let's talk through what you need automated — no pressure, just a quick conversation about your process and whether I'm a good fit to help.</p>
+  <p>Let's talk through what you need automated: no pressure, just a quick conversation about your process and whether I'm a good fit to help.</p>
   <div class="booking-frame-wrap">
     <iframe src="https://calendly.com/pungzuwangdu11" title="Book a call"></iframe>
   </div>
@@ -3141,7 +3159,7 @@
       Download Resume
     </a>
   </div>
-  <p class="footer-text">Automation workflows built in n8n, Make.com, and Zapier — connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.<br><span class="footer-links">My AI automation business: <a class="inline-link" href="klarkyytech/" target="_blank" rel="noopener">KlarkyyTech ↗</a> · <a class="inline-link" href="#book">Book a free call</a></span></p>
+  <p class="footer-text">Automation workflows built in n8n, Make.com, and Zapier, connecting AI models, CRMs, calendars, and messaging platforms into unattended, self-healing pipelines.<br><span class="footer-links">My AI automation business: <a class="inline-link" href="klarkyytech/" target="_blank" rel="noopener">KlarkyyTech ↗</a> · <a class="inline-link" href="#book">Book a free call</a></span></p>
 </footer>
 
 <div id="lightbox">
@@ -3523,8 +3541,8 @@
 </script>
 <!-- 3D + motion layer (fx/): hero workflow network, scroll motion, card tilt -->
 <script src="fx/hero-network.js" defer></script>
-<script src="fx/ring.js?v=20261125e" defer></script>
-<script src="fx/motion.js?v=20261125e" defer></script>
+<script src="fx/ring.js?v=20261125f" defer></script>
+<script src="fx/motion.js?v=20261125f" defer></script>
 <script src="fx/tilt.js" defer></script>
 <script src="klarkyytech-chat.js" defer></script>
 
