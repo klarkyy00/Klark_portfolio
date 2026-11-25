@@ -31,8 +31,8 @@
       ['.process-steps', '.process-step'],
       // FAQ items use a native scroll-driven slide (index.html) where supported; this reveal is the fallback
       (window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) ? null : ['.faq-section', '.faq-item'],
-      // certificates use a native scroll-driven animation (index.html) where supported; this flip-in is the fallback
-      (window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) ? null : ['.cert-grid', '.cert-card', false, 'flip-y'],
+      // certificates use the falling cards (fx/services.js, loaded first); this flip-in covers reduced motion
+      window.__certFall ? null : ['.cert-grid', '.cert-card', false, 'flip-y'],
       ['.testimonial-grid', ':scope > *']
     ],
     headingSections: '.about-section, .services-section, .process-section, .faq-section, .cert-section, ' +
