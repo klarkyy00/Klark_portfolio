@@ -24,7 +24,7 @@
 
     // [container selector, child selector, soft?]  soft = rise only, no 3D tilt
     cascades: [
-      ['.stats-grid', '.stat > *', true],
+      window.__statBricks ? null : ['.stats-grid', '.stat > *', true],   // stats drop as bricks (index.html) when motion is on
       ['#cardWrap', '.card', false, 'flip-x'],
       // desktop services use the agents-deploying deck (fx/services.js, loaded first); this flip-in covers the rest
       window.__svcDeck ? null : ['.services-grid', '.service-card', false, 'flip-y'],
