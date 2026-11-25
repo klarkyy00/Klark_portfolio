@@ -28,7 +28,8 @@
       ['#cardWrap', '.card', false, 'flip-x'],
       ['.services-grid', '.service-card', false, 'flip-y'],
       ['.process-steps', '.process-step'],
-      ['.faq-section', '.faq-item'],
+      // FAQ items use a native scroll-driven slide (index.html) where supported; this reveal is the fallback
+      (window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) ? null : ['.faq-section', '.faq-item'],
       // certificates use a native scroll-driven animation (index.html) where supported; this flip-in is the fallback
       (window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) ? null : ['.cert-grid', '.cert-card', false, 'flip-y'],
       ['.testimonial-grid', ':scope > *']
