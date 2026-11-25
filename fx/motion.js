@@ -26,7 +26,8 @@
     cascades: [
       ['.stats-grid', '.stat > *', true],
       ['#cardWrap', '.card', false, 'flip-x'],
-      ['.services-grid', '.service-card', false, 'flip-y'],
+      // desktop services use the agents-deploying deck (fx/services.js, loaded first); this flip-in covers the rest
+      window.__svcDeck ? null : ['.services-grid', '.service-card', false, 'flip-y'],
       ['.process-steps', '.process-step'],
       // FAQ items use a native scroll-driven slide (index.html) where supported; this reveal is the fallback
       (window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) ? null : ['.faq-section', '.faq-item'],
