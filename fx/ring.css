@@ -1,0 +1,54 @@
+/* Websites ring (2026-11-25) - only active when fx/ring.js adds .ring-mode */
+#websites.ring-mode{ padding-bottom: 24px; }
+.ring-track{ position: relative; }
+.ring-stage{
+  position: sticky; top: 58px; height: calc(100vh - 58px); min-height: 560px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+  overflow: hidden;
+  width: 100vw; margin-left: calc(50% - 50vw);   /* full-bleed so side tiles run off the screen edge, not a box edge */
+}
+.ring-view{
+  position: relative; width: 100%; display: flex; justify-content: center;
+  perspective: 1900px; perspective-origin: 50% 40%;
+  padding: 8px 0 34px;
+}
+#websites .websites-grid.ring{
+  display: block; position: relative; margin: 0;
+  width: var(--ring-w, 320px); height: var(--ring-h, 330px);
+  transform-style: preserve-3d; will-change: transform;
+}
+#websites .ring .site-tile{
+  position: absolute; inset: 0 auto auto 0; width: var(--ring-w, 320px); margin: 0;
+  backface-visibility: hidden;
+  transition: box-shadow .35s cubic-bezier(.4,0,.2,1), border-color .35s cubic-bezier(.4,0,.2,1);
+}
+#websites .ring .site-tile.ring-front{
+  border-color: rgba(34,211,238,.55);
+  box-shadow: 0 30px 60px -28px rgba(0,0,0,.9), 0 0 0 1px rgba(34,211,238,.25), 0 0 46px -10px rgba(139,92,246,.45);
+}
+/* the ring's own caption carries the text; tiles keep only the shot + name */
+#websites .ring .site-info p, #websites .ring .site-url{ display: none; }
+/* ambient: soft light pool under the ring */
+.ring-floor{
+  position: absolute; left: 50%; bottom: 0; width: min(900px, 92vw); height: 90px; transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(139,92,246,.28), rgba(34,211,238,.10) 45%, transparent 72%);
+  filter: blur(6px); pointer-events: none;
+}
+.ring-caption{ width: min(560px, calc(100vw - 32px)); text-align: center; }
+.ring-cap-inner{ display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ring-count{ font-size: .78rem; font-weight: 700; letter-spacing: .08em; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ring-type{ font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent2); }
+.ring-title{ margin: 0; font-size: 1.45rem; font-weight: 800; color: #f1f5f9; text-wrap: balance; }
+.ring-desc{ margin: 0 0 8px; color: var(--muted); font-size: .95rem; text-wrap: pretty; }
+.ring-open{ display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.ring-hint{ margin: 14px 0 0; font-size: .78rem; color: var(--muted); opacity: .7; }
+@media (max-width: 760px){
+  .ring-stage{ gap: 14px; min-height: 520px; }
+  .ring-view{ perspective: 1200px; padding-bottom: 22px; }
+  .ring-title{ font-size: 1.2rem; }
+  .ring-desc{ font-size: .9rem; }
+}
+@media (max-height: 700px) and (min-width: 761px){
+  .ring-view{ padding-bottom: 18px; }
+  .ring-hint{ display: none; }
+}

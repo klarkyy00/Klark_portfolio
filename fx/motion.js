@@ -30,7 +30,7 @@
       ['.process-steps', '.process-step'],
       ['.faq-section', '.faq-item'],
       ['.cert-grid', '.cert-card', false, 'flip-y'],
-      ['.websites-grid', '.site-tile', false, 'flip-y'],
+      ['#dashboards .websites-grid', '.site-tile', false, 'flip-y'],   // #websites tiles live on the ring (fx/ring.js)
       ['.testimonial-grid', ':scope > *']
     ],
     headingSections: '.about-section, .services-section, .process-section, .faq-section, .cert-section, ' +
