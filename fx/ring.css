@@ -58,3 +58,16 @@ html .ring .site-info p, html .ring .site-url{ display: none; }
 .ring-projects .site-live{ background: rgba(139,92,246,.9); color: #fff; }
 .ring-list-label{ text-align: center; color: var(--muted); font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 8px 0 10px; }
 #cardWrap .card{ scroll-margin-top: 140px; }
+
+/* zoom + depth motion (2026-11-25b) */
+html .websites-grid.ring > .site-tile{ transition: box-shadow .35s cubic-bezier(.4,0,.2,1), border-color .35s cubic-bezier(.4,0,.2,1); overflow: hidden; }
+html .ring .site-shot img{ transform: translateX(var(--px,0px)) scale(1.1); transition: none; }
+html .ring .site-tile.ring-front .site-shot::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.16) 50%, transparent 65%);
+  transform: translateX(-120%); animation: ring-shine 1.1s .25s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes ring-shine{ to{ transform: translateX(120%); } }
+.ring-floor{ transition: none; }
+.ring-caption .ring-cap-inner > *{ will-change: transform, opacity; }
+@media (prefers-reduced-motion: reduce){ html .ring .site-tile.ring-front .site-shot::after{ animation: none; opacity: 0; } }

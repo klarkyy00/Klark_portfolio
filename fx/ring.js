@@ -29,17 +29,17 @@
     if (o.external) { elOpen.target = '_blank'; elOpen.rel = 'noopener'; }
     if (o.onOpen) elOpen.addEventListener('click', function (e) { e.preventDefault(); o.onOpen(front); });
 
-    var STEP = 360 / N, R = 0, stepPx = 0, trackTop = 0, travel = 1;
-    var cur = 0, target = 0, started = false, raf = 0, front = -1, inView = false;
+    var STEP = 360 / N, ZP = 120, ZS = 0.16, R = 0, stepPx = 0, trackTop = 0, travel = 1;
+    var cur = 0, target = 0, started = false, raf = 0, front = -1, inView = false, intro = 0, introDone = false, capSeq = 0;
 
     function layout() {
-      var phone = innerWidth <= 760;
+      var phone = innerWidth <= 760; ZP = phone ? 60 : 120; ZS = phone ? 0.08 : 0.16;
       var w = phone ? Math.min(250, innerWidth * 0.66) : 320, gap = phone ? 18 : 34;
       grid.style.setProperty('--ring-w', w + 'px');
       R = Math.round((w + gap) / (2 * Math.tan(Math.PI / N)));
       var h = 0; tiles.forEach(function (t) { h = Math.max(h, t.offsetHeight); });
       grid.style.setProperty('--ring-h', h + 'px');
-      tiles.forEach(function (t, i) { t.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + R + 'px)'; });
+      tiles.forEach(function (t, i) { t.__k = -1; t.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + R + 'px)'; });
       stepPx = Math.round(innerHeight * (phone ? 0.3 : 0.34));
       travel = stepPx * (N - 1);
       track.style.height = 'calc(100vh - ' + NAV + 'px + ' + travel + 'px)';
@@ -58,19 +58,29 @@
     function frame() {
       raf = 0;
       target = angle();
-      var d = target - cur;
+      var d = target - cur, prev = cur;
       cur = Math.abs(d) < 0.02 ? target : cur + d * 0.14;
-      grid.style.transform = 'translateZ(' + (-R) + 'px) rotateY(' + (-cur).toFixed(3) + 'deg)';
+      var v = cur - prev;                                            // angular speed: drives the lean + floor glow
+      if (intro > 0.002) intro *= 0.93; else intro = 0;
+      var lean = Math.max(-5, Math.min(5, v * 1.4));                 // ring leans into the turn, settles when it stops
+      grid.style.transform = 'translateZ(' + (-R - intro * 420) + 'px) rotateX(' + lean.toFixed(2) + 'deg) rotateY(' + (-(cur - intro * 70)).toFixed(3) + 'deg)';
+      floor.style.opacity = (0.75 + Math.min(0.25, Math.abs(v) * 0.08)).toFixed(2);
       for (var i = 0; i < N; i++) {
         var a = ((i * STEP - cur) % 360 + 540) % 360 - 180, abs = Math.abs(a), t = tiles[i], vis = abs < 115;
         if (t.__vis !== vis) { t.__vis = vis; t.style.pointerEvents = vis ? '' : 'none'; }
         var op = !vis ? 0 : abs < 8 ? 1 : Math.max(0.18, 1 - (abs - 8) / 120);
         op = Math.round(op * 50) / 50;
         if (t.__o !== op) { t.__o = op; t.style.opacity = op; }
+        if (vis) {
+          var k = Math.max(0, 1 - abs / (STEP * 0.8)); k = Math.round(k * k * (3 - 2 * k) * 50) / 50;   // zoom: pushes forward + grows as it nears the front
+          if (t.__k !== k) { t.__k = k; t.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + (R + k * ZP) + 'px) scale(' + (1 + k * ZS).toFixed(3) + ')'; }
+          var px = Math.round(Math.max(-1, Math.min(1, a / 70)) * -14);                                   // screenshot drifts against the turn (parallax)
+          if (t.__px !== px) { t.__px = px; t.style.setProperty('--px', px + 'px'); }
+        }
       }
       var f = Math.max(0, Math.min(N - 1, Math.round(cur / STEP)));
       if (f !== front) setFront(f);
-      if (cur !== target) kick();
+      if (cur !== target || intro > 0) kick();
     }
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
 
@@ -84,11 +94,18 @@
         elOpen.setAttribute('aria-label', o.openLabel + ': ' + d.title + (o.external ? ' (opens in a new tab)' : ''));
       };
       if (first || !capInner.animate) { apply(); return; }
-      capInner.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-6px)' }], { duration: 140, easing: 'cubic-bezier(.4,0,1,1)' })
-        .onfinish = function () {
-          apply();
-          capInner.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.4,0,.2,1)' });
-        };
+      var kids = capInner.children, seq = ++capSeq, outs = [];
+      Array.prototype.forEach.call(kids, function (c) {
+        outs.push(c.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-6px)' }], { duration: 130, easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards' }));
+      });
+      outs[outs.length - 1].onfinish = function () {
+        if (seq !== capSeq) return;                                   // a newer tile took the front: let its own fade finish
+        apply();
+        capInner.getAnimations({ subtree: true }).forEach(function (x) { x.cancel(); });
+        Array.prototype.forEach.call(kids, function (c2, m) {         // stagger the arrival: count, label, title, text, button
+          c2.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 380, delay: m * 55, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
+        });
+      };
     }
     function goTo(i, smooth) { window.scrollTo({ top: trackTop + i * stepPx + 2, behavior: smooth ? 'smooth' : 'auto' }); }
     tiles.forEach(function (t, i) {
@@ -106,7 +123,7 @@
       var lastH = 0;
       new ResizeObserver(function () { var h = document.documentElement.scrollHeight; if (Math.abs(h - lastH) > 2) { lastH = h; measure(); kick(); } }).observe(document.body);
     }
-    new IntersectionObserver(function (es) { inView = es[0].isIntersecting; if (inView) kick(); }, { rootMargin: '200px 0px' }).observe(track);
+    new IntersectionObserver(function (es) { inView = es[0].isIntersecting; if (inView) { if (!introDone) { introDone = true; intro = 1; } kick(); } }, { rootMargin: '200px 0px' }).observe(track);
     layout(); setFront(0);
   }
 
