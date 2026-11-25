@@ -55,7 +55,7 @@ html .ring .site-info p, html .ring .site-url{ display: none; }
 
 /* featured projects ring: workflow screenshots read best from the top-left */
 .ring-projects .site-shot img{ object-fit: cover; object-position: 0 0; }
-.ring-projects .site-live{ background: rgba(139,92,246,.9); color: #fff; }
+.ring-projects .site-live{ background: #6d28d9; color: #fff; }   /* 7.1:1 with white (was 4.2:1) */
 .ring-list-label{ text-align: center; color: var(--muted); font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 8px 0 10px; }
 #cardWrap .card{ scroll-margin-top: 140px; }
 
@@ -71,3 +71,8 @@ html .ring .site-tile.ring-front .site-shot::after{
 .ring-floor{ transition: none; }
 .ring-caption .ring-cap-inner > *{ will-change: transform, opacity; }
 @media (prefers-reduced-motion: reduce){ html .ring .site-tile.ring-front .site-shot::after{ animation: none; opacity: 0; } }
+
+/* progress rail: shows where you are on the ring, fills with the turn */
+.ring-rail{ position: relative; width: min(220px, 60vw); height: 3px; border-radius: 3px; background: rgba(148,163,184,.18); overflow: hidden; margin: 2px auto 0; }
+.ring-rail i{ position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--accent2,#22d3ee), #8b5cf6); border-radius: inherit; }
+@media (hover: none){ .ring-keys{ display: none; } }

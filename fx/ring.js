@@ -19,18 +19,18 @@
     cap.innerHTML = '<div class="ring-cap-inner"><span class="ring-count"></span><span class="ring-type"></span>' +
       '<h3 class="ring-title"></h3><p class="ring-desc"></p>' +
       '<a class="hero-cta primary ring-open"></a></div>' +
-      '<p class="ring-hint" aria-hidden="true">Scroll to turn the ring</p>';
+      '<div class="ring-rail" aria-hidden="true"><i></i></div><p class="ring-hint" aria-hidden="true">Scroll<span class="ring-keys"> or use ← →</span> to turn the ring</p>';
     o.mount.parentNode.insertBefore(track, o.mount);
     track.appendChild(stage); stage.appendChild(view); view.appendChild(floor); view.appendChild(grid); stage.appendChild(cap);
     o.section.classList.add('ring-mode'); grid.classList.add('ring');
 
     var elCount = cap.querySelector('.ring-count'), elType = cap.querySelector('.ring-type'), elTitle = cap.querySelector('.ring-title'),
-        elDesc = cap.querySelector('.ring-desc'), elOpen = cap.querySelector('.ring-open'), capInner = cap.querySelector('.ring-cap-inner');
+        elDesc = cap.querySelector('.ring-desc'), elOpen = cap.querySelector('.ring-open'), capInner = cap.querySelector('.ring-cap-inner'), rail = cap.querySelector('.ring-rail i');
     if (o.external) { elOpen.target = '_blank'; elOpen.rel = 'noopener'; }
     if (o.onOpen) elOpen.addEventListener('click', function (e) { e.preventDefault(); o.onOpen(front); });
 
     var STEP = 360 / N, ZP = 120, ZS = 0.16, R = 0, stepPx = 0, trackTop = 0, travel = 1;
-    var cur = 0, target = 0, started = false, raf = 0, front = -1, inView = false, intro = 0, introDone = false, capSeq = 0;
+    var cur = 0, target = 0, started = false, raf = 0, front = -1, inView = false, intro = 0, introDone = false;
 
     function layout() {
       var phone = innerWidth <= 760; ZP = phone ? 60 : 120; ZS = phone ? 0.08 : 0.16;
@@ -64,6 +64,7 @@
       if (intro > 0.002) intro *= 0.93; else intro = 0;
       var lean = Math.max(-5, Math.min(5, v * 1.4));                 // ring leans into the turn, settles when it stops
       grid.style.transform = 'translateZ(' + (-R - intro * 420) + 'px) rotateX(' + lean.toFixed(2) + 'deg) rotateY(' + (-(cur - intro * 70)).toFixed(3) + 'deg)';
+      rail.style.transform = 'scaleX(' + (N > 1 ? Math.max(0, Math.min(1, cur / ((N - 1) * STEP))) : 1).toFixed(4) + ')';
       floor.style.opacity = (0.75 + Math.min(0.25, Math.abs(v) * 0.08)).toFixed(2);
       for (var i = 0; i < N; i++) {
         var a = ((i * STEP - cur) % 360 + 540) % 360 - 180, abs = Math.abs(a), t = tiles[i], vis = abs < 115;
@@ -94,18 +95,13 @@
         elOpen.setAttribute('aria-label', o.openLabel + ': ' + d.title + (o.external ? ' (opens in a new tab)' : ''));
       };
       if (first || !capInner.animate) { apply(); return; }
-      var kids = capInner.children, seq = ++capSeq, outs = [];
-      Array.prototype.forEach.call(kids, function (c) {
-        outs.push(c.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-6px)' }], { duration: 130, easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards' }));
+      // swap the text now, then stagger it in. No wait on a fade-out: if the main thread is busy the
+      // caption can never be left hidden, because its resting style is always fully visible.
+      capInner.getAnimations({ subtree: true }).forEach(function (x) { x.cancel(); });
+      apply();
+      Array.prototype.forEach.call(capInner.children, function (c, m) {   // count, label, title, text, button
+        c.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 380, delay: m * 55, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
       });
-      outs[outs.length - 1].onfinish = function () {
-        if (seq !== capSeq) return;                                   // a newer tile took the front: let its own fade finish
-        apply();
-        capInner.getAnimations({ subtree: true }).forEach(function (x) { x.cancel(); });
-        Array.prototype.forEach.call(kids, function (c2, m) {         // stagger the arrival: count, label, title, text, button
-          c2.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 380, delay: m * 55, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
-        });
-      };
     }
     function goTo(i, smooth) { window.scrollTo({ top: trackTop + i * stepPx + 2, behavior: smooth ? 'smooth' : 'auto' }); }
     tiles.forEach(function (t, i) {
@@ -114,6 +110,11 @@
         if (o.onOpen) { e.preventDefault(); o.onOpen(i); }
       });
       t.addEventListener('focus', function () { if (i !== front) goTo(i, false); });
+      t.addEventListener('keydown', function (e) {                       // arrow keys step the ring and move focus with it
+        var k = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+        if (!k) return; e.preventDefault();
+        var j = Math.max(0, Math.min(N - 1, i + k)); if (j !== i) { goTo(j, true); tiles[j].focus({ preventScroll: true }); }
+      });
     });
 
     window.addEventListener('scroll', function () { if (inView) kick(); }, { passive: true });
