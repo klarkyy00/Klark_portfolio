@@ -1,8 +1,7 @@
-/* Services: "agents deploying" (2026-11-25, impeccable animate playbook).
-   Desktop: the service cards start as one overlapping, fanned stack in the middle of the grid (a queue of
-   agents). Scrolling deals them out to their grid slots one by one; each card that lands boots: its status
-   chip flips Queued -> Running and a scan line sweeps it once. Fully scroll-linked, reverses on scroll up.
-   Single-column layouts: no stack; each card boots as it enters view.
+/* Services: "falling agents" (2026-11-25, impeccable animate playbook).
+   Scroll-linked: each service card drops in from above its slot with gravity (accelerating), drifting and
+   tilting a little as it falls, then lands with a short squash. On landing it boots: the status chip flips
+   Queued -> Running and a scan line sweeps it once. Cards in a row fall left to right. Reverses on scroll up.
    Reduced motion: no movement, every agent shows Running. Default state (no JS) is the normal grid. */
 (function () {
   'use strict';
@@ -19,63 +18,51 @@
   });
   if (reduce) { all.forEach(function (c) { c.classList.add('agent-live'); }); return; }
 
-  var deck = matchMedia('(min-width: 900px)');
-  if (deck.matches) window.__svcDeck = true;          // motion.js skips its own reveal for this grid
+  window.__svcDeck = true;                            // motion.js skips its own reveal for this grid
   grid.classList.add('agent-grid');
 
-  var cards = [], raf = 0, cur = 0, inView = false, mode = '';
-  function visible() { return all.filter(function (c) { return c.offsetParent !== null; }); }
-
+  var cards = [], raf = 0, sy = scrollY, inView = false, F = 340, SPAN = 380, STAG = 70;
   function measure() {
-    mode = deck.matches && getComputedStyle(grid).gridTemplateColumns.split(' ').length > 1 ? 'deck' : 'list';
-    cards = visible();
-    if (mode !== 'deck') { all.forEach(function (c) { c.style.translate = c.style.rotate = c.style.scale = ''; }); return; }
-    var n = cards.length, cx = grid.offsetWidth / 2, cy = Math.min(grid.offsetHeight, 520) / 2, mid = (n - 1) / 2;
+    var phone = innerWidth < 760;
+    F = phone ? 170 : 290;                            // fall height (px)
+    SPAN = innerHeight * (phone ? 0.36 : 0.42);       // scroll distance a card takes to fall
+    STAG = phone ? 0 : 70;                            // extra scroll per column, so a row falls left to right
+    var gTop = grid.getBoundingClientRect().top + scrollY;
+    cards = all.filter(function (c) { return c.offsetParent !== null; });
+    var lefts = cards.map(function (c) { return c.offsetLeft; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).sort(function (a, b) { return a - b; });
+    var tops = cards.map(function (c) { return c.offsetTop; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).sort(function (a, b) { return a - b; });
     cards.forEach(function (c, i) {
-      var x = c.offsetLeft + c.offsetWidth / 2, y = c.offsetTop + c.offsetHeight / 2;
-      c.__dx = cx + (i - mid) * 14 - x;
-      c.__dy = cy + (i - mid) * 8 - y;
-      c.__rz = (i - mid) * 4.5;
-      c.__start = i * (0.4 / Math.max(1, n - 1));
-      c.style.zIndex = String(i + 1);
+      c.__top = gTop + c.offsetTop;                   // layout position: transforms never change it
+      c.__col = lefts.indexOf(c.offsetLeft);
+      c.__row = tops.indexOf(c.offsetTop);
+      c.__side = i % 2 ? 1 : -1;
+      c.__rz = (7 + (i % 3) * 3) * c.__side;
+      c.__live = undefined;
     });
-  }
-  function progress() {                               // 0 when the grid top is low in the viewport, 1 once it has risen
-    var r = grid.getBoundingClientRect();
-    return Math.max(0, Math.min(1, (innerHeight * 0.92 - r.top) / (innerHeight * 0.6)));
   }
   function frame() {
     raf = 0;
-    if (mode !== 'deck') return;
-    var target = progress(), d = target - cur;
-    cur = Math.abs(d) < 0.001 ? target : cur + d * 0.16;
+    var d = scrollY - sy;
+    sy = Math.abs(d) < 0.5 ? scrollY : sy + d * 0.2;  // smoothed scroll so the fall glides
     cards.forEach(function (c) {
-      var k = Math.max(0, Math.min(1, (cur - c.__start) / 0.6));
-      var e = 1 - Math.pow(1 - k, 3), t = 1 - e;      // ease-out: cards decelerate into their slots
-      c.style.translate = (c.__dx * t).toFixed(1) + 'px ' + (c.__dy * t).toFixed(1) + 'px';
-      c.style.rotate = (c.__rz * t).toFixed(2) + 'deg';
-      c.style.scale = (1 - 0.1 * t).toFixed(3);
-      c.classList.toggle('agent-live', k >= 0.97);
+      var k = (sy + innerHeight * 0.98 - c.__top - c.__col * STAG) / SPAN;
+      k = Math.max(0, Math.min(1, k));
+      var u = 1 - k * k;                              // gravity: slow at the top, fastest just before landing
+      c.style.translate = (c.__side * 26 * u).toFixed(1) + 'px ' + (-F * u).toFixed(1) + 'px';
+      c.style.rotate = (c.__rz * u).toFixed(2) + 'deg';
+      c.style.opacity = Math.min(1, k * 2.2).toFixed(2);
+      var live = k >= 0.995;
+      if (live !== c.__live) { c.__live = live; c.classList.toggle('agent-live', live); c.style.zIndex = String(live ? 20 : 10 - c.__row); }   // falling cards pass behind landed ones and the row above
     });
-    if (cur !== target) kick();
+    if (sy !== scrollY) kick();
   }
   function kick() { if (!raf) raf = requestAnimationFrame(frame); }
 
-  // list mode: each card boots as it comes into view, and resets if it drops back below
-  var io = new IntersectionObserver(function (es) {
-    if (mode === 'deck') return;
-    es.forEach(function (en) {
-      if (en.isIntersecting) en.target.classList.add('agent-live');
-      else if (en.boundingClientRect.top > 0) en.target.classList.remove('agent-live');
-    });
-  }, { threshold: 0.55 });
-  all.forEach(function (c) { io.observe(c); });
-
-  new IntersectionObserver(function (es) { inView = es[0].isIntersecting; if (inView) kick(); }, { rootMargin: '300px 0px' }).observe(grid);
+  new IntersectionObserver(function (es) { inView = es[0].isIntersecting; if (inView) kick(); }, { rootMargin: '400px 0px' }).observe(grid);
   window.addEventListener('scroll', function () { if (inView) kick(); }, { passive: true });
-  function remeasure() { measure(); cur = progress(); kick(); }
+  function remeasure() { measure(); sy = scrollY; kick(); }
   if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(grid);
+  window.addEventListener('resize', remeasure, { passive: true });
   window.addEventListener('load', remeasure);
-  if (deck.addEventListener) deck.addEventListener('change', remeasure);
-  measure(); cur = progress(); kick();
+  measure(); kick();
 })();
