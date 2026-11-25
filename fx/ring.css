@@ -1,5 +1,5 @@
 /* Websites ring (2026-11-25) - only active when fx/ring.js adds .ring-mode */
-#websites.ring-mode{ padding-bottom: 24px; }
+.websites-section.ring-mode{ padding-bottom: 24px; }
 .ring-track{ position: relative; }
 .ring-stage{
   position: sticky; top: 58px; height: calc(100vh - 58px); min-height: 560px;
@@ -12,22 +12,22 @@
   perspective: 1900px; perspective-origin: 50% 40%;
   padding: 8px 0 34px;
 }
-#websites .websites-grid.ring{
+html .websites-grid.ring{
   display: block; position: relative; margin: 0;
   width: var(--ring-w, 320px); height: var(--ring-h, 330px);
   transform-style: preserve-3d; will-change: transform;
 }
-#websites .ring .site-tile{
+html .websites-grid.ring > .site-tile{
   position: absolute; inset: 0 auto auto 0; width: var(--ring-w, 320px); margin: 0;
   backface-visibility: hidden;
   transition: box-shadow .35s cubic-bezier(.4,0,.2,1), border-color .35s cubic-bezier(.4,0,.2,1);
 }
-#websites .ring .site-tile.ring-front{
+html .websites-grid.ring > .site-tile.ring-front{
   border-color: rgba(34,211,238,.55);
   box-shadow: 0 30px 60px -28px rgba(0,0,0,.9), 0 0 0 1px rgba(34,211,238,.25), 0 0 46px -10px rgba(139,92,246,.45);
 }
 /* the ring's own caption carries the text; tiles keep only the shot + name */
-#websites .ring .site-info p, #websites .ring .site-url{ display: none; }
+html .ring .site-info p, html .ring .site-url{ display: none; }
 /* ambient: soft light pool under the ring */
 .ring-floor{
   position: absolute; left: 50%; bottom: 0; width: min(900px, 92vw); height: 90px; transform: translateX(-50%);
@@ -52,3 +52,9 @@
   .ring-view{ padding-bottom: 18px; }
   .ring-hint{ display: none; }
 }
+
+/* featured projects ring: workflow screenshots read best from the top-left */
+.ring-projects .site-shot img{ object-fit: cover; object-position: 0 0; }
+.ring-projects .site-live{ background: rgba(139,92,246,.9); color: #fff; }
+.ring-list-label{ text-align: center; color: var(--muted); font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 8px 0 10px; }
+#cardWrap .card{ scroll-margin-top: 140px; }
