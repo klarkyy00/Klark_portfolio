@@ -1385,8 +1385,33 @@
 @keyframes rdPulse{ 0%{ box-shadow:0 0 0 0 rgba(34,211,238,.55); } 70%,100%{ box-shadow:0 0 0 10px rgba(34,211,238,0); } }
 @media (hover:hover){ .about-video .hero-cta:hover svg{ transform:scale(1.15); } }
 @media (prefers-reduced-motion: reduce){ .about-video .hero-cta svg{ animation:none; } }
+/* Certifications: scroll-driven flow (2026-11-25, modern-web-guidance "scroll-entry-exit-effects").
+   Cards rise and untilt as they enter, drift at different rates per column across the whole viewport pass (a slow wave),
+   then tilt away as they leave. Native view() timeline only; other browsers keep the motion.js flip-in. */
+@media (prefers-reduced-motion: no-preference){
+  @supports ((animation-timeline: view()) and (animation-range: entry)){
+    @keyframes cert-flow{
+      cover 0%{ opacity:0; translate:0 calc(90px + var(--lag) * 40px); rotate:x 36deg; scale:.9; }
+      cover 30%{ opacity:1; translate:0 calc(var(--drift) * 1px); rotate:x 0deg; scale:1; }
+      cover 72%{ opacity:1; translate:0 calc(var(--drift) * -1px); rotate:x 0deg; scale:1; }
+      cover 100%{ opacity:.15; translate:0 -50px; rotate:x -22deg; scale:.94; }
+    }
+    .cert-grid{ perspective:1100px; }
+    .cert-grid > .cert-card{
+      --lag:0; --drift:6;
+      transform-origin:50% 100%;
+      animation:cert-flow auto linear both;
+      animation-timeline:view();
+    }
+    @media (min-width:761px){
+      .cert-grid > .cert-card:nth-child(4n+2){ --lag:1; --drift:16; }
+      .cert-grid > .cert-card:nth-child(4n+3){ --lag:2; --drift:10; }
+      .cert-grid > .cert-card:nth-child(4n+4){ --lag:3; --drift:22; }
+    }
+  }
+}
 </style>
-<link rel="stylesheet" href="fx/ring.css?v=20261125h">
+<link rel="stylesheet" href="fx/ring.css?v=20261125i">
 </head>
 <body id="top">
 
@@ -3559,9 +3584,9 @@
 </script>
 <!-- 3D + motion layer (fx/): hero workflow network, scroll motion, card tilt -->
 <script src="fx/hero-network.js" defer></script>
-<script src="fx/ring.js?v=20261125h" defer></script>
-<script src="fx/about.js?v=20261125h" defer></script>
-<script src="fx/motion.js?v=20261125h" defer></script>
+<script src="fx/ring.js?v=20261125i" defer></script>
+<script src="fx/about.js?v=20261125i" defer></script>
+<script src="fx/motion.js?v=20261125i" defer></script>
 <script src="fx/tilt.js" defer></script>
 <script src="klarkyytech-chat.js" defer></script>
 

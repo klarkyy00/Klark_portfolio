@@ -29,7 +29,8 @@
       ['.services-grid', '.service-card', false, 'flip-y'],
       ['.process-steps', '.process-step'],
       ['.faq-section', '.faq-item'],
-      ['.cert-grid', '.cert-card', false, 'flip-y'],
+      // certificates use a native scroll-driven animation (index.html) where supported; this flip-in is the fallback
+      (window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) ? null : ['.cert-grid', '.cert-card', false, 'flip-y'],
       ['.testimonial-grid', ':scope > *']
     ],
     headingSections: '.about-section, .services-section, .process-section, .faq-section, .cert-section, ' +
@@ -140,6 +141,7 @@
     });
     // cascades
     CONFIG.cascades.forEach(function (c) {
+      if (!c) return;
       $all(c[0]).forEach(function (box) {
         $all(c[1], box).forEach(function (el) {
           if (el.__fx) return;
