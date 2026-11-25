@@ -1467,11 +1467,17 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
   @keyframes agent-land{ 0%{ scale:1.03 .93; } 55%{ scale:.99 1.01; } 100%{ scale:1; } }
   .agent-grid .service-card.agent-live{ animation:agent-land .5s cubic-bezier(.16,1,.3,1); }
   .cert-grid > .cert-float.cert-landed{ animation:agent-land .5s cubic-bezier(.16,1,.3,1); }
+/* falling grids: solid card faces (the glass .62 background let a card behind show its text through; over the page
+   background the glass reads as #0e0f23, so landed cards look the same), and no lagging .reveal opacity transition */
+.fall-grid > .service-card, .fall-grid > .cert-float > .cert-card{ background:#0e0f23; backdrop-filter:none; -webkit-backdrop-filter:none; }
+.fall-grid > .reveal{ transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+/* a falling card is solid and drops in front of the deck with a deep shadow, so both it and the card below stay readable */
+.fall-grid > .service-card.is-falling, .fall-grid > .cert-float.is-falling > .cert-card{ box-shadow:0 26px 48px -14px rgba(0,0,0,.85), 0 0 0 1px rgba(34,211,238,.18); }
   @keyframes agent-dot{ 0%,100%{ opacity:1; } 50%{ opacity:.45; } }
   .service-card.agent-live .agent-chip i{ animation:agent-dot 1.8s ease-in-out infinite; }
 }
 </style>
-<link rel="stylesheet" href="fx/ring.css?v=20261125p">
+<link rel="stylesheet" href="fx/ring.css?v=20261126c">
 </head>
 <body id="top">
 
@@ -3659,10 +3665,10 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
 </script>
 <!-- 3D + motion layer (fx/): hero workflow network, scroll motion, card tilt -->
 <script src="fx/hero-network.js" defer></script>
-<script src="fx/ring.js?v=20261125p" defer></script>
-<script src="fx/about.js?v=20261125p" defer></script>
-<script src="fx/services.js?v=20261125p" defer></script>
-<script src="fx/motion.js?v=20261125p" defer></script>
+<script src="fx/ring.js?v=20261126c" defer></script>
+<script src="fx/about.js?v=20261126c" defer></script>
+<script src="fx/services.js?v=20261126c" defer></script>
+<script src="fx/motion.js?v=20261126c" defer></script>
 <script src="fx/tilt.js" defer></script>
 <script src="klarkyytech-chat.js" defer></script>
 

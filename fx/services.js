@@ -23,15 +23,15 @@
       var gTop = grid.getBoundingClientRect().top + scrollY;
       cards = all.filter(function (c) { return c.offsetParent !== null; });
       var uniq = function (v, i, a) { return a.indexOf(v) === i; }, num = function (a, b) { return a - b; };
-      var lefts = cards.map(function (c) { return c.offsetLeft; }).filter(uniq).sort(num);
       var tops = cards.map(function (c) { return c.offsetTop; }).filter(uniq).sort(num);
       cards.forEach(function (c, i) {
         c.__top = gTop + c.offsetTop;                   // layout position: transforms never change it
-        c.__col = lefts.indexOf(c.offsetLeft);
+        // column counted within the card's own row (a centred short last row must not become columns 5-7)
+        c.__col = cards.filter(function (o) { return o.offsetTop === c.offsetTop && o.offsetLeft < c.offsetLeft; }).length;
         c.__row = tops.indexOf(c.offsetTop);
         c.__side = i % 2 ? 1 : -1;
         c.__rz = (7 + (i % 3) * 3) * c.__side;
-        c.__live = undefined;
+        c.__live = undefined; c.__z = undefined;
       });
     }
     function frame() {
@@ -44,12 +44,16 @@
         var u = 1 - k * k;                              // gravity: slow at the top, fastest just before landing
         c.style.translate = (c.__side * 26 * u).toFixed(1) + 'px ' + (-F * u).toFixed(1) + 'px';
         c.style.rotate = (c.__rz * u).toFixed(2) + 'deg';
-        c.style.opacity = Math.min(1, k * 2.2).toFixed(2);
+        // solid almost at once: a half-transparent card over another card mixes the two texts and neither can be read
+        c.style.opacity = Math.min(1, k * 7).toFixed(2);
         var live = k >= 0.995;
         if (live !== c.__live) {
-          c.__live = live; c.classList.toggle(o.landed, live);
-          c.style.zIndex = String(live ? 20 : 10 - c.__row);   // falling cards pass behind landed ones and the row above
+          c.__live = live; c.classList.toggle(o.landed, live); c.classList.toggle('is-falling', !live);
         }
+        // stacking follows progress: the nearer a card is to landing, the more it is in front. A card that is still
+        // fading in (top of its fall) is therefore always behind solid cards, so two texts never show through each other.
+        var z = live ? 40 : 10 + Math.round(k * 25);
+        if (z !== c.__z) { c.__z = z; c.style.zIndex = String(z); }
       });
       if (sy !== scrollY) kick();
     }
