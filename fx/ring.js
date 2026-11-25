@@ -20,8 +20,11 @@
       '<h3 class="ring-title"></h3><p class="ring-desc"></p>' +
       '<a class="hero-cta primary ring-open"></a></div>' +
       '<div class="ring-rail" aria-hidden="true"><i></i></div><p class="ring-hint" aria-hidden="true">Scroll<span class="ring-keys"> or use ← →</span> to turn the ring</p>';
+    var bg = document.createElement('div'); bg.className = 'ring-bg'; bg.setAttribute('aria-hidden', 'true');
+    bg.innerHTML = '<div class="ring-bg-l"></div><div class="ring-bg-l"></div>';
+    var bgL = bg.children, bgOn = 0, bgSrc = '';
     o.mount.parentNode.insertBefore(track, o.mount);
-    track.appendChild(stage); stage.appendChild(view); view.appendChild(floor); view.appendChild(grid); stage.appendChild(cap);
+    track.appendChild(stage); stage.appendChild(bg); stage.appendChild(view); view.appendChild(floor); view.appendChild(grid); stage.appendChild(cap);
     o.section.classList.add('ring-mode'); grid.classList.add('ring');
 
     var elCount = cap.querySelector('.ring-count'), elType = cap.querySelector('.ring-type'), elTitle = cap.querySelector('.ring-title'),
@@ -89,6 +92,11 @@
       var first = front < 0; front = f;
       tiles.forEach(function (t, i) { t.classList.toggle('ring-front', i === f); t.setAttribute('aria-current', i === f ? 'true' : 'false'); });
       var d = o.info[f];
+      if (d.img && d.img !== bgSrc) {                                   // backdrop: the front project, blurred, crossfades in
+        bgSrc = d.img; var nx = bgL[1 - bgOn], ol = bgL[bgOn];
+        nx.style.backgroundImage = 'url("' + d.img.replace(/"/g, '%22') + '")';
+        nx.classList.add('on'); ol.classList.remove('on'); bgOn = 1 - bgOn;
+      }
       var apply = function () {
         elCount.textContent = (f + 1) + ' of ' + N; elType.textContent = d.type; elTitle.textContent = d.title; elDesc.textContent = d.desc;
         elOpen.href = d.href; elOpen.innerHTML = o.openLabel + (o.external ? ' <span aria-hidden="true">↗</span>' : '');
@@ -138,7 +146,7 @@
     var more = grid.nextElementSibling; if (more && more.classList.contains('show-more-row')) more.remove();
     var info = tiles.map(function (t) {
       var q = function (s) { var e = t.querySelector(s); return e ? e.textContent.trim() : ''; };
-      return { href: t.href, type: q('.site-type'), title: q('h3'), desc: q('.site-info p') };
+      var im = t.querySelector('.site-shot img'); return { href: t.href, img: im ? im.src : '', type: q('.site-type'), title: q('h3'), desc: q('.site-info p') };
     });
     makeRing({ section: sec, grid: grid, mount: grid, tiles: tiles, info: info, openLabel: openLabel, external: true });
   }
@@ -167,7 +175,7 @@
       a.querySelector('.site-type').textContent = q('.card-tag');
       a.querySelector('h3').textContent = q('.card-title');
       grid.appendChild(a); tiles.push(a);
-      info.push({ href: '#' + c.id, type: q('.card-tag'), title: q('.card-title'), desc: result });
+      info.push({ href: '#' + c.id, img: im.src, type: q('.card-tag'), title: q('.card-title'), desc: result });
     });
     var head = zone.querySelector('.projects-head');
     var mount = document.createElement('div'); zone.insertBefore(mount, filter);
