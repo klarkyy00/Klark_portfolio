@@ -48,10 +48,27 @@
 
     function layout() {
       var phone = innerWidth <= 760; ZP = phone ? 60 : 120; ZS = phone ? 0.08 : 0.16;
+      var navEl = document.querySelector('.top-nav'); NAV = navEl ? Math.round(navEl.getBoundingClientRect().height) : 58;
+      stage.style.top = NAV + 'px'; stage.style.height = 'calc(100vh - ' + NAV + 'px)'; stage.style.minHeight = '0';
+      view.style.zoom = '';
       var w = phone ? Math.min(250, innerWidth * 0.66) : 320, gap = phone ? 18 : 34;
-      grid.style.setProperty('--ring-w', w + 'px');
+      var h = 0, setW = function () {
+        grid.style.setProperty('--ring-w', w + 'px');
+        h = 0; tiles.forEach(function (t) { h = Math.max(h, t.offsetHeight); });
+      };
+      setW();
+      // fit the height: the front tile is zoomed (scale + pushed toward the camera), and the caption sits under it;
+      // on short screens (laptops, 125% Windows scaling) shrink the tiles so the front one never slides under the nav
+      var P = phone ? 1200 : 1900, zoom = (1 + ZS) * P / (P - ZP) * 1.04;
+      var room = innerHeight - NAV - Math.max(cap.offsetHeight, phone ? 220 : 240) - (phone ? 14 : 22) - (phone ? 30 : 42) - 28;
+      for (var it = 0; it < 4 && h * zoom > room && w > (phone ? 170 : 210); it++) {
+        w = Math.max(phone ? 170 : 210, Math.floor(w * room / (h * zoom)));
+        setW();
+      }
+      // still too tall (the text block under each screenshot does not shrink with width): scale the whole ring down
+      var fit = Math.max(0.55, Math.min(1, room / (h * zoom)));
+      if (fit < 0.995) view.style.zoom = fit.toFixed(3);
       R = Math.round((w + gap) / (2 * Math.tan(Math.PI / N)));
-      var h = 0; tiles.forEach(function (t) { h = Math.max(h, t.offsetHeight); });
       grid.style.setProperty('--ring-h', h + 'px');
       tiles.forEach(function (t, i) { t.__k = -1; t.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + R + 'px)'; });
       stepPx = Math.round(innerHeight * (phone ? 0.3 : 0.34));
@@ -146,7 +163,7 @@
       new ResizeObserver(function () { var h = document.documentElement.scrollHeight; if (Math.abs(h - lastH) > 2) { lastH = h; measure(); kick(); } }).observe(document.body);
     }
     new IntersectionObserver(function (es) { inView = es[0].isIntersecting; if (inView) { if (!introDone) { introDone = true; intro = 1; } kick(); } }, { rootMargin: '200px 0px' }).observe(track);
-    layout(); setFront(0);
+    layout(); setFront(0); layout();   // second pass measures the real caption height
   }
 
   /* ---------- tile sections (Websites, Dashboards) ---------- */
