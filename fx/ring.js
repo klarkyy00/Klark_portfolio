@@ -71,7 +71,8 @@
       R = Math.round((w + gap) / (2 * Math.tan(Math.PI / N)));
       grid.style.setProperty('--ring-h', h + 'px');
       tiles.forEach(function (t, i) { t.__k = -1; t.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + R + 'px)'; });
-      stepPx = Math.round(innerHeight * (phone ? 0.3 : 0.34));
+      // scroll per tile; o.hold shortens the pinned section (page was ~21 screens, rings took half of it)
+      stepPx = Math.round(innerHeight * (phone ? 0.3 : 0.34) * (o.hold || 1));
       travel = stepPx * (N - 1);
       track.style.height = 'calc(100vh - ' + NAV + 'px + ' + travel + 'px)';
       measure();
@@ -178,7 +179,7 @@
       var q = function (s) { var e = t.querySelector(s); return e ? e.textContent.trim() : ''; };
       var im = t.querySelector('.site-shot img'); return { href: t.href, img: im ? im.src : '', type: q('.site-type'), title: q('h3'), desc: q('.site-info p') };
     });
-    makeRing({ section: sec, grid: grid, mount: grid, tiles: tiles, info: info, openLabel: openLabel, external: true });
+    makeRing({ section: sec, grid: grid, mount: grid, tiles: tiles, info: info, openLabel: openLabel, external: true, hold: 0.6 });
   }
   tileSection('websites', 'Open site');
   tileSection('dashboards', 'Open dashboard');
@@ -209,7 +210,7 @@
     });
     var head = zone.querySelector('.projects-head');
     var mount = document.createElement('div'); zone.insertBefore(mount, filter);
-    makeRing({ section: zone, grid: grid, mount: mount, tiles: tiles, info: info, openLabel: 'Read the case study', external: false,
+    makeRing({ section: zone, grid: grid, mount: mount, tiles: tiles, info: info, openLabel: 'Read the case study', external: false, hold: 0.82,
       onOpen: function (i) { openCase(cards[i]); } });
     mount.remove();
 

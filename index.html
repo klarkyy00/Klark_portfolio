@@ -1538,6 +1538,23 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
   main .card-body td, main .case-strip > div, main .case-result, main .cert-card .cert-org, main .section-label, main .edu-line strong,
   .footer .footer-text{ font-size:.9375rem; }
 }
+/* ===== Mobile pass (2026-11-26, mobile-native via Alyn): gated by capability, not screen width ===== */
+/* 6. menu: the Book a Call button is the "current" item while you are in the booking section */
+.nav-links a.nav-cta.active{ background:linear-gradient(90deg,#7c3aed,#4f46e5,#2563eb); color:#fff;
+  box-shadow:0 0 0 2px #22d3ee, 0 8px 26px -8px rgba(124,58,237,.7); }
+@media (hover: none) and (pointer: coarse){
+  /* 8. no backdrop blur on touch devices: it re-renders on every scroll frame and costs cheap phones the most.
+     #0e0f23 is what the .62 glass already looked like over the page background, so nothing visibly changes */
+  .card, .service-card, .faq-item, .cert-card, .testimonial-card, .site-tile{ background:#0e0f23; backdrop-filter:none; -webkit-backdrop-filter:none; }
+  .filter-nav{ background:rgba(10,14,20,.96); backdrop-filter:none; -webkit-backdrop-filter:none; }
+  html.fx-motion .top-nav, html.fx-motion .top-nav.fx-nav-scrolled, .top-nav{ background:rgba(10,14,20,.96); backdrop-filter:none; -webkit-backdrop-filter:none; }
+  /* 9. chat button: smaller, clear of the home indicator, slides away while reading (scrolling down) */
+  html body #klark-chat-launcher{ width:50px; height:50px; right:14px; bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+    transition:translate .32s cubic-bezier(.16,1,.3,1), opacity .2s ease, visibility 0s linear 0s; }
+  html body #klark-chat-launcher.fab-away{ translate:0 calc(100% + 28px); opacity:0; visibility:hidden; pointer-events:none;
+    transition:translate .32s cubic-bezier(.16,1,.3,1), opacity .2s ease, visibility 0s linear .32s; }
+  .footer{ padding-bottom:calc(84px + env(safe-area-inset-bottom, 0px)); }
+}
 </style>
 <link rel="stylesheet" href="fx/ring.css?v=20261126c">
 </head>
@@ -3660,7 +3677,13 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
     });
 
     const links = document.querySelectorAll('.nav-links a[data-target]');
-    const secs = Array.from(links).map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+    const navCta = document.querySelector('.nav-links .nav-cta');
+    // spy on the menu sections plus FAQ and Booking (no menu item): FAQ clears the highlight,
+    // Booking lights the "Book a Call" button, so the menu never points at the section you just left
+    const spy = Array.from(links).map(a => [a.dataset.target, document.getElementById(a.dataset.target)])
+      .concat([['faq', document.querySelector('.faq-section')], ['book', document.querySelector('.booking-section')]])
+      .filter(x => x[1]);
+    const secs = spy.map(x => x[1]);
     // perf: section tops are cached and only re-measured when the page size changes
     let spyQueued = false, lastCurrent, tops = [];
     function measureTops(){ const y = window.scrollY; tops = secs.map(s => s.getBoundingClientRect().top + y); }
@@ -3672,10 +3695,12 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
       let current = null;
       const fy = window.__frameScrollY; window.__frameScrollY = undefined;
       const y = (fy !== undefined ? fy : window.scrollY) + 140;
-      secs.forEach((s, i) => { if(tops[i] <= y) current = s.id; });
+      let best = -Infinity;
+      spy.forEach((x, i) => { if(tops[i] <= y && tops[i] > best){ best = tops[i]; current = x[0]; } });
       if(current === lastCurrent) return;
       lastCurrent = current;
-      links.forEach(a => a.classList.toggle('active', a.dataset.target === current));
+      links.forEach(a => { const on = a.dataset.target === current; a.classList.toggle('active', on); if(on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+      if(navCta){ const on = current === 'book'; navCta.classList.toggle('active', on); if(on) navCta.setAttribute('aria-current', 'true'); else navCta.removeAttribute('aria-current'); }
     }
     window.addEventListener('scroll', () => { if(!spyQueued){ spyQueued = true; requestAnimationFrame(setActive); } }, { passive:true });
     setActive();
@@ -3773,7 +3798,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 </script>
 <!-- 3D + motion layer (fx/): hero workflow network, scroll motion, card tilt -->
 <script src="fx/hero-network.js" defer></script>
-<script src="fx/ring.js?v=20261126e" defer></script>
+<script src="fx/ring.js?v=20261126h" defer></script>
 <script src="fx/about.js?v=20261126c" defer></script>
 <script src="fx/services.js?v=20261126c" defer></script>
 <script src="fx/motion.js?v=20261126g" defer></script>
@@ -3797,6 +3822,19 @@ w.innerHTML='';w.appendChild(f);if(focus)f.focus();}
 b.addEventListener('click',function(){open(true);});
 document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a[href="#book"]'))open(false);});
 if(location.hash==='#book')open(false);})();
+</script>
+<script>
+/* chat button on touch devices: hide while scrolling down (reading), show on scroll up, near the top and at the end */
+(function(){if(!matchMedia('(hover: none) and (pointer: coarse)').matches)return;
+var last=scrollY,q=false;
+function upd(){q=false;var l=document.getElementById('klark-chat-launcher'),w=document.getElementById('klark-chat-window'),y=scrollY;
+if(!l){last=y;return;}
+var end=y+innerHeight>=document.documentElement.scrollHeight-60;
+if((w&&w.classList.contains('open'))||y<240||end)l.classList.remove('fab-away');
+else if(y>last+8)l.classList.add('fab-away');
+else if(y<last-8)l.classList.remove('fab-away');
+last=y;}
+addEventListener('scroll',function(){if(!q){q=true;requestAnimationFrame(upd);}},{passive:true});})();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3541101652d54b6b939604b00dcb4918"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
