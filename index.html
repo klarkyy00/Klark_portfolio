@@ -1487,6 +1487,57 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
   background:radial-gradient(closest-side, rgba(148,163,184,.5), rgba(34,211,238,.14) 55%, transparent);
   filter:blur(3px); animation:brick-dust .75s ease-out forwards; }
 @keyframes brick-dust{ 0%{ opacity:.95; scale:.4 .5; } 100%{ opacity:0; scale:1.3 1.7; translate:0 -6px; } }
+/* ===== UI/UX pass (2026-11-26, Modern Web Guidance via Alyn: motion, typography, forms) ===== */
+/* 1. calmer page: keep the signature motion (hero network, AI box glow, scroll effects), stop the endless loops */
+.hero h1, .name-tag, .services-section h2, .process-section h2, .faq-section h2, .testimonials-section h2,
+.contact-section h2, .booking-section h2, .websites-section h2, .about-section h2, .cert-section h2{ animation-iteration-count:1; }
+.hero .avatar, .avatar{ animation:none; }
+.cert-card::before{ animation:none; }
+.service-card.agent-live .agent-chip i{ animation:none; }
+html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
+.contact-submit{ animation:none; }
+@media (prefers-reduced-motion: no-preference){
+  /* certificates: one gentle float after landing (under 5s, so no pause control needed) */
+  .cert-grid .cert-float > .cert-card, .cert-grid .cert-float::after{ animation:none; }
+  .cert-grid .cert-float.cert-landed > .cert-card{ animation:cert-bob 4.4s ease-in-out .45s 1 backwards; }
+  .cert-grid .cert-float.cert-landed::after{ animation:cert-shadow 4.4s ease-in-out .45s 1 backwards; }
+  .cert-pause-row{ display:none; }
+}
+/* 3. booking card (dark; Calendly loads on request) */
+.booking-frame-wrap:not(.cal-open){ background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%); }
+.book-card{ max-width:520px; margin:0 auto; padding:clamp(24px, 5vw, 40px); text-align:left; }
+.book-card-head{ display:flex; align-items:center; gap:14px; }
+.book-avatar{ width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid rgba(34,211,238,.5); }
+.book-name{ margin:0; font-weight:800; color:var(--text); font-size:1.05rem; }
+.book-meta{ margin:2px 0 0; color:var(--muted); font-size:.9rem; }
+.book-points{ margin:20px 0 24px; padding:0; list-style:none; display:grid; gap:10px; }
+.book-points li{ position:relative; padding-left:26px; color:var(--text); line-height:1.5; }
+.book-points li::before{ content:""; position:absolute; left:2px; top:.45em; width:12px; height:12px; border-radius:50%;
+  background:radial-gradient(circle, #22d3ee 0 35%, rgba(34,211,238,.25) 40% 100%); }
+.book-open{ font:inherit; font-weight:700; border:none; cursor:pointer; width:100%; justify-content:center; min-height:48px; }
+.book-note{ margin:10px 0 0; text-align:center; color:var(--muted); font-size:.82rem; }
+.booking-frame-wrap.cal-open iframe{ width:100%; height:650px; border:none; display:block; }
+/* 7. contact form: labels above the fields, required stated, submit matches the other primary buttons */
+.contact-form{ gap:6px; }
+.cf-req{ margin:0 0 6px; color:var(--muted); font-size:.85rem; }
+.cf-label{ font-size:.9rem; font-weight:700; color:var(--text); margin-top:12px; }
+.cf-label:first-of-type{ margin-top:0; }
+.cf-label span{ color:#22d3ee; }
+.contact-form input, .contact-form textarea{ font-size:1rem; }   /* 16px: also stops iOS zooming in on focus */
+.contact-form .contact-submit{ margin-top:16px; background:linear-gradient(90deg,#7c3aed,#4f46e5,#2563eb); color:#fff; border:none;
+  box-shadow:0 8px 26px -8px rgba(124,58,237,.7); min-height:50px; font-family:inherit; font-size:1rem; }
+.contact-form .contact-submit:hover{ background:linear-gradient(90deg,#7c3aed,#4f46e5,#2563eb); box-shadow:0 12px 34px -8px rgba(124,58,237,.9); }
+.contact-form .contact-submit:focus-visible{ outline:2px solid #22d3ee; outline-offset:3px; }
+/* 5. readable text on phones: reading text 16px, secondary text 15px (rem, so it follows the user's font setting) */
+@media (max-width:760px){
+  main .hero p.hero-lede, main .ring-desc, main .card-desc, main .highlights li, main .service-card p, main .process-step p,
+  main .faq-a, main .services-sub, main .process-sub, main .faq-sub, main .websites-sub, main .projects-head p,
+  main .booking-section > p, main .contact-section > p, main .testimonial-text{ font-size:1rem; line-height:1.6; }
+  main .services-section > p.services-sub, main .process-section > p.process-sub, main .faq-section > p.faq-sub,
+  main .websites-section > p.websites-sub{ font-size:1rem; }
+  main .card-body td, main .case-strip > div, main .case-result, main .cert-card .cert-org, main .section-label, main .edu-line strong,
+  .footer .footer-text{ font-size:.9375rem; }
+}
 </style>
 <link rel="stylesheet" href="fx/ring.css?v=20261126c">
 </head>
@@ -3141,7 +3192,6 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
       </div>
     </div>
   </div>
-  <p class="cert-pause-row"><button type="button" class="cert-pause" id="certPause">Pause floating</button></p>
 </div>
 
 <div class="faq-section reveal">
@@ -3234,8 +3284,20 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
 <div class="booking-section reveal">
   <h2>Book a Free 30-Min Call</h2>
   <p>Let's talk through what you need automated: no pressure, just a quick conversation about your process and whether I'm a good fit to help.</p>
-  <div class="booking-frame-wrap">
-    <iframe src="https://calendly.com/pungzuwangdu11" title="Book a call" loading="lazy"></iframe>
+  <div class="booking-frame-wrap" id="bookingWrap">
+    <div class="book-card">
+      <div class="book-card-head">
+        <img class="book-avatar" src="profile-photo.webp" alt="" width="56" height="56" loading="lazy">
+        <div><p class="book-name">Klark John Cabungcal</p><p class="book-meta">Free 30-minute call · pick any open slot</p></div>
+      </div>
+      <ul class="book-points">
+        <li>Walk me through one process that eats your team's time</li>
+        <li>I'll tell you whether it can be automated and roughly what it takes</li>
+        <li>No pitch, no obligation</li>
+      </ul>
+      <button type="button" class="hero-cta primary book-open" id="bookOpen">See available times</button>
+      <p class="book-note">Opens my Calendly calendar right here.</p>
+    </div>
   </div>
   <p class="booking-fallback">Calendar not loading? <a class="inline-link" href="https://calendly.com/pungzuwangdu11" target="_blank" rel="noopener">Open my booking page ↗</a> or email <a class="inline-link" href="mailto:kj_klark@yahoo.com">kj_klark@yahoo.com</a></p>
 </div>
@@ -3267,12 +3329,13 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
   <div class="edu-line"><strong>Bachelor of Science in Information Technology</strong></div>
 
   <form class="contact-form" id="contactForm">
-    <label class="sr-only" for="cf-name">Your name</label>
-    <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="Your name" required>
-    <label class="sr-only" for="cf-email">Your email</label>
+    <p class="cf-req" id="cf-req">All fields are required.</p>
+    <label class="cf-label" for="cf-name">Your name <span aria-hidden="true">*</span></label>
+    <input type="text" id="cf-name" name="name" autocomplete="name" placeholder="First and last name" required>
+    <label class="cf-label" for="cf-email">Your email <span aria-hidden="true">*</span></label>
     <input type="email" id="cf-email" name="email" autocomplete="email" spellcheck="false" placeholder="you@company.com" required>
-    <label class="sr-only" for="cf-message">Your project</label>
-    <textarea id="cf-message" name="message" placeholder="What would you like automated? e.g. replying to new leads…" required></textarea>
+    <label class="cf-label" for="cf-message">What should I automate? <span aria-hidden="true">*</span></label>
+    <textarea id="cf-message" name="message" placeholder="e.g. replying to new leads within a minute" required></textarea>
     <button type="submit" class="contact-submit" id="cf-submit">Send Message</button>
     <div class="contact-status" id="cf-status" role="status" aria-live="polite"></div>
   </form>
@@ -3713,7 +3776,7 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
 <script src="fx/ring.js?v=20261126e" defer></script>
 <script src="fx/about.js?v=20261126c" defer></script>
 <script src="fx/services.js?v=20261126c" defer></script>
-<script src="fx/motion.js?v=20261126f" defer></script>
+<script src="fx/motion.js?v=20261126g" defer></script>
 <script src="fx/tilt.js" defer></script>
 <script src="klarkyytech-chat.js" defer></script>
 
@@ -3725,9 +3788,15 @@ function k(){if(!q)q=requestAnimationFrame(u);}
 f.addEventListener('scroll',k,{passive:true});addEventListener('resize',k,{passive:true});u();})();
 </script>
 <script>
-/* cert floating: pause / resume (WCAG 2.2.2) */
-(function(){var b=document.getElementById('certPause'),g=document.querySelector('.cert-grid');if(!b||!g)return;
-b.addEventListener('click',function(){var p=g.classList.toggle('cert-paused');b.textContent=p?'Resume floating':'Pause floating';});})();
+/* booking: the Calendly embed is white and cannot be themed on this plan, so the section shows a dark card
+   and loads the calendar only when the visitor asks for it (button, or any "Book a call" link). */
+(function(){var w=document.getElementById('bookingWrap'),b=document.getElementById('bookOpen');if(!w||!b)return;
+function open(focus){if(w.classList.contains('cal-open'))return;w.classList.add('cal-open');
+var f=document.createElement('iframe');f.src='https://calendly.com/pungzuwangdu11?hide_gdpr_banner=1';f.title='Book a call with Klark (Calendly)';
+w.innerHTML='';w.appendChild(f);if(focus)f.focus();}
+b.addEventListener('click',function(){open(true);});
+document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a[href="#book"]'))open(false);});
+if(location.hash==='#book')open(false);})();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3541101652d54b6b939604b00dcb4918"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
