@@ -3647,10 +3647,11 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
       docHeight = document.documentElement.scrollHeight - window.innerHeight;
       heroHeight = hero ? hero.offsetHeight : 0;
     }
-    function update(){
+    function update(ts){
       ticking = false;
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       window.__frameScrollY = scrollTop;   // read once, before any style write; reused by the nav highlight
+      window.__frameScrollT = ts;          // ...but only within this same animation frame (stale value = wrong highlight)
       const p = docHeight > 0 ? Math.min(1, scrollTop / docHeight) : 0;
       progressBar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
       if(hero && scrollTop < heroHeight * 1.3){
@@ -3690,10 +3691,10 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
     measureTops();
     window.addEventListener('load', measureTops);
     if('ResizeObserver' in window) new ResizeObserver(() => { measureTops(); setActive(); }).observe(document.body);
-    function setActive(){
+    function setActive(ts){
       spyQueued = false;
       let current = null;
-      const fy = window.__frameScrollY; window.__frameScrollY = undefined;
+      const fy = (ts !== undefined && ts === window.__frameScrollT) ? window.__frameScrollY : undefined;
       const y = (fy !== undefined ? fy : window.scrollY) + 140;
       let best = -Infinity;
       spy.forEach((x, i) => { if(tops[i] <= y && tops[i] > best){ best = tops[i]; current = x[0]; } });
