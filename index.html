@@ -1311,7 +1311,7 @@
     background:linear-gradient(135deg,#7c3aed,#2563eb); display:grid; place-items:center; transition:transform .15s, box-shadow .2s; }
   .ai-ask button:hover{ transform:translateY(-1px); box-shadow:0 8px 22px -6px rgba(124,58,237,.8); }
   .ai-ask button svg{ width:20px; height:20px; }
-  .ai-ask:focus-within{ box-shadow:0 0 0 3px rgba(139,92,246,.25); }
+  .ai-ask:focus-within{ box-shadow:0 0 0 2px #22d3ee, 0 0 0 5px rgba(139,92,246,.35); }   /* visible keyboard focus (was a 25% violet haze) */
   .ai-chips{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:14px auto 0; max-width:680px; }
   .ai-chips button, .ai-chips a{ padding:7px 14px; border-radius:999px; font-size:.8rem; font-weight:600; cursor:pointer; text-decoration:none; font-family:inherit;
     color:#c9cdf0; background:rgba(21,24,58,.6); border:1px solid var(--border); transition:border-color .2s, color .2s, background .2s; }
@@ -3235,7 +3235,7 @@ main#content{ overflow-x:clip; }   /* lets the FAQ slide past its column without
   <h2>Book a Free 30-Min Call</h2>
   <p>Let's talk through what you need automated: no pressure, just a quick conversation about your process and whether I'm a good fit to help.</p>
   <div class="booking-frame-wrap">
-    <iframe src="https://calendly.com/pungzuwangdu11" title="Book a call"></iframe>
+    <iframe src="https://calendly.com/pungzuwangdu11" title="Book a call" loading="lazy"></iframe>
   </div>
   <p class="booking-fallback">Calendar not loading? <a class="inline-link" href="https://calendly.com/pungzuwangdu11" target="_blank" rel="noopener">Open my booking page ↗</a> or email <a class="inline-link" href="mailto:kj_klark@yahoo.com">kj_klark@yahoo.com</a></p>
 </div>
