@@ -1580,6 +1580,9 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
   color:#67e8f9; font-size:.82rem; font-weight:700; text-decoration:none; transition:background .2s, color .2s; }
 .service-links .service-case{ margin-top:0; }
 .service-case:hover, .service-case:focus-visible{ background:rgba(34,211,238,.14); color:#fff; }
+/* hero headline: letters jumble while scrolling, then decode back to the real text */
+.hero h1 .scr-w{ white-space:nowrap; }
+.hero h1 .scr-c{ display:inline-block; text-align:center; }
 </style>
 <link rel="stylesheet" href="fx/ring.css?v=20261126d">
 </head>
@@ -4151,6 +4154,57 @@ function hydrate(card){ card.querySelectorAll('video[data-poster]').forEach(func
 new MutationObserver(function(ms){ ms.forEach(function(m){ if(m.target.classList && m.target.classList.contains('card') && m.target.classList.contains('open')) hydrate(m.target); }); })
   .observe(wrap,{subtree:true,attributes:true,attributeFilter:['class']});
 wrap.querySelectorAll('.card.open').forEach(hydrate);
+})();
+</script>
+<script>
+/* hero headline scramble: while the page scrolls, letters jumble; when scrolling stops they decode left to right.
+   Each letter keeps its measured width (in em) so lines never shift. Screen readers get the plain text. */
+(function(){
+var h=document.querySelector('.hero h1'); if(!h || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+var text=h.textContent.trim(), GL='ABCDEFGHJKLMNPRSTUVXYZabcdefghknopqrstuvxyz0123456789#%&*+=<>/?';
+var cells=[], built=false;
+function build(){
+  if(built) return; built=true;
+  var fs=parseFloat(getComputedStyle(h).fontSize), vis=document.createElement('span'); vis.setAttribute('aria-hidden','true');
+  text.split(' ').forEach(function(w,i){
+    if(i) vis.appendChild(document.createTextNode(' '));
+    var ws=document.createElement('span'); ws.className='scr-w';
+    for(var k=0;k<w.length;k++){ var c=document.createElement('span'); c.className='scr-c'; c.textContent=w[k]; ws.appendChild(c); cells.push({el:c,ch:w[k],cur:w[k]}); }
+    vis.appendChild(ws);
+  });
+  var sr=document.createElement('span'); sr.className='sr-only'; sr.textContent=text;
+  h.textContent=''; h.appendChild(sr); h.appendChild(vis);
+  cells.forEach(function(c){ c.w=c.el.getBoundingClientRect().width; c.el.style.width=(c.w/fs)+'em'; });
+  /* random glyphs are picked from ones about as wide as the real letter, so nothing piles up */
+  var probe=cells[0].el, gw=GL.split('').map(function(g){ probe.textContent=g; probe.style.width='auto'; return [g,probe.getBoundingClientRect().width]; });
+  probe.textContent=cells[0].ch; probe.style.width=(cells[0].w/fs)+'em';
+  cells.forEach(function(c){ var ok=gw.filter(function(x){ return Math.abs(x[1]-c.w)<=c.w*.25+1; }).map(function(x){ return x[0]; });
+    if(ok.length<4) ok=gw.slice().sort(function(x,y){ return Math.abs(x[1]-c.w)-Math.abs(y[1]-c.w); }).slice(0,6).map(function(x){ return x[0]; });
+    c.pool=ok; });
+}
+var inView=true, lastScroll=0, resolveStart=0, raf=0, lastTick=0;
+new IntersectionObserver(function(e){ inView=e[0].isIntersecting; }).observe(h);
+function set(c,v){ if(c.cur!==v){ c.cur=v; c.el.textContent=v; } }
+function rnd(c){ return c.pool[(Math.random()*c.pool.length)|0]; }
+function tick(t){
+  raf=0;
+  if(t-lastTick<45){ raf=requestAnimationFrame(tick); return; }   /* ~20 swaps a second reads as "decoding" */
+  lastTick=t;
+  var now=performance.now(), scrolling=now-lastScroll<140, n=cells.length, busy=false;
+  if(scrolling){ resolveStart=0;
+    cells.forEach(function(c){ if(Math.random()<.55) set(c,rnd(c)); }); busy=true;
+  } else {
+    if(!resolveStart) resolveStart=now;
+    var done=Math.min(n, Math.floor((now-resolveStart)/550*n));   /* left-to-right over ~0.55s */
+    cells.forEach(function(c,i){ if(i<done) set(c,c.ch); else { set(c,rnd(c)); busy=true; } });
+  }
+  if(busy) raf=requestAnimationFrame(tick);
+}
+addEventListener('scroll',function(){
+  if(!inView) return;
+  build(); lastScroll=performance.now();
+  if(!raf) raf=requestAnimationFrame(tick);
+},{passive:true});
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3541101652d54b6b939604b00dcb4918"}'></script><!-- End Cloudflare Web Analytics -->
