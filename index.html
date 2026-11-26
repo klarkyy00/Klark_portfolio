@@ -1647,7 +1647,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 
 <div class="stats-strip">
   <div class="stats-grid">
-    <div class="stat"><div class="stat-num" data-target="24">24</div><div class="stat-label">Projects built &amp; documented</div></div>
+    <div class="stat"><div class="stat-num" data-target="28">28</div><div class="stat-label">Projects built &amp; documented</div></div>
     <div class="stat"><div class="stat-num" data-target="3">3</div><div class="stat-label">Platforms certified</div></div>
     <div class="stat"><div class="stat-num" data-target="2">2</div><div class="stat-label">Client projects delivered</div></div>
     <div class="stat"><div class="stat-num" data-target="6" data-suffix="+">6+</div><div class="stat-label">Years running live SCADA systems</div></div>
@@ -1713,10 +1713,10 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 <div class="projects-zone">
 <div class="projects-head"><h2>Projects</h2><p>Automations I&#39;ve built for clients and for myself. Open any card to see the problem, what I built and the result.</p></div>
 <div class="filter-nav" id="filterNav">
-  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(24)</span></button>
+  <button class="filter-btn active" data-filter="all">All <span class="filter-count">(28)</span></button>
   <button class="filter-btn" data-filter="web">Websites <span class="filter-count">(11)</span></button>
   <button class="filter-btn" data-filter="client">Client Work <span class="filter-count">(3)</span></button>
-  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(10)</span></button>
+  <button class="filter-btn" data-filter="n8n">n8n <span class="filter-count">(14)</span></button>
   <button class="filter-btn" data-filter="make">Make.com <span class="filter-count">(2)</span></button>
   <button class="filter-btn" data-filter="zapier">Zapier <span class="filter-count">(1)</span></button>
 </div>
@@ -2526,6 +2526,270 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
           <div class="stack">
             <span class="chip">n8n</span><span class="chip">Gemini 2.5 Flash</span><span class="chip">Gmail API</span>
             <span class="chip">Airtable</span><span class="chip">Slack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 25: Website Opportunity Finder: AI Audit → CRM → Outreach -->
+  <div class="card" data-id="c25" data-platform="n8n">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · Lead Generation · AI Audit · Outreach</span>
+        <h2 class="card-title">Website Opportunity Finder: AI Audit → CRM → Outreach</h2>
+        <div class="case-strip"><div><b>Problem</b>Finding local businesses that need a better website meant hours of searching maps and checking sites one by one.</div><div><b>What I built</b>Six n8n workflows: find businesses on OpenStreetMap, have AI audit each website, save good leads to Google Sheets, Slack and HubSpot, then queue, send, track and follow up a personal email.</div><div class="case-result"><b>Result</b>Live and running on its own every weekday since October 2026. One test run found 81 dentists, audited 10 sites, saved 10 leads (6 with an email) and created or updated 10 HubSpot companies.</div></div>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A lead engine I run for my own business. It picks the next industry and Texas city, finds businesses that have a website, reads each site, and has an AI score how much help it needs (missing online booking, no chat, no lead capture). Strong leads land in a Google Sheet, Slack and HubSpot, and an outreach email that names the real gap on their site is written, safety-checked and queued. Separate workflows send the queue in Texas business hours, read the replies, and send one follow-up in the same thread.</p>
+
+          <div class="screenshot-gallery">
+            <img src="website-finder-search-audit.webp" alt="Website Opportunity Finder workflow, part 1: find businesses and audit their websites" loading="lazy">
+            <img src="website-finder-crm-outreach.webp" alt="Website Opportunity Finder workflow, part 2: leads to Sheets, Slack and HubSpot, then AI outreach" loading="lazy">
+            <img src="website-finder-send-queue.webp" alt="Send Queued Emails workflow with do-not-contact and pre-send checks" loading="lazy">
+            <img src="website-finder-reply-handler.webp" alt="Reply Handler workflow: AI classifies replies, handles bounces and updates HubSpot" loading="lazy">
+          </div>
+
+          <div class="section-label">How the system fits together</div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-clock"/></svg>Weekdays, hourly</span><span class="arrow">→</span>
+            <span class="step">Pick next industry + city</span><span class="arrow">→</span>
+            <span class="step">OpenStreetMap search</span><span class="arrow">→</span>
+            <span class="step">Skip chains + already audited</span>
+          </div>
+          <div class="flow">
+            <span class="step">Fetch website</span><span class="arrow">→</span>
+            <span class="step">Detect booking / chat / forms</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-spark"/></svg>AI audit + score</span><span class="arrow">→</span>
+            <span class="step">Score ≥ 8 only</span>
+          </div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-mail"/></svg>Find contact email</span><span class="arrow">→</span>
+            <span class="step">Google Sheet + Slack</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-db"/></svg>HubSpot company</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-pen"/></svg>AI writes outreach</span><span class="arrow">→</span>
+            <span class="step">Safety check → queue</span>
+          </div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-clock"/></svg>Texas 9:30am–3:30pm</span><span class="arrow">→</span>
+            <span class="step">Do-not-contact + MX check</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-mail"/></svg>Send (10/day)</span><span class="arrow">→</span>
+            <span class="step">HubSpot: Attempted to contact</span>
+          </div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-chat"/></svg>Reply arrives</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-spark"/></svg>AI classifies reply</span><span class="arrow">→</span>
+            <span class="step">Do-not-contact / HubSpot status / audit draft</span>
+          </div>
+          <div class="flow">
+            <span class="split neg"><svg class="fi fi-err" aria-hidden="true"><use href="#i-alert"/></svg>Error Trigger</span><span class="arrow">→</span>
+            <span class="step">Slack alert</span>
+          </div>
+
+          <div class="section-label">How it works, start to finish</div>
+          <ul class="highlights">
+            <li><strong>1. Pick the next search.</strong> An hourly weekday schedule rotates through 10 industries across Austin, Dallas and San Antonio, and stops for the day once it has 10 leads that have an email address.</li>
+            <li><strong>2. Find businesses for free.</strong> OpenStreetMap (Nominatim for the city, Overpass for businesses) instead of a paid lead database, with a mirror server as a fallback because the free servers are sometimes down.</li>
+            <li><strong>3. Skip what is not worth auditing:</strong> chains and franchises, duplicate domains, and anything audited on an earlier day.</li>
+            <li><strong>4. Read the website.</strong> A Code node pulls signals from the HTML: booking tools (by vendor), chat widgets (by script domain), real forms, and same-site booking pages.</li>
+            <li><strong>5. AI audit.</strong> A Groq model returns a structured score and the single biggest gap, with a strict scoring scale so it does not rate every site 9–10.</li>
+            <li><strong>6. Save the lead</strong> to Google Sheets (no duplicates), post it to Slack, and create or update the company in HubSpot with Lead Status New.</li>
+            <li><strong>7. Write the outreach.</strong> The AI writes a short email about that site’s real gap; a safety check blocks anything that breaks the rules before it is queued. Leads with no email get a WhatsApp message and click-to-chat link in Slack instead.</li>
+            <li><strong>8. Send, read, follow up.</strong> The sender works through the queue in Texas business hours; the reply handler classifies each reply (interested, question, not interested, auto-reply) and updates HubSpot; one follow-up goes out after 4 days, in the same Gmail thread.</li>
+          </ul>
+
+          <div class="section-label">Edge cases & error handling</div>
+          <ul class="highlights">
+            <li><strong>Never email the wrong people:</strong> a do-not-contact list (opt-outs and bounces are added automatically), an MX check on every domain, and a hard daily send limit.</li>
+            <li><strong>AI misread a site:</strong> the first real batch showed the audit missed booking forms loaded by JavaScript on 4 of 6 sites. I added vendor detection and “verified facts” that override the AI before any email is written.</li>
+            <li><strong>Bot-protection pages</strong> (Cloudflare “Just a moment”) are marked as blocked, not as “site down”.</li>
+            <li><strong>Rate limits:</strong> AI calls run one at a time with a delay to stay inside the free tier; HubSpot searches are throttled after a 429 in testing.</li>
+            <li><strong>Missed runs:</strong> n8n runs on my PC, so schedules repeat hourly with a once-per-day guard and only mark a search done after it succeeds.</li>
+            <li><strong>Leads with no way to contact them</strong> are removed automatically after 23 hours.</li>
+            <li><strong>Any crash</strong> triggers a separate Error Trigger workflow that posts the failed node and error to Slack.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">OpenStreetMap</span><span class="chip">Groq (gpt-oss-120b)</span><span class="chip">Google Sheets</span><span class="chip">HubSpot</span><span class="chip">Gmail API</span><span class="chip">Slack</span><span class="chip">n8n Data Tables</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 26: AI Chat Assistant for This Website -->
+  <div class="card" data-id="c26" data-platform="n8n">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · AI Chat Assistant · Lead Capture</span>
+        <h2 class="card-title">AI Chat Assistant for This Website</h2>
+        <div class="case-strip"><div><b>Problem</b>Visitors have questions at any hour, and a contact form alone loses the people who are not ready to fill it in.</div><div><b>What I built</b>The chat in the corner of this page. An n8n workflow answers from a fixed set of business facts with an AI model; a second workflow sends chat leads to Slack and HubSpot.</div><div class="case-result"><b>Result</b>Live on this site since October 2026. Try the chat button in the bottom-right corner.</div></div>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A website assistant that answers questions about my services, never invents prices, asks one follow-up question, and offers the free audit. Answers come only from a fixed list of business facts written into the prompt. Because n8n runs on my own PC, a Cloudflare Worker sits in front: it keeps the chat answering 24/7 and holds leads in a queue when n8n is offline, retrying every 15 minutes.</p>
+
+          <div class="screenshot-gallery">
+            <img src="chat-assistant-live.webp" alt="The chat assistant on this website answering a question about automating lead replies" loading="lazy">
+            <img src="chat-assistant-workflow.webp" alt="Website Chat Assistant workflow: validate the message, answer with AI, respond" loading="lazy">
+            <img src="chat-leads-workflow.webp" alt="Website Chat Leads workflow: validate the lead, then Slack and HubSpot" loading="lazy">
+          </div>
+
+          <div class="section-label">Two small workflows</div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-chat"/></svg>Visitor message</span><span class="arrow">→</span>
+            <span class="step">Validate + trim history</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-spark"/></svg>AI answer (business facts only)</span><span class="arrow">→</span>
+            <span class="step">Reply to the chat</span>
+          </div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-pen"/></svg>Visitor leaves details</span><span class="arrow">→</span>
+            <span class="step">Looks real?</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-chat"/></svg>Slack</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-db"/></svg>HubSpot contact</span>
+          </div>
+          <div class="flow">
+            <span class="split neg"><svg class="fi fi-err" aria-hidden="true"><use href="#i-alert"/></svg>n8n offline</span><span class="arrow">→</span>
+            <span class="step">Worker queues the lead</span><span class="arrow">→</span>
+            <span class="step">Retry every 15 min</span>
+          </div>
+
+          <div class="section-label">Why I built it this way</div>
+          <ul class="highlights">
+            <li><strong>Facts, not guesses:</strong> the assistant may only use the business facts in its prompt, so it cannot make up prices, clients or services.</li>
+            <li><strong>Clear failure answers:</strong> a bad request and an AI error each get their own response instead of a hanging chat.</li>
+            <li><strong>Spam filter before the CRM:</strong> leads are validated before anything reaches Slack or HubSpot.</li>
+            <li><strong>Always on:</strong> the Worker answers even when my PC is off, and no lead is lost while n8n is down.</li>
+          </ul>
+
+          <div class="section-label">What I’d improve</div>
+          <ul class="highlights">
+            <li>Read the business facts from one shared file at run time instead of copying them into the prompt.</li>
+            <li>Log questions the assistant could not answer, to find gaps in the website.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Groq (gpt-oss-120b)</span><span class="chip">Cloudflare Workers + KV</span><span class="chip">Slack</span><span class="chip">HubSpot</span><span class="chip">JavaScript</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 27: Reels Maker: Long Video → Captioned Vertical Reels -->
+  <div class="card" data-id="c27" data-platform="n8n">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · Video · AI</span>
+        <h2 class="card-title">Reels Maker: Long Video → Captioned Vertical Reels</h2>
+        <div class="case-strip"><div><b>Problem</b>Turning one long video into short vertical clips with captions takes hours of editing for every video.</div><div><b>What I built</b>Drop a long video into a folder. A script transcribes it, an AI picks the best 30–60 second moments, and ffmpeg renders 1080×1920 reels with word-by-word captions. An n8n workflow posts the result to Slack.</div><div class="case-result"><b>Result</b>Hands-off: the folder watcher starts with my PC, and every finished batch (or failure) shows up in Slack.</div></div>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">A small production line for short-form video. Whisper transcribes the audio with word timings; a language model picks self-contained moments and writes a hook; a vision model looks at frames to decide whether to crop on a speaker’s face or fit the frame on a blurred background. Captions show 2–3 words at a time with the current word highlighted.</p>
+
+          <div class="screenshot-gallery">
+            <img src="reels-ready-workflow.webp" alt="Reels Ready workflow: webhook, check the result, post success or failure to Slack" loading="lazy">
+          </div>
+
+          <div class="section-label">The pipeline</div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-upload"/></svg>Video dropped in folder</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-volume"/></svg>Whisper transcript (word timings)</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-spark"/></svg>AI picks 30–60s moments</span>
+          </div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-video"/></svg>Vision: crop on face or fit</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-layers"/></svg>ffmpeg 1080×1920 + captions</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-send"/></svg>n8n webhook</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-chat"/></svg>Slack</span>
+          </div>
+
+          <div class="section-label">Why it is split this way</div>
+          <ul class="highlights">
+            <li><strong>Files stay out of n8n:</strong> recent n8n versions turn off Execute Command and the local file trigger by default, and my n8n is reachable from the internet, so the file work runs in a local script and n8n only handles the notification.</li>
+            <li><strong>Free models with fallbacks:</strong> each AI step goes through my own model gateway, which falls back to another provider if one is down.</li>
+            <li><strong>Success and failure both report:</strong> the Slack message says which reels were made, or why a video failed, and the source file is moved to done or failed.</li>
+          </ul>
+
+          <div class="section-label">What I’d improve</div>
+          <ul class="highlights">
+            <li>Test the face-crop path on more real talking-head footage.</li>
+            <li>Post approved reels straight to Instagram, TikTok and YouTube Shorts.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">Node.js</span><span class="chip">ffmpeg</span><span class="chip">Whisper</span><span class="chip">Vision LLM</span><span class="chip">Slack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 28: WhatsApp AI Auto-Reply + Mini CRM -->
+  <div class="card" data-id="c28" data-platform="n8n">
+    <div class="card-head has-body">
+      <div class="head-left">
+        <span class="card-tag">n8n · WhatsApp · AI Agent · CRM</span>
+        <h2 class="card-title">WhatsApp AI Auto-Reply + Mini CRM</h2>
+        <div class="case-strip"><div><b>Problem</b>Small businesses answer the same WhatsApp questions all day and lose track of who asked what.</div><div><b>What I built</b>One n8n workflow: every incoming message updates a contact in a 3-table CRM, an AI agent answers from the business’s FAQ table and saves lead details it learns, and every reply is logged.</div><div class="case-result"><b>Result</b>Built and validated in n8n. Not live yet: it needs a WhatsApp Business account connected to go live.</div></div>
+      </div>
+      <div class="chevron">⌄</div>
+    </div>
+    <div class="card-body-wrap">
+      <div class="card-body-inner">
+        <div class="card-body">
+          <p class="card-desc">An AI receptionist for WhatsApp with its own CRM. The CRM is three n8n Data Tables: Contacts (stage, interest, message count, needs-human flag), Messages (every message in and out) and Business Info (the FAQ the agent answers from). The business edits answers in a table, not in a prompt.</p>
+
+          <div class="screenshot-gallery">
+            <img src="whatsapp-autoreply-crm.webp" alt="WhatsApp AI Auto-Reply workflow with CRM tables, AI agent, memory and tools" loading="lazy">
+          </div>
+
+          <div class="section-label">The flow</div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-chat"/></svg>WhatsApp message</span><span class="arrow">→</span>
+            <span class="step">Text messages only</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-db"/></svg>Find or create contact</span><span class="arrow">→</span>
+            <span class="step">Log message</span>
+          </div>
+          <div class="flow">
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-bot"/></svg>AI agent (memory per number)</span><span class="arrow">→</span>
+            <span class="step">Tool: look up FAQ</span><span class="arrow">→</span>
+            <span class="step">Tool: save lead detail</span><span class="arrow">→</span>
+            <span class="step"><svg class="fi" aria-hidden="true"><use href="#i-send"/></svg>Reply on WhatsApp</span><span class="arrow">→</span>
+            <span class="step">Log reply</span>
+          </div>
+          <div class="flow">
+            <span class="split neg"><svg class="fi fi-err" aria-hidden="true"><use href="#i-alert"/></svg>AI or send fails</span><span class="arrow">→</span>
+            <span class="step">Fallback reply + Slack alert</span>
+          </div>
+
+          <div class="section-label">Design choices</div>
+          <ul class="highlights">
+            <li><strong>Answers come from a table:</strong> the agent looks up the Business Info table, so changing an answer needs no workflow edit.</li>
+            <li><strong>Remembers each customer:</strong> conversation memory is keyed on the WhatsApp number (last 30 messages).</li>
+            <li><strong>Captures leads as it chats:</strong> a tool lets the agent save a name, email or interest to the contact row.</li>
+            <li><strong>Never silent:</strong> if the AI fails, the customer still gets a polite fallback reply, and the team is alerted in Slack.</li>
+          </ul>
+
+          <div class="section-label">What I’d improve before production</div>
+          <ul class="highlights">
+            <li>Make “save lead detail” update only the fields it learned, so a blank value can never overwrite an earlier one.</li>
+            <li>Hand the chat to a person when a contact is flagged “needs human”.</li>
+          </ul>
+
+          <div class="stack">
+            <span class="chip">n8n</span><span class="chip">AI Agent</span><span class="chip">OpenAI gpt-4o-mini</span><span class="chip">WhatsApp Business Cloud API</span><span class="chip">n8n Data Tables</span><span class="chip">Slack</span>
           </div>
         </div>
       </div>
