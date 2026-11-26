@@ -1660,7 +1660,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
     <button type="button" data-ask="Which client projects have you delivered?">Client projects</button>
   </div>
 
-  <p class="hint">Click any project below to <span>expand the full workflow</span></p>
+  <p class="hint">Scroll to browse my projects, then <span>open any case study</span> for the full workflow</p>
 </div>
 
 <div class="stats-strip">
@@ -1764,19 +1764,19 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="Available%20date%20appoinment.webp">
+              <video controls preload="none" data-poster="Available%20date%20appoinment.webp">
                 <source src="Advance%20appointment%20setter%20Confirm.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Confirmed Booking Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Unavailable%20date%20appointment.webp">
+              <video controls preload="none" data-poster="Unavailable%20date%20appointment.webp">
                 <source src="Advance%20appointment%20setter%20Re%20schedule.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Reschedule Flow Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Error.webp">
+              <video controls preload="none" data-poster="Error.webp">
                 <source src="Advance%20appointment%20setter%20Error.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Error Handling Demo</div>
@@ -1832,7 +1832,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="E-commerce%20order%20Processing.webp">
+              <video controls preload="none" data-poster="E-commerce%20order%20Processing.webp">
                 <source src="E-Commerce%20Order%20Processing.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Workflow Demo</div>
@@ -1885,7 +1885,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="Invoice%20and%20Payment%20Automation.webp">
+              <video controls preload="none" data-poster="Invoice%20and%20Payment%20Automation.webp">
                 <source src="Invoice%20%26%20Payment%20Automation.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Workflow Demo</div>
@@ -1949,19 +1949,19 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 
           <div class="video-gallery">
             <div class="video-item">
-              <video controls preload="none" poster="hot%20lead.webp">
+              <video controls preload="none" data-poster="hot%20lead.webp">
                 <source src="Lead%20Generation%20%26%20Sales%20Automation%20Pipeline_Hot.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Hot Lead Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Warm%20Lead.webp">
+              <video controls preload="none" data-poster="Warm%20Lead.webp">
                 <source src="Lead%20Generation%20%26%20Sales%20Automation_Warm.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Warm Lead Demo</div>
             </div>
             <div class="video-item">
-              <video controls preload="none" poster="Warm%20Lead%202.webp">
+              <video controls preload="none" data-poster="Warm%20Lead%202.webp">
                 <source src="Lead%20Generation%20%26%20Sales%20Automation_Cold.mp4" type="video/mp4">
               </video>
               <div class="video-caption">Cold Lead Demo</div>
@@ -4082,7 +4082,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 </script>
 <!-- 3D + motion layer (fx/): hero workflow network, scroll motion, card tilt -->
 <script src="fx/hero-network.js" defer></script>
-<script src="fx/ring.js?v=20261126j" defer></script>
+<script src="fx/ring.js?v=20261126k" defer></script>
 <script src="fx/about.js?v=20261126c" defer></script>
 <script src="fx/services.js?v=20261126c" defer></script>
 <script src="fx/motion.js?v=20261126g" defer></script>
@@ -4144,6 +4144,16 @@ document.addEventListener('click',function(e){
   var a=e.target.closest && e.target.closest('a[data-case]'); if(!a) return;
   if(openCase(a.getAttribute('data-case'))) e.preventDefault();
 });
+})();
+</script>
+<script>
+/* speed: video posters inside case studies load only when that card is opened (they were ~250KB on first load) */
+(function(){
+var wrap=document.getElementById('cardWrap'); if(!wrap) return;
+function hydrate(card){ card.querySelectorAll('video[data-poster]').forEach(function(v){ v.poster=v.getAttribute('data-poster'); v.removeAttribute('data-poster'); }); }
+new MutationObserver(function(ms){ ms.forEach(function(m){ if(m.target.classList && m.target.classList.contains('card') && m.target.classList.contains('open')) hydrate(m.target); }); })
+  .observe(wrap,{subtree:true,attributes:true,attributeFilter:['class']});
+wrap.querySelectorAll('.card.open').forEach(hydrate);
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3541101652d54b6b939604b00dcb4918"}'></script><!-- End Cloudflare Web Analytics -->

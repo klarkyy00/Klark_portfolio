@@ -108,6 +108,7 @@
       for (var i = 0; i < N; i++) {
         var a = ((i * STEP - cur) % 360 + 540) % 360 - 180, abs = Math.abs(a), t = tiles[i], vis = abs < 115;
         if (t.__vis !== vis) { t.__vis = vis; t.style.pointerEvents = vis ? '' : 'none'; }
+        if (vis && t.__lazy) { t.__lazy.src = t.__lazy.dataset.src; t.__lazy = null; }   // project tiles: image on first view
         var op = !vis ? 0 : abs < 8 ? 1 : Math.max(0.18, 1 - (abs - 8) / 120);
         op = Math.round(op * 50) / 50;
         if (t.__o !== op) { t.__o = op; t.style.opacity = op; }
@@ -202,8 +203,8 @@
     var grid = document.createElement('div'); grid.className = 'websites-grid ring-projects';
     var info = [], tiles = [];
     cards.forEach(function (c) {
-      var img = c.querySelector('.screenshot-gallery img, .card-body img, video[poster]');
-      var src = img ? (img.tagName === 'VIDEO' ? img.getAttribute('poster') : img.getAttribute('src')) : '';
+      var img = c.querySelector('.screenshot-gallery img, .card-body img, video[poster], video[data-poster]');
+      var src = img ? (img.tagName === 'VIDEO' ? (img.getAttribute('poster') || img.getAttribute('data-poster')) : img.getAttribute('src')) : '';
       var q = function (s) { var e = c.querySelector(s); return e ? e.textContent.trim() : ''; };
       var res = c.querySelector('.case-result');
       var result = res ? res.textContent.replace(/^\s*Result\s*/, '').trim() : q('.card-desc');
@@ -211,12 +212,12 @@
       var a = document.createElement('a'); a.className = 'site-tile proj-tile'; a.href = '#' + c.id;
       a.innerHTML = '<div class="site-shot"><img loading="lazy" decoding="async" alt=""><span class="site-live"></span></div>' +
         '<div class="site-info"><span class="site-type"></span><h3></h3></div>';
-      var im = a.querySelector('img'); im.src = src; im.alt = q('.card-title') + ' screenshot';
+      var im = a.querySelector('img'); im.dataset.src = src; a.__lazy = im;   // loaded when the tile turns into view (frame) im.alt = q('.card-title') + ' screenshot';
       a.querySelector('.site-live').textContent = c.dataset.client === 'client' ? 'Client project' : 'Case study';
       a.querySelector('.site-type').textContent = q('.card-tag');
       a.querySelector('h3').textContent = q('.card-title');
       grid.appendChild(a); tiles.push(a);
-      info.push({ href: '#' + c.id, img: im.src, type: q('.card-tag'), title: q('.card-title'), desc: result });
+      info.push({ href: '#' + c.id, img: new URL(src, location.href).href, type: q('.card-tag'), title: q('.card-title'), desc: result });
     });
     var head = zone.querySelector('.projects-head');
     var mount = document.createElement('div'); zone.insertBefore(mount, filter);
