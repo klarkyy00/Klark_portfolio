@@ -945,7 +945,8 @@
     .card-desc{ font-size:0.88rem; }
 
     .flow{ padding:12px; gap:6px; }
-    .step{ font-size:0.7rem; padding:6px 9px; }
+    .step{ font-size:0.8125rem; padding:7px 10px; white-space:normal; line-height:1.35; }   /* 13px: readable on phones */
+    .flow .split{ font-size:0.8125rem; }
 
     .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 0 20px; }
     .table-scroll table.info-table{ margin:0; min-width:480px; }
@@ -4065,24 +4066,20 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
     form.addEventListener('submit', e => { e.preventDefault(); ask(input.value); input.value = ''; });
     document.querySelectorAll('.ai-chips [data-ask]').forEach(b => b.addEventListener('click', () => ask(b.dataset.ask)));
 
-    // typing placeholder that cycles example questions (static if reduced motion)
+    // example questions rotate in the placeholder; always a full, readable question (static if reduced motion)
     if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const examples = ['Ask me about my work…', 'What can you automate for my business?', 'How would n8n save me time?', 'Can you build my website?'];
-    let p = 0, i = 0, del = false;
-    (function tick(){
-      if(document.activeElement === input || input.value){ return setTimeout(tick, 800); }
-      const t = examples[p % examples.length];
-      i += del ? -1 : 1;
-      input.placeholder = t.slice(0, Math.max(i, 0)) || ' ';
-      if(!del && i >= t.length){ del = true; return setTimeout(tick, 2200); }
-      if(del && i <= 0){ del = false; p++; return setTimeout(tick, 350); }
-      setTimeout(tick, del ? 22 : 55);
-    })();
+    let p = 0;
+    setInterval(() => {
+      if(document.activeElement === input || input.value || document.hidden) return;
+      p = (p + 1) % examples.length;
+      input.placeholder = examples[p];
+    }, 3200);
   })();
 </script>
 <!-- 3D + motion layer (fx/): hero workflow network, scroll motion, card tilt -->
 <script src="fx/hero-network.js" defer></script>
-<script src="fx/ring.js?v=20261126k" defer></script>
+<script src="fx/ring.js?v=20261126l" defer></script>
 <script src="fx/about.js?v=20261126c" defer></script>
 <script src="fx/services.js?v=20261126c" defer></script>
 <script src="fx/motion.js?v=20261126g" defer></script>

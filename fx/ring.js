@@ -221,7 +221,7 @@
     });
     var head = zone.querySelector('.projects-head');
     var mount = document.createElement('div'); zone.insertBefore(mount, filter);
-    makeRing({ section: zone, grid: grid, mount: mount, tiles: tiles, info: info, openLabel: 'Read the case study', external: false, hold: 0.82,
+    makeRing({ section: zone, grid: grid, mount: mount, tiles: tiles, info: info, openLabel: 'Read the case study', external: false, hold: 0.6,
       onOpen: function (i) { openCase(cards[i]); } });
     mount.remove();
 
