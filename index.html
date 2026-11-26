@@ -1561,6 +1561,24 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
 .fi-hot{ color:#fb923c; } .fi-warm{ color:#fbbf24; } .fi-cold{ color:#7dd3fc; } .fi-err{ color:#f87171; }
 /* About: ~60 characters per line (68ch was ~78 real characters) */
 .about-section p{ max-width:58ch; }
+/* ===== 2026-11-26 pass: project list, contact details, chat button, service proof ===== */
+/* 1. collapsed project list: no filters over an empty list, no empty padding; they appear once the list opens */
+#cardWrap.has-more:not(.more-open):not(.filtered){ padding-top:0; padding-bottom:0; }
+.projects-zone:has(#cardWrap.has-more:not(.more-open):not(.filtered)) #filterNav{ display:none; }
+.projects-zone:has(#cardWrap.has-more:not(.more-open):not(.filtered)) .show-more-row{ margin-top:6px; }
+/* 2. contact details wrap as a tidy row (no separators); degree now sits in About */
+.contact-section .contact-line{ display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 26px; margin-bottom:22px; }
+.contact-section .contact-line a, .contact-section .contact-line span.addr{ display:inline-flex; align-items:center; gap:7px; }
+.contact-section .contact-line span.addr{ color:var(--muted); }
+.about-section p.about-edu{ margin-top:18px; }
+.about-edu strong{ color:var(--text); font-weight:700; }
+/* 4. service cards: case-study link next to (or instead of) the demo link */
+.service-links{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.service-links .service-demo{ margin-top:0; }
+.service-case{ display:inline-flex; align-items:center; min-height:36px; margin-top:14px; padding:8px 14px; border-radius:10px; border:1px solid rgba(34,211,238,.45);
+  color:#67e8f9; font-size:.82rem; font-weight:700; text-decoration:none; transition:background .2s, color .2s; }
+.service-links .service-case{ margin-top:0; }
+.service-case:hover, .service-case:focus-visible{ background:rgba(34,211,238,.14); color:#fff; }
 </style>
 <link rel="stylesheet" href="fx/ring.css?v=20261126d">
 </head>
@@ -2533,7 +2551,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
   </div>
 
   <!-- 25: Website Opportunity Finder: AI Audit → CRM → Outreach -->
-  <div class="card" data-id="c25" data-platform="n8n">
+  <div class="card" id="case-c25" data-id="c25" data-platform="n8n">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · Lead Generation · AI Audit · Outreach</span>
@@ -2622,7 +2640,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
   </div>
 
   <!-- 26: AI Chat Assistant for This Website -->
-  <div class="card" data-id="c26" data-platform="n8n">
+  <div class="card" id="case-c26" data-id="c26" data-platform="n8n">
     <div class="card-head has-body">
       <div class="head-left">
         <span class="card-tag">n8n · AI Chat Assistant · Lead Capture</span>
@@ -3330,6 +3348,7 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
   <p>I also run <a class="inline-link" href="klarkyytech/" target="_blank" rel="noopener">KlarkyyTech</a>, my AI automation business, where small businesses can see what I build for them and get in touch.</p>
   <p class="about-video"><a class="hero-cta ghost" href="https://klark-intro.pages.dev/" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Watch my 2-minute intro</a></p>
   <p>I'm currently <span class="hl">open to freelance automation projects and full-time opportunities</span>. If you have a repetitive process eating up your team's time, I'd like to hear about it.</p>
+  <p class="about-edu"><strong>Education:</strong> Bachelor of Science in Information Technology</p>
 </div>
 
 <div class="services-section reveal">
@@ -3377,13 +3396,14 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
       <h3>AI Website Chat Assistant</h3>
       <p>A chat assistant that answers your visitors' questions 24/7 from your own business info, captures leads, and alerts you instantly. Try the one on this page.</p>
       <div class="service-tags"><span>Chat AI</span><span>Lead Capture</span><span>Slack</span></div>
+      <a class="service-case" href="#case-c26" data-case="c26">Read the case study &rarr;</a>
     </div>
     <div class="service-card">
       <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg></div>
       <h3>Lead Generation &amp; Cold Outreach</h3>
       <p>I find local businesses, audit their websites with AI, and send each one a personal email about its specific gap, with follow-ups, reply sorting, and opt-outs handled.</p>
       <div class="service-tags"><span>Prospecting</span><span>AI Audit</span><span>Email</span></div>
-      <a class="service-demo" href="demo.html" target="_blank" rel="noopener">See a live demo &rarr;</a>
+      <div class="service-links"><a class="service-demo" href="demo.html" target="_blank" rel="noopener">See a live demo &rarr;</a><a class="service-case" href="#case-c25" data-case="c25">Read the case study &rarr;</a></div>
     </div>
     <div class="service-card">
       <div class="service-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg></div>
@@ -3598,23 +3618,15 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
       <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
       kj_klark@yahoo.com
     </a>
-    <span class="sep">|</span>
-    <a href="mailto:klarkyy02@gmail.com">
-      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-      klarkyy02@gmail.com
-    </a>
-    <span class="sep">|</span>
-    <span class="addr">
-      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-      500 Banay-Banay 1st, San Jose, Batangas
-    </span>
-    <span class="sep">|</span>
-    <span class="addr">
+    <a href="tel:+639653923930">
       <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
       0965 392 3930
+    </a>
+    <span class="addr">
+      <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      San Jose, Batangas, Philippines · works remotely
     </span>
   </div>
-  <div class="edu-line"><strong>Bachelor of Science in Information Technology</strong></div>
 
   <form class="contact-form" id="contactForm">
     <p class="cf-req" id="cf-req">All fields are required.</p>
@@ -4096,17 +4108,43 @@ document.addEventListener('click',function(e){if(e.target.closest&&e.target.clos
 if(location.hash==='#book')open(false);})();
 </script>
 <script>
-/* chat button on touch devices: hide while scrolling down (reading), show on scroll up, near the top and at the end */
+/* chat button on touch devices: hide while scrolling down (reading), show on scroll up, near the top and at the end,
+   but never while the contact form is under it */
 (function(){if(!matchMedia('(hover: none) and (pointer: coarse)').matches)return;
 var last=scrollY,q=false;
 function upd(){q=false;var l=document.getElementById('klark-chat-launcher'),w=document.getElementById('klark-chat-window'),y=scrollY;
 if(!l){last=y;return;}
 var end=y+innerHeight>=document.documentElement.scrollHeight-60;
-if((w&&w.classList.contains('open'))||y<240||end)l.classList.remove('fab-away');
+var f=document.getElementById('contactForm'),fr=f&&f.getBoundingClientRect(),onForm=fr&&fr.bottom>innerHeight-96&&fr.top<innerHeight-8;
+if(w&&w.classList.contains('open'))l.classList.remove('fab-away');
+else if(onForm)l.classList.add('fab-away');   /* never sit on the form fields or the Send button */
+else if(y<240||end)l.classList.remove('fab-away');
 else if(y>last+8)l.classList.add('fab-away');
 else if(y<last-8)l.classList.remove('fab-away');
 last=y;}
 addEventListener('scroll',function(){if(!q){q=true;requestAnimationFrame(upd);}},{passive:true});})();
+</script>
+<script>
+/* "Read the case study" links (services): open the project list if collapsed, open that card, scroll to it */
+(function(){
+function openCase(id){
+  var wrap=document.getElementById('cardWrap'); if(!wrap) return false;
+  var card=wrap.querySelector('.card[data-id="'+id+'"]'); if(!card) return false;
+  if(card.classList.contains('hidden')){ var all=document.querySelector('#filterNav [data-filter="all"]'); if(all) all.click(); }
+  if(wrap.classList.contains('has-more') && !wrap.classList.contains('more-open')){
+    var row=wrap.nextElementSibling, b=row && row.classList.contains('show-more-row') && row.querySelector('button');
+    if(b) b.click(); else wrap.classList.add('more-open');
+  }
+  var head=card.querySelector('.card-head');
+  if(!card.classList.contains('open') && head) head.click();
+  setTimeout(function(){ card.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); if(head){ if(!head.hasAttribute('tabindex')) head.setAttribute('tabindex','-1'); head.focus({preventScroll:true}); } }, 80);
+  return true;
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest && e.target.closest('a[data-case]'); if(!a) return;
+  if(openCase(a.getAttribute('data-case'))) e.preventDefault();
+});
+})();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3541101652d54b6b939604b00dcb4918"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
