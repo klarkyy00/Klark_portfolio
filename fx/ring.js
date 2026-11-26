@@ -198,7 +198,7 @@
   (function () {
     var wrap = document.getElementById('cardWrap'), zone = document.querySelector('.projects-zone'), filter = document.getElementById('filterNav');
     if (!wrap || !zone || !filter) return;
-    var cards = Array.prototype.slice.call(wrap.querySelectorAll(':scope > .card')).slice(0, 6);   // the page's featured order
+    var cards = Array.prototype.slice.call(wrap.querySelectorAll(':scope > .card')).slice(0, 8);   // the page's featured order (index.html puts these first)
     var grid = document.createElement('div'); grid.className = 'websites-grid ring-projects';
     var info = [], tiles = [];
     cards.forEach(function (c) {
