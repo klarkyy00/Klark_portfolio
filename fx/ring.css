@@ -28,6 +28,9 @@ html .websites-grid.ring > .site-tile.ring-front{
 }
 /* the ring's own caption carries the text; tiles keep only the shot + name */
 html .ring .site-info p, html .ring .site-url{ display: none; }
+/* one line each on the tiles (full title is in the caption), so all three rings get the same tile size */
+html .ring .site-info h3, html .ring .site-info .site-type{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+html .ring .site-info{ min-width: 0; }
 /* ambient: soft light pool under the ring */
 .ring-floor{
   position: absolute; left: 50%; bottom: 0; width: min(900px, 92vw); height: 90px; transform: translateX(-50%);
