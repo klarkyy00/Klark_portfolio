@@ -1580,16 +1580,20 @@ html.fx-motion .top-nav.fx-nav-scrolled::after{ animation:none; }
   color:#67e8f9; font-size:.82rem; font-weight:700; text-decoration:none; transition:background .2s, color .2s; }
 .service-links .service-case{ margin-top:0; }
 .service-case:hover, .service-case:focus-visible{ background:rgba(34,211,238,.14); color:#fff; }
-/* hero headline: letters jumble while scrolling, then decode back to the real text */
-.hero h1 .scr-w{ white-space:nowrap; }
-.hero h1 .scr-c{ display:inline-block; text-align:center; }
-.hero h1 .scr-vis{ display:block; text-wrap:balance; }
-/* moving letters can't show the clipped gradient, so they carry a solid colour matched to their spot in it */
-.hero h1 .scr-c.jit{ transition:none; -webkit-text-fill-color:var(--c); color:var(--c); }
-.hero h1 .scr-c.land{ transition:transform .42s cubic-bezier(.175,.885,.32,1.275), opacity .3s ease-out; -webkit-text-fill-color:var(--c); color:var(--c); }
-.hero h1 .scr-c.fade{ transition:-webkit-text-fill-color .3s ease-out, color .3s ease-out; }
-.hero h1 .scr-c.hot{ color:#67e8f9; -webkit-text-fill-color:#67e8f9; text-shadow:0 0 12px rgba(34,211,238,.7); }
-.hero h1 .scr-c.hot2{ color:#fff; -webkit-text-fill-color:#fff; text-shadow:0 0 10px rgba(167,139,250,.8); }
+/* hero headline, "masked type" (2026-11-26): words rise from behind a cut line on load; scrolling slips them back
+   up behind it one by one, reversibly. Each word paints its own slice of one shared gradient, because moving text
+   inside a background-clip:text parent disappears. */
+@property --mt-sh{ syntax:'<number>'; inherits:true; initial-value:0; }
+@property --mt-in{ syntax:'<percentage>'; inherits:false; initial-value:0%; }
+@keyframes mt-shimmer{ to{ --mt-sh:1; } }
+.hero h1.mt-on{ background:none; -webkit-text-fill-color:initial; color:#a78bfa; animation:mt-shimmer 6s linear infinite; }
+.hero h1.mt-on .mt-m{ display:inline-block; overflow:hidden; vertical-align:top; padding:.06em .04em .14em; margin:-.06em -.04em -.14em; }
+.hero h1.mt-on .mt-w{ display:inline-block;
+  background:linear-gradient(90deg,#a78bfa,#60a5fa,#22d3ee,#a78bfa) repeat-x;
+  background-size:var(--mt-W3,300%) 100%; background-position:calc(var(--mt-sh) * var(--mt-W6,0px) * -1 - var(--mt-ox,0px)) 50%;
+  -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+  transform:translateY(calc(var(--mt-in) + var(--mt-sc,0%))) rotate(var(--mt-r,0deg)); transform-origin:0 100%; will-change:transform; /* own layer, else Chrome drops mid-move clipped words */
+  transition:--mt-in .9s cubic-bezier(.16,.84,.24,1); }
 </style>
 <link rel="stylesheet" href="fx/ring.css?v=20261126d">
 </head>
@@ -4164,85 +4168,47 @@ wrap.querySelectorAll('.card.open').forEach(hydrate);
 })();
 </script>
 <script>
-/* hero headline scramble (motion pass, 2026-11-26): while the page scrolls the letters jumble, jump, tilt and flash,
-   harder the faster you scroll, drifting against the scroll; the line leans with the scroll. When scrolling stops,
-   letters land left to right with a small overshoot. Widths are locked (em) so lines never shift.
-   Screen readers get the plain text (aria-label); reduced-motion visitors get the static headline. */
+/* hero headline, masked type: the scroll position is the clock (same position = same frame, both directions).
+   Word i starts slipping a beat after word i-1; by the time the headline reaches the nav every word has gone
+   up behind its cut line. Reduced motion / no JS: the plain gradient headline. */
 (function(){
 var h=document.querySelector('.hero h1'); if(!h || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-var text=h.textContent.trim(), GL='ABCDEFGHJKLMNPRSTUVXYZabcdefghknopqrstuvxyz0123456789#%&*+=<>/?';
-var cells=[], built=false, vis;
-function build(){
-  if(built) return; built=true;
-  var fs=parseFloat(getComputedStyle(h).fontSize); vis=document.createElement('span'); vis.className='scr-vis'; vis.setAttribute('aria-hidden','true');
-  text.split(' ').forEach(function(w,i){
-    if(i) vis.appendChild(document.createTextNode(' '));
-    var ws=document.createElement('span'); ws.className='scr-w';
-    for(var k=0;k<w.length;k++){ var c=document.createElement('span'); c.className='scr-c'; c.textContent=w[k]; ws.appendChild(c); cells.push({el:c,ch:w[k],cur:w[k],on:false}); }
-    vis.appendChild(ws);
+var text=h.textContent.trim(), words=[];
+h.textContent='';
+text.split(' ').forEach(function(w,i){
+  if(i) h.appendChild(document.createTextNode(' '));
+  var m=document.createElement('span'); m.className='mt-m';
+  var s=document.createElement('span'); s.className='mt-w'; s.textContent=w; m.appendChild(s); h.appendChild(m); words.push(s);
+});
+var intro=scrollY<40 && document.visibilityState==='visible';   /* a hidden tab never runs the rise, so it would sit hidden */
+h.classList.add('mt-on');
+function measure(){
+  var r=h.getBoundingClientRect();
+  h.style.setProperty('--mt-W3',(r.width*3)+'px'); h.style.setProperty('--mt-W6',(r.width*6)+'px');
+  words.forEach(function(w){ w.style.setProperty('--mt-ox',(w.getBoundingClientRect().left-r.left)+'px'); });
+}
+measure(); if(window.ResizeObserver) new ResizeObserver(measure).observe(h);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(measure);
+if(intro){   /* load-in: every word starts below its cut line and rises a beat after the one before */
+  words.forEach(function(w,i){ w.style.transition='none'; w.style.setProperty('--mt-in','112%'); });
+  void h.offsetWidth;
+  words.forEach(function(w,i){ w.style.transition=''; w.style.transitionDelay=(.05+i*.055)+'s'; w.style.setProperty('--mt-in','0%'); });
+  setTimeout(function(){ words.forEach(function(w){ w.style.removeProperty('--mt-in'); w.style.transitionDelay=''; }); }, 2200); }
+var start=0, span=1;
+function geo(){ var r=h.getBoundingClientRect(); start=Math.max(0, r.top+scrollY-innerHeight*.55); span=Math.max(160, r.bottom+scrollY-70-start); }
+function ease(x){ return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2; }
+var raf=0, last=-1;
+function frame(){
+  raf=0; var p=Math.max(0,Math.min(1,(scrollY-start)/span)); if(p===last) return; last=p;
+  var n=words.length;
+  words.forEach(function(w,i){
+    var a=i/n*.55, q=ease(Math.max(0,Math.min(1,(p-a)/.45)));
+    w.style.setProperty('--mt-sc',(-112*q).toFixed(2)+'%');
+    w.style.setProperty('--mt-r',(-4*q).toFixed(2)+'deg');
   });
-  /* accessible name on the heading itself: a hidden text copy inside it would be painted into the clipped gradient */
-  h.setAttribute('aria-label',text); h.textContent=''; h.appendChild(vis);
-  var hr=h.getBoundingClientRect(), S=[[167,139,250],[96,165,250],[34,211,238]];
-  cells.forEach(function(c){ var r=c.el.getBoundingClientRect(); c.w=r.width; c.el.style.width=(c.w/fs)+'em';
-    var f=Math.max(0,Math.min(1,(r.left+r.width/2-hr.left)/hr.width))*.8, a=f<.5?S[0]:S[1], b2=f<.5?S[1]:S[2], u=f<.5?f*2:(f-.5)*2;
-    c.el.style.setProperty('--c','rgb('+a.map(function(v,i){ return Math.round(v+(b2[i]-v)*u); }).join(',')+')'); });
-
-  /* random glyphs are picked from ones about as wide as the real letter, so nothing piles up */
-  var probe=cells[0].el, gw=GL.split('').map(function(g){ probe.textContent=g; probe.style.width='auto'; return [g,probe.getBoundingClientRect().width]; });
-  probe.textContent=cells[0].ch; probe.style.width=(cells[0].w/fs)+'em';
-  cells.forEach(function(c){ var ok=gw.filter(function(x){ return Math.abs(x[1]-c.w)<=c.w*.25+1; }).map(function(x){ return x[0]; });
-    if(ok.length<4) ok=gw.slice().sort(function(x,y){ return Math.abs(x[1]-c.w)-Math.abs(y[1]-c.w); }).slice(0,6).map(function(x){ return x[0]; });
-    c.pool=ok; });
 }
-var lean=0, inView=true, lastScroll=0, lastY=scrollY, lastT=0, vel=0, dir=1, resolveStart=0, raf=0, lastTick=0;
-new IntersectionObserver(function(e){ inView=e[0].isIntersecting; }).observe(h);
-function rnd(c){ return c.pool[(Math.random()*c.pool.length)|0]; }
-function R(a){ return (Math.random()*2-1)*a; }
-function jumble(c,k){
-  if(!c.on){ c.on=true; clearTimeout(c.to); c.el.classList.remove('land','fade'); c.el.classList.add('jit'); }
-  var t=rnd(c); if(c.cur!==t){ c.cur=t; c.el.textContent=t; }
-  /* drift against the scroll + random jump, tilt and scale, all scaled by scroll speed k */
-  c.el.style.transform='translate('+R(.06*k).toFixed(3)+'em,'+(-dir*.12*k+R(.22*k)).toFixed(3)+'em) skewX('+lean.toFixed(1)+'deg) rotate('+R(16*k).toFixed(1)+'deg) scale('+(1+R(.22*k)).toFixed(3)+')';
-  c.el.style.opacity=(1-Math.random()*.45*k).toFixed(2);
-  var r=Math.random(); c.el.classList.toggle('hot', r<.16*k+.04); c.el.classList.toggle('hot2', r>1-.08*k);
-}
-function land(c){
-  if(!c.on) return; c.on=false;
-  c.cur=c.ch; c.el.textContent=c.ch;
-  c.el.classList.remove('jit','hot','hot2');
-  c.el.style.transform='translateY('+(-dir*.18)+'em) scale(1.22)'; c.el.style.opacity='1';
-  void c.el.offsetWidth;                 /* start the pop from here */
-  c.el.classList.add('land'); c.el.style.transform='';
-  /* once landed (no transform), drop the solid colour so the real gradient shows again */
-  c.to=setTimeout(function(){ if(!c.on){ c.el.classList.add('fade'); c.el.classList.remove('land'); } },450);
-}
-function tick(t){
-  raf=0;
-  if(t-lastTick<40){ raf=requestAnimationFrame(tick); return; }
-  lastTick=t;
-  var now=performance.now(), scrolling=now-lastScroll<130, n=cells.length, busy=false;
-  if(scrolling){ resolveStart=0;
-    var k=Math.max(.45, Math.min(1, vel/1.6));
-    lean=-dir*9*k;   /* the whole line leans with the scroll: applied per moving letter (transforming the h1 breaks its gradient paint) */
-    cells.forEach(function(c){ if(Math.random()<.35+.5*k || !c.on) jumble(c,k); });
-    busy=true;
-  } else {
-    if(!resolveStart){ resolveStart=now; lean=0; }
-    var p=Math.min(1,(now-resolveStart)/600), e=1-Math.pow(1-p,2), done=Math.floor(e*n);   /* ease-out stagger, ~0.6s */
-    var kk=.5;
-    cells.forEach(function(c,i){ if(i<done || p>=1) land(c); else { if(Math.random()<.6) jumble(c,kk*(1-p)+.2); busy=true; } });
-  }
-  if(busy) raf=requestAnimationFrame(tick);
-}
-addEventListener('scroll',function(){
-  var now=performance.now(), y=scrollY, dy=y-lastY, dt=Math.max(1,now-lastT);
-  lastY=y; lastT=now; if(dy) dir=dy>0?1:-1;
-  vel=vel*.6+Math.abs(dy)/dt*.4;          /* px per ms, smoothed */
-  if(!inView) return;
-  build(); lastScroll=now;
-  if(!raf) raf=requestAnimationFrame(tick);
-},{passive:true});
+function onScroll(){ if(!raf) raf=requestAnimationFrame(frame); }
+geo(); frame(); addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',function(){ geo(); last=-1; onScroll(); });
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3541101652d54b6b939604b00dcb4918"}'></script><!-- End Cloudflare Web Analytics -->
